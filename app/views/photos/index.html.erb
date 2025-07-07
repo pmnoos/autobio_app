@@ -1,0 +1,166 @@
+<% content_for :title, "Photo Gallery" %>
+
+<div class="w-full max-w-7xl mx-auto">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <header class="text-center mb-12">
+    <h1 class="font-bold text-5xl text-gray-900 mb-4">Photo Gallery</h1>
+    <p class="text-xl text-gray-600 mb-8">Memories captured through the lens</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium text-lg" %>
+      <%= link_to "📖 Back to Chapters", root_path, class: "rounded-md px-6 py-3 bg-gray-100 hover:bg-gray-50 text-gray-700 inline-block font-medium text-lg" %>
+    </div>
+  </header>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    <% if @photos.any? %>
+      <% @photos.each_with_index do |photo, index| %>
+        <div style="width: 256px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; transition: all 0.3s ease;">
+          <% if photo.image.attached? %>
+            <div style="width: 256px; height: 256px; overflow: hidden; cursor: pointer;" onclick="openLightbox(<%= index %>)">
+              <%= image_tag photo.image, 
+                  alt: photo.title,
+                  loading: "lazy",
+                  style: "width: 256px; height: 256px; object-fit: cover; display: block;" %>
+            </div>
+          <% else %>
+            <div style="width: 256px; height: 256px; background: linear-gradient(135deg, #f3f4f6, #e5e7eb); display: flex; align-items: center; justify-content: center;">
+              <span style="color: #9ca3af; font-size: 18px;">No Image</span>
+            </div>
+          <% end %>
+          
+          <!-- Photo Info -->
+          <div style="padding: 16px;">
+            <h3 style="font-weight: 600; color: #111827; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= photo.title %></h3>
+            <% if photo.taken_at.present? %>
+              <p style="font-size: 14px; color: #6b7280; margin-bottom: 8px;"><%= photo.taken_at.strftime("%B %d, %Y") %></p>
+            <% end %>
+            <% if photo.description.present? %>
+              <p style="font-size: 14px; color: #4b5563; line-height: 1.4;"><%= truncate(photo.description, length: 60) %></p>
+            <% end %>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 8px; margin-top: 12px;">
+              <%= link_to "View", photo, class: "px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-medium" %>
+              <%= link_to "Edit", edit_photo_path(photo), class: "px-3 py-1 bg-gray-100 hover:bg-gray-50 text-gray-700 rounded text-xs font-medium" %>
+              <%= button_to "Delete", photo, method: :delete, 
+                  class: "px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-medium", 
+                  data: { turbo_confirm: "Are you sure?" } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-span-full text-center py-16">
+        <div class="mb-8">
+          <svg class="mx-auto h-24 w-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-medium text-gray-900 mb-4">No photos yet</h3>
+        <p class="text-gray-600 mb-8">Start building your photo gallery by uploading your first image.</p>
+        <%= link_to "Upload Your First Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50" style="display: none;">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="relative max-w-7xl max-h-full">
+      <!-- Close Button -->
+      <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      
+      <!-- Navigation Buttons -->
+      <button onclick="previousPhoto()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      
+      <button onclick="nextPhoto()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+      
+      <!-- Image -->
+      <img id="lightbox-image" src="" alt="" class="max-w-full max-h-full object-contain">
+      
+      <!-- Photo Info -->
+      <div id="lightbox-info" class="absolute bottom-4 left-4 right-4 text-white bg-black bg-opacity-50 rounded-lg p-4">
+        <h3 id="lightbox-title" class="text-xl font-semibold mb-2"></h3>
+        <p id="lightbox-date" class="text-sm text-gray-300 mb-2"></p>
+        <p id="lightbox-description" class="text-sm"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const photos = <%= raw @photos.map { |photo| 
+    {
+      id: photo.id,
+      title: photo.title,
+      description: photo.description,
+      taken_at: photo.taken_at&.strftime("%B %d, %Y"),
+      image_url: photo.image.attached? ? url_for(photo.image) : nil
+    }
+  }.to_json %>;
+  
+  let currentPhotoIndex = 0;
+  
+  function openLightbox(index) {
+    currentPhotoIndex = index;
+    const photo = photos[index];
+    
+    if (!photo.image_url) return;
+    
+    document.getElementById('lightbox-image').src = photo.image_url;
+    document.getElementById('lightbox-title').textContent = photo.title;
+    document.getElementById('lightbox-date').textContent = photo.taken_at || '';
+    document.getElementById('lightbox-description').textContent = photo.description || '';
+    
+    const lightbox = document.getElementById('lightbox');
+    lightbox.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+  
+  function nextPhoto() {
+    currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+    openLightbox(currentPhotoIndex);
+  }
+  
+  function previousPhoto() {
+    currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+    openLightbox(currentPhotoIndex);
+  }
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox.style.display === 'block') {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') previousPhoto();
+    }
+  });
+  
+  // Close lightbox when clicking outside image
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+</script>

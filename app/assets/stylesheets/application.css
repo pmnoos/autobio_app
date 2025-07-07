@@ -1,0 +1,244 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/* Prose styles for rich text content */
+.prose {
+  max-width: none;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h1 { font-size: 2rem; }
+.prose h2 { font-size: 1.5rem; }
+.prose h3 { font-size: 1.25rem; }
+
+.prose ul, .prose ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.25rem;
+}
+
+.prose blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: #1d4ed8;
+}
+
+/* Grid layout utilities */
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+  max-height: 300px;
+  max-width: 300px;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Responsive grid breakpoints */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Removed old photo gallery styles - using new .photo-gallery class instead */
+
+/* Photo gallery layout - Using CSS Grid with fixed sizing */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 256px);
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.photo-item {
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-container {
+  width: 256px;
+  height: 256px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.photo-thumbnail {
+  width: 256px;
+  height: 256px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Responsive behavior */
+@media (max-width: 640px) {
+  .photo-gallery {
+    grid-template-columns: 256px;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .photo-gallery {
+    grid-template-columns: repeat(2, 256px);
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1500px) {
+  .photo-gallery {
+    grid-template-columns: repeat(3, 256px);
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1501px) {
+  .photo-gallery {
+    grid-template-columns: repeat(4, 256px);
+    justify-content: center;
+  }
+}
+
+/* Grid utilities to ensure proper grid behavior */
+.grid {
+  display: grid !important;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+/* Ensure responsive behavior */
+@media (max-width: 640px) {
+  #photos > div {
+    max-width: 256px;
+    width: 256px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  #photos > div {
+    max-width: 256px;
+    width: 256px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  #photos > div {
+    max-width: 256px;
+    width: 256px;
+  }
+}
+
+@media (min-width: 1281px) {
+  #photos > div {
+    max-width: 256px;
+    width: 256px;
+  }
+}
