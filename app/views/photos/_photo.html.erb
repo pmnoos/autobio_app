@@ -1,4 +1,14 @@
-<div id="<%= dom_id photo %>" class="w-full sm:w-auto my-5 space-y-5">
+<div id="<%= dom_id photo %>" class="w-full my-5 space-y-5">
+  <!-- Photo Image -->
+  <% if photo.image.attached? %>
+    <div class="mb-6">
+      <%= image_tag photo.image, 
+          alt: photo.title,
+          class: "w-full max-w-2xl rounded-lg shadow-lg mx-auto block",
+          loading: "lazy" %>
+    </div>
+  <% end %>
+  
   <div>
     <strong class="block font-medium mb-1">Title:</strong>
     <%= photo.title %>

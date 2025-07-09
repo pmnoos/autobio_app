@@ -1,9 +1,15 @@
 class ChaptersController < ApplicationController
+  allow_unauthenticated_access only: [:index, :list, :show]
   before_action :set_chapter, only: %i[ show edit update destroy ]
 
   # GET /chapters or /chapters.json
   def index
-    @chapters = Chapter.all
+    @chapters = Chapter.all.order_chapters_with_intro_first
+  end
+
+  # GET /chapters/list
+  def list
+    @chapters = Chapter.all.order_chapters_with_intro_first
   end
 
   # GET /chapters/1 or /chapters/1.json

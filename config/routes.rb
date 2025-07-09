@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :photos
-  resources :chapters
+  resources :chapters do
+    collection do
+      get :list
+    end
+  end
   resource :session
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,4 +19,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "chapters#index"
+
+  # Static pages
+  get "about" => "pages#about"
+  get "privacy" => "pages#privacy"
+  get "terms" => "pages#terms"
+  get "contact" => "pages#contact"
 end

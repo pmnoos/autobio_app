@@ -1,57 +1,62 @@
 <% content_for :title, "Photo Gallery" %>
 
-<div class="w-full max-w-7xl mx-auto">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <% if notice.present? %>
+      <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md mb-6">
+        <%= notice %>
+      </div>
+    <% end %>
 
-  <header class="text-center mb-12">
-    <h1 class="font-bold text-5xl text-gray-900 mb-4">Photo Gallery</h1>
-    <p class="text-xl text-gray-600 mb-8">Memories captured through the lens</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium text-lg" %>
-      <%= link_to "📖 Back to Chapters", root_path, class: "rounded-md px-6 py-3 bg-gray-100 hover:bg-gray-50 text-gray-700 inline-block font-medium text-lg" %>
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Photo Gallery</h1>
+        <p class="text-gray-700 mt-2 text-lg">Memories captured through the lens</p>
+      </div>
+      
+      <% if authenticated? %>
+        <%= link_to "Add New Photo", new_photo_path, 
+            class: "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all transform hover:scale-105 shadow-lg" %>
+      <% end %>
     </div>
-  </header>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-    <% if @photos.any? %>
-      <% @photos.each_with_index do |photo, index| %>
-        <div style="width: 256px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; transition: all 0.3s ease;">
-          <% if photo.image.attached? %>
-            <div style="width: 256px; height: 256px; overflow: hidden; cursor: pointer;" onclick="openLightbox(<%= index %>)">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; width: 100%;">
+      <% if @photos.any? %>
+        <% photos_with_images = @photos.select { |photo| photo.image.attached? }.sort_by(&:id) %>
+        <% photos_with_images.each_with_index do |photo, index| %>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100" style="width: 100%; max-width: 280px; justify-self: center;">
+            <div class="cursor-pointer bg-gradient-to-br from-gray-100 to-gray-200" onclick="openLightbox(<%= index %>)" style="aspect-ratio: 1/1; overflow: hidden;" data-photo-id="<%= photo.id %>" data-index="<%= index %>">
               <%= image_tag photo.image, 
                   alt: photo.title,
                   loading: "lazy",
-                  style: "width: 256px; height: 256px; object-fit: cover; display: block;" %>
+                  class: "w-full h-full object-cover hover:scale-110 transition-transform duration-500" %>
             </div>
-          <% else %>
-            <div style="width: 256px; height: 256px; background: linear-gradient(135deg, #f3f4f6, #e5e7eb); display: flex; align-items: center; justify-content: center;">
-              <span style="color: #9ca3af; font-size: 18px;">No Image</span>
-            </div>
-          <% end %>
-          
-          <!-- Photo Info -->
-          <div style="padding: 16px;">
-            <h3 style="font-weight: 600; color: #111827; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= photo.title %></h3>
-            <% if photo.taken_at.present? %>
-              <p style="font-size: 14px; color: #6b7280; margin-bottom: 8px;"><%= photo.taken_at.strftime("%B %d, %Y") %></p>
-            <% end %>
-            <% if photo.description.present? %>
-              <p style="font-size: 14px; color: #4b5563; line-height: 1.4;"><%= truncate(photo.description, length: 60) %></p>
-            <% end %>
             
-            <!-- Action Buttons -->
-            <div style="display: flex; gap: 8px; margin-top: 12px;">
-              <%= link_to "View", photo, class: "px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-medium" %>
-              <%= link_to "Edit", edit_photo_path(photo), class: "px-3 py-1 bg-gray-100 hover:bg-gray-50 text-gray-700 rounded text-xs font-medium" %>
-              <%= button_to "Delete", photo, method: :delete, 
-                  class: "px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-medium", 
-                  data: { turbo_confirm: "Are you sure?" } %>
+            <!-- Photo Info -->
+            <div class="p-4">
+              <h3 class="font-bold text-gray-900 mb-2 text-lg truncate"><%= photo.title %></h3>
+              <% if photo.taken_at.present? %>
+                <p class="text-sm text-purple-600 font-medium mb-2"><%= photo.taken_at.strftime("%B %d, %Y") %></p>
+              <% end %>
+              <% if photo.description.present? %>
+                <p class="text-sm text-gray-600 line-clamp-2"><%= truncate(photo.description, length: 80) %></p>
+              <% end %>
+              
+              <!-- Action Buttons -->
+              <% if authenticated? %>
+                <div class="flex gap-2 mt-3">
+                  <%= link_to "View", photo, 
+                      class: "flex-1 bg-gradient-to-r from-blue-500 to-teal-500 text-white text-center py-2 px-3 rounded-lg text-sm font-medium hover:from-blue-600 hover:to-teal-600 transition-all" %>
+                  <%= link_to "Edit", edit_photo_path(photo), 
+                      class: "flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-center py-2 px-3 rounded-lg text-sm font-medium hover:from-yellow-600 hover:to-orange-600 transition-all" %>
+                </div>
+              <% else %>
+                <%= link_to "View", photo, 
+                    class: "block w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white text-center py-2 px-3 rounded-lg text-sm font-medium hover:from-blue-600 hover:to-teal-600 transition-all mt-3" %>
+              <% end %>
             </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
     <% else %>
       <div class="col-span-full text-center py-16">
         <div class="mb-8">
@@ -105,23 +110,31 @@
 </div>
 
 <script>
-  const photos = <%= raw @photos.map { |photo| 
+  // Ensure photos array matches exactly with the displayed photos
+  const photos = <%= raw @photos.select { |photo| photo.image.attached? }.sort_by(&:id).map.with_index { |photo, index| 
     {
+      index: index,
       id: photo.id,
       title: photo.title,
       description: photo.description,
       taken_at: photo.taken_at&.strftime("%B %d, %Y"),
-      image_url: photo.image.attached? ? url_for(photo.image) : nil
+      image_url: url_for(photo.image)
     }
   }.to_json %>;
+  
+  console.log('Photos array:', photos); // Debug log
   
   let currentPhotoIndex = 0;
   
   function openLightbox(index) {
+    console.log('Opening lightbox for index:', index, 'Photo:', photos[index]); // Debug log
     currentPhotoIndex = index;
     const photo = photos[index];
     
-    if (!photo.image_url) return;
+    if (!photo || !photo.image_url) {
+      console.log('No photo found for index:', index);
+      return;
+    }
     
     document.getElementById('lightbox-image').src = photo.image_url;
     document.getElementById('lightbox-title').textContent = photo.title;
