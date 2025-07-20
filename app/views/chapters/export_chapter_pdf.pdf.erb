@@ -1,0 +1,35 @@
+<!-- Single Chapter Export -->
+<div class="cover-page">
+  <h1 class="cover-title"><%= @user_info[:title] %></h1>
+  <p class="cover-subtitle">
+    <% if @chapter.intro_chapter? %>
+      Introduction: <%= @chapter.title %>
+    <% else %>
+      Chapter <%= @chapter.chapter_number %>: <%= @chapter.title %>
+    <% end %>
+  </p>
+  <p class="cover-author">by <%= @user_info[:name] %></p>
+  <p class="cover-date">Generated on <%= @user_info[:generated_date] %></p>
+</div>
+
+<!-- Chapter Content -->
+<div class="chapter">
+  <div class="chapter-header">
+    <% if @chapter.intro_chapter? %>
+      <div class="chapter-number">Introduction</div>
+    <% else %>
+      <div class="chapter-number">Chapter <%= @chapter.chapter_number %></div>
+    <% end %>
+    <h1 class="chapter-title"><%= @chapter.title %></h1>
+    <% if @chapter.subtitle.present? %>
+      <p class="chapter-subtitle"><%= @chapter.subtitle %></p>
+    <% end %>
+    <div class="chapter-date">
+      Written on <%= @chapter.created_at.strftime("%B %d, %Y") %>
+    </div>
+  </div>
+  
+  <div class="chapter-content">
+    <%= @chapter.content %>
+  </div>
+</div>

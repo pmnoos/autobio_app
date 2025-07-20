@@ -42,6 +42,10 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
+# PDF Export functionality
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

@@ -16,6 +16,9 @@ A personal journey through life, love, and adventure.
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <%= link_to "Start Reading", list_chapters_path, 
             class: "bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg" %>
+        <%= link_to "📄 Download as PDF", export_pdf_chapters_path(format: :pdf), 
+            class: "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105 shadow-lg",
+            target: "_blank" %>
         <%= link_to "View Gallery", photos_path, 
             class: "border-2 border-teal-300 text-teal-300 hover:bg-teal-300 hover:text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg transition-all transform hover:scale-105" %>
       </div>

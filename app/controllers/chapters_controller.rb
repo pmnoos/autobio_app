@@ -1,6 +1,7 @@
 class ChaptersController < ApplicationController
-  allow_unauthenticated_access only: [:index, :list, :show]
-  before_action :set_chapter, only: %i[ show edit update destroy ]
+  include ActionController::MimeResponds
+  allow_unauthenticated_access only: [:index, :list, :show, :export_pdf, :export_chapter_pdf]
+  before_action :set_chapter, only: %i[ show edit update destroy export_chapter_pdf ]
 
   # GET /chapters or /chapters.json
   def index
@@ -14,6 +15,69 @@ class ChaptersController < ApplicationController
 
   # GET /chapters/1 or /chapters/1.json
   def show
+  end
+
+  # GET /chapters/export_pdf
+  def export_pdf
+    @chapters = Chapter.all.order_chapters_with_intro_first
+    @user_info = get_user_info_for_pdf
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "autobiography_complete_#{Date.current.strftime('%Y%m%d')}",
+               template: 'chapters/export_pdf',
+               layout: 'pdf',
+               page_size: 'A4',
+               margin: {
+                 top: 15,
+                 bottom: 15,
+                 left: 15,
+                 right: 15
+               },
+               header: {
+                 html: {
+                   template: 'shared/pdf_header'
+                 }
+               },
+               footer: {
+                 html: {
+                   template: 'shared/pdf_footer'
+                 }
+               },
+               enable_local_file_access: true
+      end
+    end
+  end
+
+  # GET /chapters/1/export_chapter_pdf
+  def export_chapter_pdf
+    @user_info = get_user_info_for_pdf
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@chapter.title.parameterize}_#{Date.current.strftime('%Y%m%d')}",
+               template: 'chapters/export_chapter_pdf',
+               layout: 'pdf',
+               page_size: 'A4',
+               margin: {
+                 top: 15,
+                 bottom: 15,
+                 left: 15,
+                 right: 15
+               },
+               header: {
+                 html: {
+                   template: 'shared/pdf_header'
+                 }
+               },
+               footer: {
+                 html: {
+                   template: 'shared/pdf_footer'
+                 }
+               },
+               enable_local_file_access: true
+      end
+    end
   end
 
   # GET /chapters/new
@@ -72,5 +136,15 @@ class ChaptersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def chapter_params
       params.expect(chapter: [ :title, :subtitle, :image_header, :content ])
+    end
+
+    # Get user information for PDF export
+    def get_user_info_for_pdf
+      {
+        name: "Your Name", # Replace with actual user name from User model
+        title: "My Autobiography",
+        subtitle: "A Journey Through Life's Adventures",
+        generated_date: Date.current.strftime("%B %d, %Y")
+      }
     end
 end

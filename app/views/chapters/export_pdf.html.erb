@@ -1,0 +1,48 @@
+<!-- Cover Page -->
+<div class="cover-page">
+  <h1 class="cover-title"><%= @user_info[:title] %></h1>
+  <p class="cover-subtitle"><%= @user_info[:subtitle] %></p>
+  <p class="cover-author">by <%= @user_info[:name] %></p>
+  <p class="cover-date">Generated on <%= @user_info[:generated_date] %></p>
+</div>
+
+<!-- Table of Contents -->
+<div class="table-of-contents">
+  <h2 class="toc-title">Table of Contents</h2>
+  <% @chapters.each_with_index do |chapter, index| %>
+    <div class="toc-entry">
+      <span class="toc-chapter">
+        <% if chapter.intro_chapter? %>
+          Introduction: <%= chapter.title %>
+        <% else %>
+          Chapter <%= chapter.chapter_number %>: <%= chapter.title %>
+        <% end %>
+      </span>
+      <span class="toc-page"><%= index + 1 %></span>
+    </div>
+  <% end %>
+</div>
+
+<!-- Chapters -->
+<% @chapters.each do |chapter| %>
+  <div class="chapter">
+    <div class="chapter-header">
+      <% if chapter.intro_chapter? %>
+        <div class="chapter-number">Introduction</div>
+      <% else %>
+        <div class="chapter-number">Chapter <%= chapter.chapter_number %></div>
+      <% end %>
+      <h1 class="chapter-title"><%= chapter.title %></h1>
+      <% if chapter.subtitle.present? %>
+        <p class="chapter-subtitle"><%= chapter.subtitle %></p>
+      <% end %>
+      <div class="chapter-date">
+        Written on <%= chapter.created_at.strftime("%B %d, %Y") %>
+      </div>
+    </div>
+    
+    <div class="chapter-content">
+      <%= chapter.content %>
+    </div>
+  </div>
+<% end %>

@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   resources :chapters do
     collection do
       get :list
+      get :export_pdf
+    end
+    member do
+      get :export_chapter_pdf
     end
   end
   resource :session

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 10pt;
+      margin: 0;
+      padding: 5px 15px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #a0aec0;
+    }
+    .page-number {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="footer-content">
+    <span>Generated on <%= Date.current.strftime("%B %d, %Y") %></span>
+    <span class="page-number">Page <span class="page"></span> of <span class="topage"></span></span>
+  </div>
+</body>
+</html>
