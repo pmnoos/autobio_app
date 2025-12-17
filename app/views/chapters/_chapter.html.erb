@@ -1,34 +1,44 @@
-<article id="<%= dom_id chapter %>" class="w-full max-w-4xl mx-auto my-8 bg-white shadow-lg rounded-lg overflow-hidden">
+<article id="<%= dom_id chapter %>" class="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
   <!-- Header Image -->
   <% if chapter.image_header.attached? %>
-    <div class="w-full h-64 bg-gray-200">
-      <%= image_tag chapter.image_header, class: "w-full h-full object-cover", alt: chapter.title %>
+    <div class="w-1/2 mx-auto h-48 bg-gray-200 relative overflow-hidden rounded-lg">
+      <%= image_tag chapter.image_header, class: "w-full h-48 object-cover rounded-lg", alt: chapter.title %>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
     </div>
   <% end %>
   
   <!-- Chapter Header -->
-  <header class="px-8 py-6 bg-gradient-to-r from-gray-50 to-white border-b">
-    <div class="flex items-center gap-4 mb-2">
-      <% if chapter.intro_chapter? %>
-        <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
-          Introduction
-        </span>
-      <% else %>
-        <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
-          Chapter <%= chapter.chapter_number %>
-        </span>
+  <header class="px-10 py-8 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center gap-4 mb-4">
+        <% if chapter.intro_chapter? %>
+          <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            Introduction
+          </span>
+        <% else %>
+          <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            Chapter <%= chapter.chapter_number %>
+          </span>
+        <% end %>
+        <% if authenticated? %>
+          <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+            <%= chapter.created_at.strftime("%B %d, %Y") %>
+          </span>
+        <% end %>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 leading-tight"><%= chapter.title %></h1>
+      <% if chapter.subtitle.present? %>
+        <h2 class="text-xl sm:text-2xl text-gray-600 font-medium leading-relaxed max-w-3xl mx-auto"><%= chapter.subtitle %></h2>
       <% end %>
     </div>
-    <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= chapter.title %></h1>
-    <% if chapter.subtitle.present? %>
-      <h2 class="text-xl text-gray-600 font-medium"><%= chapter.subtitle %></h2>
-    <% end %>
   </header>
   
   <!-- Chapter Content -->
-  <div class="px-8 py-6">
-    <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed">
-      <%= chapter.content %>
+  <div class="px-10 py-8">
+    <div class="prose prose-xl prose-gray max-w-3xl mx-auto text-gray-800 leading-loose">
+      <div class="prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600">
+        <%== chapter.content.body.to_s %>
+      </div>
     </div>
   </div>
 </article>
