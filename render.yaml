@@ -1,0 +1,28 @@
+# Render Blueprint for Autobiography App
+# Docs: https://render.com/docs/blueprint-spec
+
+databases:
+  - name: autobio-db
+    plan: starter
+
+services:
+  - type: web
+    name: autobio-app
+    env: ruby
+    plan: starter
+    autoDeploy: true
+    buildCommand: |
+      bundle install
+      bundle exec rails assets:precompile
+    startCommand: bundle exec puma -C config/puma.rb
+    postDeployCommand: bundle exec rails db:migrate
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+      - key: RAILS_MASTER_KEY
+        # Set in Render dashboard if you use Rails credentials
+        sync: false

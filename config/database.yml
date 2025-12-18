@@ -30,29 +30,14 @@ test:
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   primary:
-    <<: *default
-    database: autobio_app_production
-    username: postgres
-    password: peter284
-    host: localhost
+    url: <%= ENV["DATABASE_URL"] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   cache:
-    <<: *default
-    database: autobio_app_production_cache
-    username: postgres
-    password: peter284
-    host: localhost
+    url: <%= ENV["DATABASE_URL"] %>
     migrations_paths: db/cache_migrate
   queue:
-    <<: *default
-    database: autobio_app_production_queue
-    username: postgres
-    password: peter284
-    host: localhost
+    url: <%= ENV["DATABASE_URL"] %>
     migrations_paths: db/queue_migrate
   cable:
-    <<: *default
-    database: autobio_app_production_cable
-    username: postgres
-    password: peter284
-    host: localhost
+    url: <%= ENV["DATABASE_URL"] %>
     migrations_paths: db/cable_migrate
