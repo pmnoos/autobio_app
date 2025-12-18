@@ -47,8 +47,13 @@
           <% photos_with_images = @photos.select { |photo| photo.image.attached? }.sort_by(&:id) %>
           <% photos_with_images.each_with_index do |photo, index| %>
             <div class="tile">
-              <a href="#" onclick="openLightbox(<%= index %>); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
-                 class="block hover:opacity-80 transition-opacity duration-200">
+              <a href="#" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
+                 class="block hover:opacity-80 transition-opacity duration-200"
+                 data-index="<%= index %>"
+                 data-image-url="<%= url_for(photo.image) %>"
+                 data-title="<%= photo.title %>"
+                 data-description="<%= photo.description %>"
+                 data-date="<%= photo.taken_at&.strftime("%B %d, %Y") %>">
                 <div style="padding-top: 100%;"></div>
                 <%= image_tag photo.image,
                     alt: photo.title,
@@ -164,6 +169,28 @@
     lightbox.style.display = 'block';
     document.body.style.overflow = 'hidden';
     // Set focus to close button for accessibility
+    document.querySelector('#lightbox button[onclick="closeLightbox()"]')?.focus();
+  }
+
+  // Open lightbox using data attributes on the clicked element (robust for dynamic updates)
+  function openLightboxFromElement(el) {
+    const imageUrl = el.dataset.imageUrl;
+    const title = el.dataset.title || '';
+    const date = el.dataset.date || '';
+    const description = el.dataset.description || '';
+    const index = parseInt(el.dataset.index || '0', 10);
+    currentPhotoIndex = isNaN(index) ? 0 : index;
+
+    if (!imageUrl) { return; }
+
+    document.getElementById('lightbox-image').src = imageUrl;
+    document.getElementById('lightbox-title').textContent = title;
+    document.getElementById('lightbox-date').textContent = date;
+    document.getElementById('lightbox-description').textContent = description;
+
+    const lightbox = document.getElementById('lightbox');
+    lightbox.style.display = 'block';
+    document.body.style.overflow = 'hidden';
     document.querySelector('#lightbox button[onclick="closeLightbox()"]')?.focus();
   }
   
