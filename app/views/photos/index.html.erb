@@ -47,8 +47,9 @@
           <% photos_with_images = @photos.select { |photo| photo.image.attached? }.sort_by(&:id) %>
           <% photos_with_images.each_with_index do |photo, index| %>
             <div class="tile">
-              <a href="#" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
+                <a href="#" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
                  class="block hover:opacity-80 transition-opacity duration-200"
+                  data-id="<%= photo.id %>"
                  data-index="<%= index %>"
                  data-image-url="<%= url_for(photo.image) %>"
                  data-title="<%= photo.title %>"
@@ -128,6 +129,7 @@
         <h3 id="lightbox-title" class="text-xl font-semibold mb-2"></h3>
         <p id="lightbox-date" class="text-sm text-gray-300 mb-2"></p>
         <p id="lightbox-description" class="text-sm"></p>
+        <div id="lightbox-actions" class="mt-3 text-center"></div>
       </div>
     </div>
   </div>
@@ -135,6 +137,7 @@
 
 <script>
   // Ensure photos array matches exactly with the displayed photos
+  const isAuthenticated = <%= authenticated? ? 'true' : 'false' %>;
   const photos = <%= raw @photos.select { |photo| photo.image.attached? }.sort_by(&:id).map.with_index { |photo, index| 
     {
       index: index,
@@ -164,6 +167,15 @@
     document.getElementById('lightbox-title').textContent = photo.title;
     document.getElementById('lightbox-date').textContent = photo.taken_at || '';
     document.getElementById('lightbox-description').textContent = photo.description || '';
+
+    const actions = document.getElementById('lightbox-actions');
+    if (actions) {
+      if (isAuthenticated && photo.id) {
+        actions.innerHTML = `<a href="/photos/${photo.id}/edit" class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-150 ease-in-out text-sm">Edit</a>`;
+      } else {
+        actions.innerHTML = '';
+      }
+    }
     
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'block';
@@ -178,6 +190,7 @@
     const title = el.dataset.title || '';
     const date = el.dataset.date || '';
     const description = el.dataset.description || '';
+    const id = el.dataset.id;
     const index = parseInt(el.dataset.index || '0', 10);
     currentPhotoIndex = isNaN(index) ? 0 : index;
 
@@ -187,6 +200,15 @@
     document.getElementById('lightbox-title').textContent = title;
     document.getElementById('lightbox-date').textContent = date;
     document.getElementById('lightbox-description').textContent = description;
+
+    const actions = document.getElementById('lightbox-actions');
+    if (actions) {
+      if (isAuthenticated && id) {
+        actions.innerHTML = `<a href="/photos/${id}/edit" class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition duration-150 ease-in-out text-sm">Edit</a>`;
+      } else {
+        actions.innerHTML = '';
+      }
+    }
 
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'block';
