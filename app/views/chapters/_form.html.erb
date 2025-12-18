@@ -1,37 +1,113 @@
-<%= form_with(model: chapter, class: "contents") do |form| %>
+<%= form_with(model: chapter, class: "space-y-6") do |form| %>
   <% if chapter.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(chapter.errors.count, "error") %> prohibited this chapter from being saved:</h2>
-
-      <ul class="list-disc ml-6">
-        <% chapter.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div id="error_explanation" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(chapter.errors.count, "error") %> prohibited this chapter from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <% chapter.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": chapter.errors[:title].none?, "border-red-400 focus:outline-red-600": chapter.errors[:title].any?}] %>
+  <!-- Title Field -->
+  <div class="space-y-2">
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, 
+        class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 #{'border-red-300 focus:ring-red-500 focus:border-red-500' if chapter.errors[:title].any?}",
+        placeholder: "Enter chapter title (e.g., 'My Childhood', 'High School Years')" %>
+    <% if chapter.errors[:title].any? %>
+      <p class="text-sm text-red-600"><%= chapter.errors[:title].first %></p>
+    <% end %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :subtitle %>
-    <%= form.text_field :subtitle, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": chapter.errors[:subtitle].none?, "border-red-400 focus:outline-red-600": chapter.errors[:subtitle].any?}] %>
+  <!-- Subtitle Field -->
+  <div class="space-y-2">
+    <%= form.label :subtitle, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :subtitle, 
+        class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 #{'border-red-300 focus:ring-red-500 focus:border-red-500' if chapter.errors[:subtitle].any?}",
+        placeholder: "Optional subtitle (e.g., 'Growing up in the 80s', 'Finding my passion')" %>
+    <% if chapter.errors[:subtitle].any? %>
+      <p class="text-sm text-red-600"><%= chapter.errors[:subtitle].first %></p>
+    <% end %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :image_header, "Header Image" %>
-    <%= form.file_field :image_header, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": chapter.errors[:image_header].none?, "border-red-400 focus:outline-red-600": chapter.errors[:image_header].any?}] %>
+  <!-- Header Image Field -->
+  <div class="space-y-2">
+    <%= form.label :image_header, "Header Image", class: "block text-sm font-medium text-gray-700" %>
+    <div class="flex items-center space-x-4">
+      <div class="flex-1">
+        <%= form.file_field :image_header, 
+            accept: "image/*",
+            class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 #{'border-red-300' if chapter.errors[:image_header].any?}" %>
+      </div>
+      <% if chapter.image_header.attached? %>
+        <div class="flex-shrink-0">
+          <%= image_tag chapter.image_header, class: "h-16 w-16 rounded-lg object-cover" %>
+        </div>
+      <% end %>
+    </div>
+    <p class="text-xs text-gray-500">Upload an image to use as the header for this chapter (optional)</p>
+    <% if chapter.errors[:image_header].any? %>
+      <p class="text-sm text-red-600"><%= chapter.errors[:image_header].first %></p>
+    <% end %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :content %>
-    <%= form.rich_text_area :content, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full min-h-96", {"border-gray-400 focus:outline-blue-600": chapter.errors[:content].none?, "border-red-400 focus:outline-red-600": chapter.errors[:content].any?}] %>
+  <!-- Content Field -->
+  <div class="space-y-2">
+    <%= form.label :content, "Chapter Content", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.rich_text_area :content, 
+        class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-96 #{'border-red-300 focus:ring-red-500 focus:border-red-500' if chapter.errors[:content].any?}" %>
+    <p class="text-xs text-gray-500">Write your chapter content here. You can format text, add images, links, and more.</p>
+    <% if chapter.errors[:content].any? %>
+      <p class="text-sm text-red-600"><%= chapter.errors[:content].first %></p>
+    <% end %>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <!-- Action Buttons -->
+  <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+    <div class="flex space-x-3">
+      <%= form.submit class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Save Chapter
+      <% end %>
+
+      <% if chapter.persisted? && authenticated? %>
+        <%= button_tag type: :submit,
+                       name: :download_after,
+                       value: :docx,
+                       class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Save & Download DOCX
+        <% end %>
+      <% end %>
+      
+      <% if chapter.persisted? %>
+        <%= link_to "Cancel", @chapter, class: "inline-flex items-center px-4 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+      <% else %>
+        <%= link_to "Cancel", chapters_path, class: "inline-flex items-center px-4 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out" %>
+      <% end %>
+    </div>
+    
+    <div class="text-sm text-gray-500">
+      <p>Auto-save as you type</p>
+    </div>
   </div>
 <% end %>

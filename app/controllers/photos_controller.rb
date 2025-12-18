@@ -11,6 +11,14 @@ class PhotosController < ApplicationController
   def show
   end
 
+  # GET /chapters/:chapter_id/photos/:id
+  def show_from_chapter
+    @chapter_id = params[:chapter_id]
+    @photo = Photo.find(params[:id])
+    # Redirect to regular photo show with chapter parameter
+    redirect_to photo_path(@photo, chapter_id: @chapter_id)
+  end
+
   # GET /photos/new
   def new
     @photo = Photo.new

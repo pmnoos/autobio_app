@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :users, only: [:new, :create]
   resources :photos
   resources :chapters do
     collection do
@@ -7,6 +8,12 @@ Rails.application.routes.draw do
     end
     member do
       get :export_chapter_pdf
+    end
+    # Nested route for photos accessed from chapters
+    resources :photos, only: [:show], controller: 'photos' do
+      member do
+        get :show, path: '', to: 'photos#show_from_chapter'
+      end
     end
   end
   resource :session

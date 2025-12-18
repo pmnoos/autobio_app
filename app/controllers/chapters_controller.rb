@@ -1,6 +1,6 @@
 class ChaptersController < ApplicationController
   include ActionController::MimeResponds
-  allow_unauthenticated_access only: [:index, :list, :show, :export_pdf, :export_chapter_pdf]
+  allow_unauthenticated_access only: [ :index, :list, :show ]
   before_action :set_chapter, only: %i[ show edit update destroy export_chapter_pdf ]
 
   # GET /chapters or /chapters.json
@@ -15,6 +15,14 @@ class ChaptersController < ApplicationController
 
   # GET /chapters/1 or /chapters/1.json
   def show
+    # Get all chapters in the correct order for navigation
+    all_chapters = Chapter.all.order_chapters_with_intro_first
+    current_index = all_chapters.find_index(@chapter)
+
+    if current_index
+      @previous_chapter = current_index > 0 ? all_chapters[current_index - 1] : nil
+      @next_chapter = current_index < all_chapters.length - 1 ? all_chapters[current_index + 1] : nil
+    end
   end
 
   # GET /chapters/export_pdf
@@ -25,9 +33,9 @@ class ChaptersController < ApplicationController
       format.html
       format.pdf do
         render pdf: "autobiography_complete_#{Date.current.strftime('%Y%m%d')}",
-               template: 'chapters/export_pdf',
-               layout: 'pdf',
-               page_size: 'A4',
+               template: "chapters/export_pdf",
+               layout: "pdf",
+               page_size: "A4",
                margin: {
                  top: 15,
                  bottom: 15,
@@ -36,15 +44,26 @@ class ChaptersController < ApplicationController
                },
                header: {
                  html: {
-                   template: 'shared/pdf_header'
+                   template: "shared/pdf_header"
                  }
                },
                footer: {
                  html: {
-                   template: 'shared/pdf_footer'
+                   template: "shared/pdf_footer"
                  }
                },
                enable_local_file_access: true
+      end
+      # Handle DOCX without requiring a registered MIME type
+      format.any do
+        requested = request.format
+        if (requested.respond_to?(:symbol) && requested.symbol == :docx) ||
+           requested.to_s == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          data = DocxExporter.generate_full_docx(chapters: @chapters, user_info: @user_info)
+          send_data data,
+                    filename: "autobiography_complete_#{Date.current.strftime('%Y%m%d')}.docx",
+                    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        end
       end
     end
   end
@@ -56,9 +75,9 @@ class ChaptersController < ApplicationController
       format.html
       format.pdf do
         render pdf: "#{@chapter.title.parameterize}_#{Date.current.strftime('%Y%m%d')}",
-               template: 'chapters/export_chapter_pdf',
-               layout: 'pdf',
-               page_size: 'A4',
+               template: "chapters/export_chapter_pdf",
+               layout: "pdf",
+               page_size: "A4",
                margin: {
                  top: 15,
                  bottom: 15,
@@ -67,15 +86,26 @@ class ChaptersController < ApplicationController
                },
                header: {
                  html: {
-                   template: 'shared/pdf_header'
+                   template: "shared/pdf_header"
                  }
                },
                footer: {
                  html: {
-                   template: 'shared/pdf_footer'
+                   template: "shared/pdf_footer"
                  }
                },
                enable_local_file_access: true
+      end
+      # Handle DOCX for single chapter without requiring a registered MIME
+      format.any do
+        requested = request.format
+        if (requested.respond_to?(:symbol) && requested.symbol == :docx) ||
+           requested.to_s == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          data = DocxExporter.generate_full_docx(chapters: [ @chapter ], user_info: @user_info)
+          send_data data,
+                    filename: "#{@chapter.title.parameterize}_#{Date.current.strftime('%Y%m%d')}.docx",
+                    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        end
       end
     end
   end
@@ -108,7 +138,12 @@ class ChaptersController < ApplicationController
   def update
     respond_to do |format|
       if @chapter.update(chapter_params)
-        format.html { redirect_to @chapter, notice: "Chapter was successfully updated." }
+        # If user requested download after save, redirect to DOCX export
+        if params[:download_after] == "docx"
+          format.html { redirect_to export_chapter_pdf_chapter_path(@chapter, format: :docx) }
+        else
+          format.html { redirect_to @chapter, notice: "Chapter was successfully updated." }
+        end
         format.json { render :show, status: :ok, location: @chapter }
       else
         format.html { render :edit, status: :unprocessable_entity }

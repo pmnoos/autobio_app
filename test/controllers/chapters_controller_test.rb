@@ -28,6 +28,19 @@ class ChaptersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should export full pdf" do
+    get export_pdf_chapters_url(format: :pdf)
+    assert_response :success
+    assert_equal "application/pdf", @response.media_type
+  end
+
+  test "should export full docx" do
+    get export_pdf_chapters_url(format: :docx)
+    assert_response :success
+    assert_equal "application/vnd.openxmlformats-officedocument.wordprocessingml.document", @response.media_type
+    assert @response.body.bytesize > 1000, "DOCX payload too small"
+  end
+
   test "should get edit" do
     get edit_chapter_url(@chapter)
     assert_response :success

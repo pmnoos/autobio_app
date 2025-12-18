@@ -1,9 +1,91 @@
 <% content_for :title, "New chapter" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New chapter</h1>
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Header Section -->
+  <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="font-bold text-3xl text-gray-800">Create New Chapter</h1>
+        <p class="text-gray-600 mt-2">Add a new chapter to your autobiography</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to chapters_path, class: "inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition duration-150 ease-in-out" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Chapters
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Writing Tips -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-blue-800">Writing Tips</h3>
+          <div class="mt-2 text-sm text-blue-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Choose a clear, descriptive title for your chapter</li>
+              <li>Start with an engaging opening that draws readers in</li>
+              <li>Include specific details, dates, and emotions to bring your story to life</li>
+              <li>Don't worry about perfection - you can always edit later</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <%= render "form", chapter: @chapter %>
+  <!-- Form Section -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <%= render "form", chapter: @chapter %>
+  </div>
 
-  <%= link_to "Back to chapters", chapters_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <!-- Chapter Ideas Section -->
+  <div class="mt-6 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">💡 Need inspiration? Here are some chapter ideas:</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <h4 class="font-medium text-gray-700">Early Life</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+          <li>• My Childhood Home</li>
+          <li>• Family Traditions</li>
+          <li>• First Memories</li>
+          <li>• School Days</li>
+        </ul>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-medium text-gray-700">Milestones</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+          <li>• Graduation Day</li>
+          <li>• First Job</li>
+          <li>• Falling in Love</li>
+          <li>• Becoming a Parent</li>
+        </ul>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-medium text-gray-700">Challenges</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+          <li>• Overcoming Obstacles</li>
+          <li>• Lessons Learned</li>
+          <li>• Turning Points</li>
+          <li>• Growth Moments</li>
+        </ul>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-medium text-gray-700">Achievements</h4>
+        <ul class="text-sm text-gray-600 space-y-1">
+          <li>• Career Highlights</li>
+          <li>• Personal Triumphs</li>
+          <li>• Dreams Realized</li>
+          <li>• Making a Difference</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

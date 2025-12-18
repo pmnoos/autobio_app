@@ -9,13 +9,28 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+/* Global body background */
+body {
+  background-color: #f8fafc; /* Light gray-blue background */
+  /* Alternative options:
+     background-color: #ffffff; - Pure white
+     background-color: #f1f5f9; - Light slate
+     background-color: #fef7ff; - Light purple tint
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); - Gradient
+  */
+}
+
 /* Prose styles for rich text content */
 .prose {
   max-width: none;
+  font-family: Georgia, 'Times New Roman', serif; /* More readable serif font for long-form content */
+  font-size: 1.125rem; /* Slightly larger base font */
+  line-height: 1.75; /* Better line spacing for reading */
 }
 
 .prose p {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem; /* Slightly more space between paragraphs */
+  color: #374151; /* Slightly warmer gray than default */
 }
 
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {

@@ -1,6 +1,16 @@
 <% content_for :title, "Photo Gallery" %>
 
-<div class="w-full max-w-7xl mx-auto">
+<% content_for :head do %>
+  <style>
+    .gallery-grid { display: grid; gap: 0.25rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    @media (min-width: 640px) { .gallery-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+    @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+    @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); } }
+    @media (min-width: 1280px) { .gallery-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); } }
+  </style>
+<% end %>
+
+<div class="w-full mx-auto">
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
@@ -9,21 +19,30 @@
     <h1 class="font-bold text-5xl text-gray-900 mb-4">Photo Gallery</h1>
     <p class="text-xl text-gray-600 mb-8">Memories captured through the lens</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium text-lg" %>
+      <% if authenticated? %>
+        <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium text-lg" %>
+      <% else %>
+        <span class="text-sm text-gray-700 bg-blue-50 border border-blue-200 px-3 py-2 rounded">
+          Sign in to add photos
+          <%= link_to "Sign in", new_session_path, class: "underline text-blue-700 hover:text-blue-800 ml-1" %>
+        </span>
+      <% end %>
       <%= link_to "📖 Back to Chapters", root_path, class: "rounded-md px-6 py-3 bg-gray-100 hover:bg-gray-50 text-gray-700 inline-block font-medium text-lg" %>
     </div>
   </header>
 
-  <div id="photos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <div id="photos" class="gallery-grid w-full">
     <% if @photos.any? %>
       <% @photos.each_with_index do |photo, index| %>
         <div class="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
           <% if photo.image.attached? %>
-            <div class="aspect-square overflow-hidden cursor-pointer" onclick="openLightbox(<%= index %>)">
-              <%= image_tag photo.image, 
-                  class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300", 
+            <div class="relative overflow-hidden cursor-pointer rounded-sm" onclick="openLightbox(<%= index %>)" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="lightbox" aria-label="View <%= photo.title %>" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox(<%= index %>); event.preventDefault();}">
+              <div style="padding-top: 100%;"></div>
+                <%= image_tag photo.image, 
+                  class: "absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300", 
                   alt: photo.title,
-                  loading: "lazy" %>
+                  loading: "lazy",
+                  decoding: "async" %>
               
               <!-- Overlay -->
               <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
@@ -70,14 +89,21 @@
         </div>
         <h3 class="text-2xl font-medium text-gray-900 mb-4">No photos yet</h3>
         <p class="text-gray-600 mb-8">Start building your photo gallery by uploading your first image.</p>
-        <%= link_to "Upload Your First Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+        <% if authenticated? %>
+          <%= link_to "Upload Your First Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+        <% else %>
+          <span class="text-sm text-gray-700 bg-blue-50 border border-blue-200 px-3 py-2 rounded">
+            Sign in to add photos
+            <%= link_to "Sign in", new_session_path, class: "underline text-blue-700 hover:text-blue-800 ml-1" %>
+          </span>
+        <% end %>
       </div>
     <% end %>
   </div>
 </div>
 
 <!-- Lightbox Modal -->
-<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50" style="display: none;">
+<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" aria-describedby="lightbox-description">
   <div class="flex items-center justify-center min-h-screen p-4">
     <div class="relative max-w-7xl max-h-full">
       <!-- Close Button -->
@@ -140,6 +166,8 @@
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    // Set focus to close button for accessibility
+    document.querySelector('#lightbox button[onclick="closeLightbox()"]')?.focus();
   }
   
   function closeLightbox() {

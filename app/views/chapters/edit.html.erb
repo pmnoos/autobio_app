@@ -1,10 +1,37 @@
 <% content_for :title, "Editing chapter" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing chapter</h1>
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Header Section -->
+  <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="font-bold text-3xl text-gray-800">Editing Chapter</h1>
+      <div class="flex space-x-3">
+        <%= link_to @chapter, class: "inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition duration-150 ease-in-out" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          Preview
+        <% end %>
+        <%= link_to chapters_path, class: "inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition duration-150 ease-in-out" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Chapters
+        <% end %>
+      </div>
+    </div>
+    
+    <% if @chapter.persisted? %>
+      <div class="text-sm text-gray-600">
+        <p><strong>Chapter:</strong> <%= @chapter.title %></p>
+        <p><strong>Last updated:</strong> <%= @chapter.updated_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+    <% end %>
+  </div>
 
-  <%= render "form", chapter: @chapter %>
-
-  <%= link_to "Show this chapter", @chapter, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to chapters", chapters_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <!-- Form Section -->
+  <div class="bg-white shadow-lg rounded-lg p-6">
+    <%= render "form", chapter: @chapter %>
+  </div>
 </div>

@@ -1,18 +1,35 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-
-# Create a default admin user for the autobiography app
-admin_user = User.find_or_create_by(email_address: "admin@example.com") do |user|
-  user.password = "password123"
+# Create an admin user if none exists
+if User.count == 0
+  admin_user = User.create!(
+    email_address: "admin@autobio.com",
+    password: "password123",
+    password_confirmation: "password123"
+  )
+  puts "✅ Created admin user: admin@autobio.com with password: password123"
+else
+  puts "ℹ️  Users already exist in the database (#{User.count} users)"
 end
 
-puts "✅ Admin user created/found:"
-puts "📧 Email: #{admin_user.email_address}"
-puts "🔐 Password: password123"
+# Create some sample chapters if none exist
+if Chapter.count == 0
+  intro_chapter = Chapter.create!(
+    title: "Introduction",
+    subtitle: "Welcome to My Story",
+    content: "<p>Welcome to my autobiography. This is where your story begins...</p><p>You can edit this chapter or create new ones to tell your life story.</p>"
+  )
+  
+  sample_chapter = Chapter.create!(
+    title: "My Early Years",
+    subtitle: "Growing Up",
+    content: "<p>This is a sample chapter about your early years.</p><p>You can edit or delete this chapter and create your own content.</p><p>Use the rich text editor to format your stories with images, links, and more.</p>"
+  )
+  
+  puts "✅ Created sample chapters to get you started"
+else
+  puts "ℹ️  Chapters already exist in the database (#{Chapter.count} chapters)"
+end
 
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+puts "\n🎉 Database seeded successfully!"
+puts "You can now:"
+puts "  • Sign up for a new account at: http://localhost:3000/users/new"
+puts "  • Or log in with admin credentials: admin@autobio.com / password123"
