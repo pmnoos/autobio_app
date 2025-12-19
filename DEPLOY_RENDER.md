@@ -28,11 +28,11 @@ Set on the Web Service (and database, as needed):
 
 `DATABASE_URL` is provided automatically when you attach the Render PostgreSQL database.
 
-## Build / Start / Post-Deploy
+## Build / Start / Pre-Deploy
 These are defined in `render.yaml` and run automatically:
 - Build: `bundle install && bundle exec rails assets:precompile`
 - Start: `bundle exec puma -C config/puma.rb`
-- Post-deploy: `bundle exec rails db:migrate`
+- Pre-deploy: `bundle exec rails db:migrate` (supported on paid instance types, including Starter)
 
 ## Seed Initial Data (Optional)
 If you want an admin user and sample chapters:
