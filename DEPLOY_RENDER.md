@@ -50,6 +50,42 @@ Run this from the Render shell for your Web Service.
   - Photo gallery loads and images open in lightbox
   - PDF and DOCX export endpoints respond (PDF opens/downloads)
 
+## Import Your Chapters
+
+If you authored chapters locally (development) and want them on Render (production), use these rake tasks.
+
+### Export from your local machine
+
+```bash
+# From your dev machine
+bundle exec rails chapters:export
+# Output: tmp/chapters_export.json
+```
+
+### Import into Render via URL (recommended)
+
+1. Host `tmp/chapters_export.json` at a public URL (e.g., a GitHub Gist raw link).
+2. In Render’s Shell for the web service:
+
+```bash
+RAILS_ENV=production bundle exec rails chapters:import_url[https://your-raw-url/chapters_export.json]
+```
+
+### Import into Render from a file path (alternative)
+
+If you can place the JSON on the server (e.g., paste into `/tmp/chapters_export.json`):
+
+```bash
+# In Render’s Shell, create the file (paste contents, then Ctrl+D):
+cat > /tmp/chapters_export.json
+RAILS_ENV=production bundle exec rails chapters:import[/tmp/chapters_export.json]
+```
+
+Notes:
+- These tasks import `title`, `subtitle`, and rich text `content` (HTML).
+- Images (e.g., `image_header`) are not exported; re-attach them in production if needed.
+- Imports append chapters; delete duplicates in the UI if you re-run imports.
+
 ## Custom Domain Cutover
 If your Django app currently holds the domain:
 1. Remove your custom domain from the old Django service in Render.
