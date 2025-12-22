@@ -1,4 +1,4 @@
-<%= form_with(model: chapter, class: "space-y-6") do |form| %>
+<%= form_with(model: chapter, class: "space-y-6", local: true, data: { turbo: false }) do |form| %>
   <% if chapter.errors.any? %>
     <div id="error_explanation" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
       <div class="flex">
@@ -45,6 +45,18 @@
     <% end %>
   </div>
 
+  <!-- Special Page Type (optional) -->
+  <% if Chapter.column_names.include?("special_type") %>
+    <div class="space-y-2">
+      <%= form.label :special_type, "Special Page Type (optional)", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.select :special_type,
+            options_for_select([["Normal (numbered)", nil], ["Dedication", "dedication"], ["Introduction", "introduction"], ["Epilogue", "epilogue"]], chapter.try(:special_type)),
+            {},
+            class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+      <p class="text-xs text-gray-500">Choose a special page type to exclude from numbering and position correctly in the book order.</p>
+    </div>
+  <% end %>
+
   <!-- Header Image Field -->
   <div class="space-y-2">
     <%= form.label :image_header, "Header Image", class: "block text-sm font-medium text-gray-700" %>
@@ -69,7 +81,8 @@
   <!-- Content Field -->
   <div class="space-y-2">
     <%= form.label :content, "Chapter Content", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.rich_text_area :content, 
+    <%= form.rich_text_area :content,
+      data: { controller: "trix-restore trix-align", turbo: false },
         class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-96 #{'border-red-300 focus:ring-red-500 focus:border-red-500' if chapter.errors[:content].any?}" %>
     <p class="text-xs text-gray-500">Write your chapter content here. You can format text, add images, links, and more.</p>
     <% if chapter.errors[:content].any? %>

@@ -27,15 +27,27 @@ class DocxExporter
       # Table of Contents (simple)
       docx.h2 "Table of Contents"
       chapters.each_with_index do |chapter, index|
-        heading = chapter.intro_chapter? ? "Introduction: #{chapter.title}" : "Chapter #{chapter.chapter_number}: #{chapter.title}"
+        heading = if chapter.dedication_chapter?
+          "Dedication: #{chapter.title}"
+        elsif chapter.intro_chapter?
+          "Introduction: #{chapter.title}"
+        elsif chapter.epilogue_chapter?
+          "Epilogue: #{chapter.title}"
+        else
+          "Chapter #{chapter.chapter_number}: #{chapter.title}"
+        end
         docx.p "#{index + 1}. #{heading}", bold: true
       end
       docx.page
 
       # Chapters
       chapters.each do |chapter|
-        if chapter.intro_chapter?
+        if chapter.dedication_chapter?
+          docx.h2 "Dedication"
+        elsif chapter.intro_chapter?
           docx.h2 "Introduction"
+        elsif chapter.epilogue_chapter?
+          docx.h2 "Epilogue"
         else
           docx.h2 "Chapter #{chapter.chapter_number}"
         end

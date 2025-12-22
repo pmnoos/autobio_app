@@ -4,3 +4,6 @@ import "controllers"
 
 import "trix"
 import "@rails/actiontext"
+// Keep alignment shortcuts via Stimulus; avoid toolbar injection to preserve stability
+// import "./trix_alignment" // disabled
+// import "./trix_alignment_toolbar" // disabled to prevent editor init issues

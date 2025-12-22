@@ -2,8 +2,12 @@
 <div class="cover-page">
   <h1 class="cover-title"><%= @user_info[:title] %></h1>
   <p class="cover-subtitle">
-    <% if @chapter.intro_chapter? %>
+    <% if @chapter.dedication_chapter? %>
+      Dedication: <%= @chapter.title %>
+    <% elsif @chapter.intro_chapter? %>
       Introduction: <%= @chapter.title %>
+    <% elsif @chapter.epilogue_chapter? %>
+      Epilogue: <%= @chapter.title %>
     <% else %>
       Chapter <%= @chapter.chapter_number %>: <%= @chapter.title %>
     <% end %>
@@ -15,8 +19,12 @@
 <!-- Chapter Content -->
 <div class="chapter">
   <div class="chapter-header">
-    <% if @chapter.intro_chapter? %>
+    <% if @chapter.dedication_chapter? %>
+      <div class="chapter-number">Dedication</div>
+    <% elsif @chapter.intro_chapter? %>
       <div class="chapter-number">Introduction</div>
+    <% elsif @chapter.epilogue_chapter? %>
+      <div class="chapter-number">Epilogue</div>
     <% else %>
       <div class="chapter-number">Chapter <%= @chapter.chapter_number %></div>
     <% end %>

@@ -170,7 +170,11 @@ class ChaptersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chapter_params
-      params.expect(chapter: [ :title, :subtitle, :image_header, :content ])
+      allowed = [ :title, :subtitle, :image_header, :content ]
+      if Chapter.column_names.include?("special_type")
+        allowed << :special_type
+      end
+      params.expect(chapter: allowed)
     end
 
     # Get user information for PDF export

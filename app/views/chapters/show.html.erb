@@ -35,8 +35,12 @@
             <div class="min-w-0 flex-1">
               <p class="text-sm text-purple-600 font-medium">Previous</p>
               <p class="text-gray-900 font-semibold">
-                <% if @previous_chapter.intro_chapter? %>
+                <% if @previous_chapter.dedication_chapter? %>
+                  Dedication
+                <% elsif @previous_chapter.intro_chapter? %>
                   Introduction
+                <% elsif @previous_chapter.epilogue_chapter? %>
+                  Epilogue
                 <% else %>
                   Chapter <%= @previous_chapter.chapter_number %>
                 <% end %>
@@ -67,8 +71,12 @@
         <div class="bg-white rounded-lg px-6 py-4 shadow-sm border border-purple-100">
           <p class="text-xs text-purple-600 font-medium uppercase tracking-wide">Currently Reading</p>
           <p class="text-lg font-bold text-gray-900 mt-1">
-            <% if @chapter.intro_chapter? %>
+            <% if @chapter.dedication_chapter? %>
+              Dedication
+            <% elsif @chapter.intro_chapter? %>
               Introduction
+            <% elsif @chapter.epilogue_chapter? %>
+              Epilogue
             <% else %>
               Chapter <%= @chapter.chapter_number %>
             <% end %>
@@ -84,8 +92,12 @@
             <div class="min-w-0 flex-1">
               <p class="text-sm text-blue-600 font-medium">Next</p>
               <p class="text-gray-900 font-semibold">
-                <% if @next_chapter.intro_chapter? %>
+                <% if @next_chapter.dedication_chapter? %>
+                  Dedication
+                <% elsif @next_chapter.intro_chapter? %>
                   Introduction
+                <% elsif @next_chapter.epilogue_chapter? %>
+                  Epilogue
                 <% else %>
                   Chapter <%= @next_chapter.chapter_number %>
                 <% end %>

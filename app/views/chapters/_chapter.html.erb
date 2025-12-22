@@ -11,9 +11,17 @@
   <header class="px-10 py-8 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
     <div class="text-center mb-6">
       <div class="inline-flex items-center gap-4 mb-4">
-        <% if chapter.intro_chapter? %>
+        <% if chapter.dedication_chapter? %>
+          <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            Dedication
+          </span>
+        <% elsif chapter.intro_chapter? %>
           <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
             Introduction
+          </span>
+        <% elsif chapter.epilogue_chapter? %>
+          <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            Epilogue
           </span>
         <% else %>
           <span class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">

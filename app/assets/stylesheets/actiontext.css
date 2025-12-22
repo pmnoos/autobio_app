@@ -438,3 +438,14 @@ trix-editor .attachment__metadata {
   padding: 0 !important;
   max-width: 100% !important;
 }
+
+/* Text alignment helpers for rich text blocks */
+.trix-content .text-left {
+  text-align: left;
+}
+.trix-content .text-center {
+  text-align: center;
+}
+.trix-content .text-right {
+  text-align: right;
+}
