@@ -16,6 +16,7 @@ services:
       bundle exec rails assets:precompile
     startCommand: bundle exec puma -C config/puma.rb
     preDeployCommand: bundle exec rails db:migrate
+    postDeployCommand: bundle exec rails db:seed
     envVars:
       - key: DATABASE_URL
         fromDatabase:
