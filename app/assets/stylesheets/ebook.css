@@ -1,0 +1,120 @@
+/* ========================= */
+/* Ebook PDF Styles */
+/* ========================= */
+
+/* General body */
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.6;
+  margin: 0.5in;
+  color: #222;
+}
+
+/* Page breaks */
+.page-break {
+  page-break-after: always;
+}
+
+/* Cover page */
+.cover-page {
+  text-align: center;
+  margin-top: 5cm;
+}
+
+.cover-title {
+  font-size: 28pt;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.cover-subtitle {
+  font-size: 20pt;
+  font-weight: normal;
+}
+
+.cover-quote {
+  margin-top: 2rem;
+  font-size: 14pt;
+  font-style: italic;
+}
+
+.cover-tagline {
+  margin-top: 1rem;
+  font-size: 12pt;
+  font-style: italic;
+}
+
+/* Dedication page */
+.dedication-page {
+  text-align: center;
+  margin-top: 5cm;
+}
+
+.dedication-text {
+  font-size: 12pt;
+}
+
+.dedication-name {
+  font-weight: bold;
+  font-size: 12pt;
+  margin-top: 1rem;
+}
+
+.chapter-title {
+  font-size: 1.6rem;
+  margin: 2rem 0 1rem;
+  font-weight: 600;
+}
+
+.chapter-image {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.chapter-image img {
+  max-width: 100%;
+  height: auto;
+  /* Cap tall images slightly to reduce vertical footprint */
+  max-height: 22rem;
+}
+
+.chapter-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Inline images within chapter content */
+.chapter-content img {
+  max-width: 100%;
+  height: auto;
+  /* Keep inline images from becoming too tall */
+  max-height: 18rem;
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #111;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Epilogue */
+.epilogue {
+  margin-top: 2rem;
+}
+
+/* Optional: Small footer */
+.pdf-footer {
+  text-align: center;
+  font-size: 10pt;
+  color: #888;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

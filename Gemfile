@@ -43,11 +43,16 @@ gem "image_processing", "~> 1.2"
 
 # PDF Export functionality
 gem "wicked_pdf"
-gem "wkhtmltopdf-binary"
+
+# PDF Export functionality
+gem "grover"
 
 # DOCX Export functionality
 gem "caracal"
 gem "nokogiri"
+
+# Cloud upload for sharing audio
+gem "cloudinary"
 
 group :development, :test do
  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,5 +75,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+  gem "openai"
 
   gem "mini_magick", "~> 5.2"

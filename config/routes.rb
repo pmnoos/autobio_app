@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :users, only: [:new, :create]
-  resources :photos
+  resources :users, only: [ :new, :create ]
+  resources :photos do
+    member do
+      get :pdf
+    end
+  end
   resources :chapters do
     collection do
       get :list
@@ -10,9 +14,9 @@ Rails.application.routes.draw do
       get :export_chapter_pdf
     end
     # Nested route for photos accessed from chapters
-    resources :photos, only: [:show], controller: 'photos' do
+    resources :photos, only: [ :show ], controller: "photos" do
       member do
-        get :show, path: '', to: 'photos#show_from_chapter'
+        get :show, path: "", to: "photos#show_from_chapter"
       end
     end
   end
@@ -31,9 +35,21 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "chapters#index"
 
+  # Audio playback routes
+  get "audio" => "audio#index", as: :audio_index
+  # Use a wildcard so filenames can include extensions (e.g., .mp3)
+  get "audio/stream/*filename" => "audio#stream", as: :audio_stream
+  # Gracefully handle missing filename by redirecting to the audio index
+  get "audio/stream" => redirect("/audio")
+  # Trigger audio generation (background)
+  post "audio/generate" => "audio#generate", as: :audio_generate
+
   # Static pages
   get "about" => "pages#about"
   get "privacy" => "pages#privacy"
   get "terms" => "pages#terms"
   get "contact" => "pages#contact"
+  get "/book", to: "book#show"
+  # Alias plural path to singular book route
+  get "/books", to: redirect("/book")
 end

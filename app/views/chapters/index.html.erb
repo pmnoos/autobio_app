@@ -9,9 +9,9 @@
   
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
     <div class="text-center">
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight">
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight" style="-webkit-text-stroke: 2px white; text-stroke: 2px white;">
         The Story of an Ordinary Man<br>
-        <span class="text-3xl sm:text-5xl lg:text-6xl">with an Extraordinary Life</span>
+        <span class="text-3xl sm:text-5xl lg:text-6xl" style="-webkit-text-stroke: 2px white; text-stroke: 2px white;">with an Extraordinary Life</span>
       </h1>
       <p class="text-xl sm:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto leading-relaxed">
         Through the simplicity of my existence, I unearthed the profound truth that to love and to be loved is the greatest adventure of all...<br>
@@ -173,7 +173,7 @@
           <!-- Chapter Image/Header -->
           <% if chapter.image_header.attached? %>
             <div class="h-56 overflow-hidden relative">
-              <%= image_tag chapter.image_header, 
+              <%= image_tag url_for(chapter.image_header), 
                   alt: chapter.title,
                   class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500",
                   loading: "lazy" %>

@@ -1,7 +1,7 @@
 <article id="<%= dom_id chapter %>" class="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
   <!-- Header Image -->
   <% if chapter.image_header.attached? %>
-    <div class="w-1/2 mx-auto h-48 bg-gray-200 relative overflow-hidden rounded-lg">
+    <div class="w-1/2 mx-auto h-30 bg-gray-200 relative overflow-hidden rounded-lg">
       <%= image_tag chapter.image_header, class: "w-full h-48 object-cover rounded-lg", alt: chapter.title %>
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
     </div>

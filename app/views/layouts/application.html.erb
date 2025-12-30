@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Autobio App" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Autobio App" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -19,6 +19,8 @@
 
     <%# Load compiled Tailwind stylesheet from app/assets/builds %>
     <%= stylesheet_link_tag :tailwind, "data-turbo-track": "reload" %>
+    <%# Load Action Text attachment styles so embedded images render nicely %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -158,11 +160,20 @@
       </div>
     </footer>
 
-    <!-- Mobile menu toggle script -->
+    <!-- Mobile menu toggle script (Turbo-safe) -->
     <script>
-      document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      window.addEventListener('turbo:load', function() {
+        const button = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenu.classList.toggle('hidden');
+        if (!button || !mobileMenu) return;
+
+        // Avoid stacking multiple listeners across Turbo visits
+        if (!button.dataset.bound) {
+          button.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+          });
+          button.dataset.bound = 'true';
+        }
       });
     </script>
   </body>

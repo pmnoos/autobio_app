@@ -109,6 +109,87 @@ class DocxExporter
     end
   end
 
+  # Generate a simplified, TTS-friendly DOCX without images/lists.
+  # - Plain paragraphs only
+  # - Consistent headings
+  # - No inline images or complex formatting
+  def self.generate_narration_docx(chapters:, user_info:)
+    tmp_docx = Tempfile.new([ "autobiography_narration", ".docx" ])
+    tmp_docx.binmode
+    begin
+      Caracal::Document.save(tmp_docx.path) do |docx|
+        docx.style do
+          id "Normal"
+          name "Normal"
+          font "Georgia"
+          size 24
+          color "333333"
+          line 360
+        end
+
+        # Cover Page (kept minimal for TTS)
+        docx.h1 user_info[:title]
+        if user_info[:subtitle].to_s.strip.length > 0
+          docx.p user_info[:subtitle]
+        end
+        docx.p "by #{user_info[:name]}"
+        docx.p "Generated on #{user_info[:generated_date]}", color: "999999"
+        docx.page
+
+        # Chapters - plain text only
+        chapters.each do |chapter|
+          # Section heading
+          if chapter.dedication_chapter?
+            docx.h2 "Dedication"
+          elsif chapter.intro_chapter?
+            docx.h2 "Introduction"
+          elsif chapter.epilogue_chapter?
+            docx.h2 "Epilogue"
+          else
+            docx.h2 "Chapter #{chapter.chapter_number}"
+          end
+
+          # Title/subtitle as leading lines for narration
+          docx.h1 chapter.title.to_s
+          if chapter.subtitle.present?
+            docx.p chapter.subtitle.to_s
+          end
+
+          # Plain text content from ActionText if available
+          plain = begin
+            chapter.content.respond_to?(:to_plain_text) ? chapter.content.to_plain_text : nil
+          rescue
+            nil
+          end
+
+          text_source = plain.presence || begin
+            # Fallback: strip HTML via Nokogiri
+            html = chapter.content.to_s
+            fragment = Nokogiri::HTML::DocumentFragment.parse(html)
+            fragment.text.to_s
+          end
+
+          # Split into paragraphs on double newlines or single line breaks
+          paragraphs = text_source.to_s.split(/\n\n+/)
+          if paragraphs.empty?
+            paragraphs = text_source.to_s.split(/\n+/)
+          end
+
+          paragraphs.each do |para|
+            cleaned = para.to_s.strip
+            next if cleaned.empty?
+            docx.p cleaned
+          end
+
+          docx.page
+        end
+      end
+      File.binread(tmp_docx.path)
+    ensure
+      tmp_docx.close! rescue nil
+    end
+  end
+
   # Reserved for future richer inline formatting support
   # def self.inline_runs_from(pnode); end
 end

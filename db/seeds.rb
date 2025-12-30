@@ -10,8 +10,9 @@ else
   puts "ℹ️  Users already exist in the database (#{User.count} users)"
 end
 
-# Create/import chapters if none exist or only demo placeholders exist
-if Chapter.count == 0 || Chapter.count <= 2
+# Create/import chapters if none exist, only demo placeholders exist, or forced via env
+force_import = ENV["IMPORT_CHAPTERS_ON_SEED"] == "1"
+if Chapter.count == 0 || Chapter.count <= 2 || force_import
   import_path = Rails.root.join("chapters_import.rb")
   if File.exist?(import_path)
     puts "📥 Importing chapters from #{import_path}"

@@ -1,3 +1,4 @@
+# Ensure URL helpers have a default host for all environments (PDF/image generation, console, etc.)
 require_relative "boot"
 
 require "rails/all"

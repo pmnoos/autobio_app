@@ -1,0 +1,126 @@
+<div class="prose max-w-3xl mx-auto">
+  <h1>Chapter Audio</h1>
+  <% if @by_chapter.blank? %>
+    <p>No audio files found in tmp/audio.<br>
+       Run <code>bundle exec rake audio:generate_all</code> to create them.</p>
+  <% else %>
+    <!-- Global playlist controls -->
+    <section style="margin-bottom: 24px; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+      <h2>Play All</h2>
+      <p id="now-playing">Now Playing: —</p>
+      <audio id="global-player" controls preload="none" style="width: 100%;"></audio>
+      <div style="margin-top: 8px; display: flex; gap: 8px;">
+        <button type="button" id="play-all">Play All</button>
+        <button type="button" id="prev-track">Prev</button>
+        <button type="button" id="next-track">Next</button>
+      </div>
+    </section>
+
+    <!-- Regenerate audio form -->
+    <section style="margin-bottom: 24px; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+      <h2>Regenerate Audio</h2>
+      <p>Pick a voice/model and regenerate all chapters in the background.</p>
+      <%= form_with url: audio_generate_path, method: :post, local: true do |f| %>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; align-items: end; max-width: 900px;">
+          <div>
+            <label for="voice">Voice</label>
+            <%= select_tag :voice_select,
+                  options_for_select([
+                    ['alloy','alloy'],
+                    ['aria','aria'],
+                    ['verse','verse']
+                  ], (ENV['TTS_VOICE'] || 'alloy')),
+                  class: "w-full border px-2 py-1 rounded" %>
+            <small class="text-gray-500">Common OpenAI voices. Use custom below to override.</small>
+            <%= text_field_tag :voice, nil, placeholder: "Custom voice (optional)", class: "w-full border px-2 py-1 rounded mt-1" %>
+          </div>
+          <div>
+            <label for="model">Model</label>
+            <%= text_field_tag :model, (ENV['TTS_MODEL'] || 'gpt-4o-mini-tts'), class: "w-full border px-2 py-1 rounded" %>
+          </div>
+          <div>
+            <label for="format">Format</label>
+            <%= select_tag :format, options_for_select([['mp3','mp3'],['wav','wav']], 'mp3'), class: "w-full border px-2 py-1 rounded" %>
+          </div>
+          <div>
+            <%= submit_tag "Regenerate All (overwrites)", class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+          </div>
+        </div>
+      <% end %>
+    </section>
+
+    <% @by_chapter.each do |key, files| %>
+      <% if key == :others %>
+        <h2>Other Files</h2>
+      <% else %>
+        <% ch = Chapter.find_by(id: key) %>
+        <h2>
+          <%= ch ? "Chapter #{key}: #{ch.title}" : "Chapter #{key}" %>
+          <button type="button" class="play-chapter" data-chapter="<%= key %>">Play Chapter</button>
+        </h2>
+      <% end %>
+      <% files.sort.each do |f| %>
+        <% name = File.basename(f) %>
+        <div style="margin-bottom: 12px;">
+          <p><%= name %></p>
+          <audio controls src="<%= audio_stream_path(filename: name) %>"></audio>
+          <p><a href="<%= audio_stream_path(filename: name) %>" download>Download</a></p>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  (function(){
+    const playlistAll = <%= raw(@playlist_all.map { |t| {
+      url: audio_stream_path(filename: t[:filename]),
+      display: (t[:chapter_id] ? `Chapter #{t[:chapter_id]}: ${t[:title] || ''}` : t[:filename])
+    } }.to_json) %>;
+
+    const player = document.getElementById('global-player');
+    const now = document.getElementById('now-playing');
+    const btnPlayAll = document.getElementById('play-all');
+    const btnPrev = document.getElementById('prev-track');
+    const btnNext = document.getElementById('next-track');
+    const chapterButtons = document.querySelectorAll('.play-chapter');
+
+    let queue = [];
+    let index = 0;
+
+    function load(i){
+      index = i;
+      const track = queue[index];
+      if(!track){ return; }
+      player.src = track.url;
+      now.textContent = 'Now Playing: ' + track.display;
+      player.play();
+    }
+
+    function playAll(){
+      queue = playlistAll.slice();
+      load(0);
+    }
+
+    function playChapter(chId){
+      // Filter from full playlist: entries that match the chapter
+      queue = playlistAll.filter(t => {
+        const m = t.display.match(/^Chapter\s+(\d+)/);
+        return m && parseInt(m[1], 10) === chId;
+      });
+      load(0);
+    }
+
+    btnPlayAll?.addEventListener('click', playAll);
+    btnPrev?.addEventListener('click', () => { if(index > 0){ load(index-1); } });
+    btnNext?.addEventListener('click', () => { if(index < queue.length - 1){ load(index+1); } });
+    player.addEventListener('ended', () => { if(index < queue.length - 1){ load(index+1); } });
+
+    chapterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ch = parseInt(btn.dataset.chapter, 10);
+        playChapter(ch);
+      });
+    });
+  })();
+</script>

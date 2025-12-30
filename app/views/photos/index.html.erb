@@ -44,10 +44,10 @@
     <div>
       <div class="gallery-grid w-full">
         <% if @photos.any? %>
-          <% photos_with_images = @photos.select { |photo| photo.image.attached? }.sort_by(&:id) %>
+          <% photos_with_images = @photos.select { |photo| photo.image.attached? } %>
           <% photos_with_images.each_with_index do |photo, index| %>
             <div class="tile">
-                <a href="#" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
+              <a href="<%= photo_path(photo) %>" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
                  class="block hover:opacity-80 transition-opacity duration-200"
                   data-id="<%= photo.id %>"
                  data-index="<%= index %>"
@@ -56,7 +56,7 @@
                  data-description="<%= photo.description %>"
                  data-date="<%= photo.taken_at&.strftime("%B %d, %Y") %>">
                 <div style="padding-top: 100%;"></div>
-                <%= image_tag photo.image,
+                <%= image_tag url_for(photo.image),
                     alt: photo.title,
                     loading: "lazy",
                     decoding: "async",
@@ -138,7 +138,7 @@
 <script>
   // Ensure photos array matches exactly with the displayed photos
   const isAuthenticated = <%= authenticated? ? 'true' : 'false' %>;
-  const photos = <%= raw @photos.select { |photo| photo.image.attached? }.sort_by(&:id).map.with_index { |photo, index| 
+  const photos = <%= raw @photos.select { |photo| photo.image.attached? }.map.with_index { |photo, index| 
     {
       index: index,
       id: photo.id,

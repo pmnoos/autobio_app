@@ -1,1 +1,10 @@
+/* Tailwind CSS v4: import all layers */
 @import "tailwindcss";
+
+@import "../stylesheets/ebook.css";
+@import "../stylesheets/application.css";
+
+/* =========================
+   EBOOK / BOOK VIEW STYLES
+   ========================= */
+

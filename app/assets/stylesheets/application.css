@@ -257,3 +257,73 @@ body {
     width: 256px;
   }
 }
+/* Reduce extra white space around paragraphs and headings */
+.chapter-content p {
+  margin-bottom: 1rem; /* tighter spacing between paragraphs */
+}
+
+.chapter-content h2 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.chapter-content h3 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+/* Reduce space after images */
+.chapter-image {
+  margin-bottom: 1rem;
+}
+
+/* Page breaks spacing */
+.page-break {
+  margin: 2rem 0; /* less than before if needed */
+}
+
+/* =========================
+   Chapter page layout tweaks
+   ========================= */
+/* Center the chapter content area with a comfortable max width */
+.chapter {
+  max-width: 56rem; /* ~896px */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Constrain and center the header image under the title */
+.chapter-image {
+  text-align: center;
+}
+
+.chapter-image img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 28rem; /* ~448px: smaller, readable size */
+  height: auto;
+}
+
+/* Limit text width for readability and center it */
+.chapter-content {
+  max-width: 65ch; /* ideal reading measure */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Keep responsiveness friendly on small screens */
+@media (max-width: 640px) {
+  .chapter {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .chapter-image img {
+    max-width: 22rem; /* ~352px on small screens */
+  }
+}

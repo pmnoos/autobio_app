@@ -22,6 +22,8 @@ services:
         fromDatabase:
           name: autobio-db
           property: connectionString
+      - key: IMPORT_CHAPTERS_ON_SEED
+        value: "1"
       - key: RAILS_ENV
         value: production
       - key: RAILS_LOG_TO_STDOUT

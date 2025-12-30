@@ -1,0 +1,20 @@
+{
+  "files.watcherExclude": {
+    "**/vendor/**": true,
+    "**/tmp/**": true,
+    "**/log/**": true,
+    "**/public/**": true,
+    "**/storage/**": true,
+    "**/node_modules/**": true,
+    "**/*.sqlite3": true,
+    "**/.git/**": true
+  },
+  "search.exclude": {
+    "**/vendor/**": true,
+    "**/tmp/**": true,
+    "**/log/**": true,
+    "**/public/**": true,
+    "**/storage/**": true,
+    "**/node_modules/**": true
+  }
+}

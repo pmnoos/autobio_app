@@ -1,10 +1,20 @@
+  # GET /photos/1/pdf
+  def pdf
+    @photo = Photo.find(params[:id])
+    html = render_to_string(template: "photos/show", layout: false)
+    pdf = Grover.new(html, format: "A4").to_pdf
+    send_data pdf, filename: "photo-#{@photo.id}.pdf", type: "application/pdf", disposition: "attachment"
+  end
 class PhotosController < ApplicationController
-  allow_unauthenticated_access only: [:index, :show]
+  allow_unauthenticated_access only: [ :index, :show ]
   before_action :set_photo, only: %i[ show edit update destroy ]
 
   # GET /photos or /photos.json
   def index
-    @photos = Photo.by_date
+    # Preload attachments to avoid N+1 and ensure robust rendering
+    @photos = Photo.by_date.with_attached_image
+    # Exclude chapter-derived images using `source` flag
+    @photos = @photos.where.not(source: "chapter")
   end
 
   # GET /photos/1 or /photos/1.json
