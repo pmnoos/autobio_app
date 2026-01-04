@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: autobio_app_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: peter284
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: ./bin/rails server -b 0.0.0.0 -p 3000
+    volumes:
+      - .:/rails
+      - storage_data:/rails/storage
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://postgres:peter284@db:5432/autobio_app_development
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+
+volumes:
+  db_data:
+  storage_data:

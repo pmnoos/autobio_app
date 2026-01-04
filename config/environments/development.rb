@@ -1,5 +1,6 @@
 # Ensure URL helpers have a default host for PDF/image generation
-Rails.application.routes.default_url_options[:host] = "localhost:3001"
+port = ENV["PORT"] || 3000
+Rails.application.routes.default_url_options[:host] = "localhost:#{port}"
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
