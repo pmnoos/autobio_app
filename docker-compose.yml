@@ -26,6 +26,7 @@ services:
       RAILS_ENV: development
       DATABASE_URL: postgres://postgres:peter284@db:5432/autobio_app_development
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DISABLE_BOOTSNAP: "true"
 
 volumes:
   db_data:

@@ -75,7 +75,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_000100) do
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
