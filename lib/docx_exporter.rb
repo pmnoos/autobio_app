@@ -86,13 +86,28 @@ class DocxExporter
           when "blockquote"
             docx.p node.text.strip, italic: true
           when "img"
-            # Inline images: attempt to fetch via src if present
             src = node["src"]
-            if src&.start_with?("http")
-              docx.img src, width: 600
+            if src.present?
+              if src.start_with?("http")
+                docx.img src, width: 600
+              elsif src.start_with?("/images/")
+                local_path = Rails.root.join("public", "images", File.basename(src)).to_s
+                docx.img local_path, width: 600 if File.exist?(local_path)
+              end
+            end
+          when "action-text-attachment"
+            # Handle Trix/ActionText image attachments
+            sgid = node["sgid"]
+            attachable = GlobalID::Locator.locate_signed(sgid) if sgid
+            if attachable && attachable.respond_to?(:image?) && attachable.image?
+              tf = Tempfile.new([ "actiontext_img", File.extname(attachable.filename.to_s) ])
+              tf.binmode
+              tf.write(attachable.download)
+              tf.flush
+              docx.img tf.path, width: 600
+              tf.close!
             end
           else
-            # Fallback: add text if meaningful
             text = node.text.to_s.strip
             docx.p(text) unless text.empty?
           end

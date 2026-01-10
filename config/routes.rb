@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   post "audio/generate" => "audio#generate", as: :audio_generate
 
   # Static pages
+  get "chapters/export/docx_test", to: "chapters#export_docx_test"
+
   get "about" => "pages#about"
   get "privacy" => "pages#privacy"
   get "terms" => "pages#terms"
