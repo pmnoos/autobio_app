@@ -1,11 +1,12 @@
-class DocxExporter
-  def initialize(chapters:)
-    @chapters = chapters
-  end
+module AudioBook
+  class AutobiographyDocxExporter
+    def initialize(chapters:)
+      @chapters = chapters
+    end
 
-  def export(file_path)
-    Caracal::Document.save(file_path) do |docx|
-      build_title_page(docx)
+    def export(file_path)
+      Caracal::Document.save(file_path) do |docx|
+        build_title_page(docx)
 
       @chapters.each_with_index do |chapter, index|
         docx.page
@@ -59,5 +60,6 @@ class DocxExporter
     docx.img image_path, width: 500
     docx.hr
     docx.p ""
+  end
   end
 end
