@@ -16,14 +16,14 @@ services:
       bundle exec rails assets:precompile
     startCommand: bundle exec puma -C config/puma.rb
     preDeployCommand: bundle exec rails db:migrate
-    postDeployCommand: bundle exec rails db:seed
+    # postDeployCommand: bundle exec rails db:seed  # Disabled - data already exists in production
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: autobio-db
           property: connectionString
-      - key: IMPORT_CHAPTERS_ON_SEED
-        value: "1"
+      # - key: IMPORT_CHAPTERS_ON_SEED
+      #   value: "1"  # Disabled - production chapters already exist
       - key: RAILS_ENV
         value: production
       - key: RAILS_LOG_TO_STDOUT

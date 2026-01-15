@@ -1,86 +1,508 @@
- .narration-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+/* ============================================
+   OPTION 1: FLOATING TAB STYLE (DEFAULT)
+   Small tab on the right edge that expands
+   ============================================ */
 
-        .narrate-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.narration-controls {
+    position: fixed !important;
+    bottom: 50% !important;
+    right: 0 !important;
+    transform: translateY(50%) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
 
-        .narrate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
+.narrate-btn {
+    background: linear-gradient(135deg, #667eea 0%, #e0cff1 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 20px 10px !important;
+    border-radius: 8px 0 0 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
+    writing-mode: vertical-rl !important;
+    opacity: 0.85 !important;
+}
 
-        .narrate-btn:active {
-            transform: translateY(0);
-        }
+.narrate-btn:hover {
+    opacity: 1;
+    padding-left: 15px;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.25);
+}
 
-        .narrate-btn.speaking {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+.narrate-btn #btnIcon {
+    writing-mode: horizontal-tb;
+    font-size: 18px;
+}
 
-        .narrate-btn.paused {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
+.narrate-btn #btnText {
+    font-size: 11px;
+    letter-spacing: 1px;
+}
 
-        .voice-select {
-            background: white;
-            border: 2px solid #667eea;
-            padding: 8px 12px;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 200px;
-        }
+.narrate-btn.speaking {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    opacity: 1;
+}
 
-        .controls-expanded {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            display: none;
-        }
+.narrate-btn.paused {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    opacity: 1;
+}
 
-        .controls-expanded.active {
-            display: block;
-        }
+.controls-expanded {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    padding: 12px;
+    border-radius: 8px 0 0 8px;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.12);
+    display: none;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-right: none;
+    max-width: 200px;
+}
 
-        .control-group {
-            margin-bottom: 10px;
-        }
+.controls-expanded.active {
+    display: block;
+}
 
-        .control-group label {
-            display: block;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
+.control-group {
+    margin-bottom: 8px;
+}
 
-        .control-group input[type="range"] {
-            width: 100%;
-        }
+.control-group label {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
 
-        .highlight {
-            background-color: #ffeb3b;
-            transition: background-color 0.3s ease;
-        }
+.control-group input[type="range"] {
+    width: 100%;
+}
+
+.voice-select {
+    background: white;
+    border: 1px solid #667eea;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Mobile adjustments for tab style */
+@media (max-width: 768px) {
+    .narration-controls {
+        bottom: 20px !important;
+        right: 10px !important;
+        transform: none !important;
+    }
+
+    .narrate-btn {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
+        flex-direction: row !important;
+        writing-mode: horizontal-tb !important;
+        border-radius: 20px !important;
+        gap: 4px !important;
+    }
+
+    .narrate-btn #btnIcon {
+        font-size: 14px !important;
+    }
+
+    .narrate-btn #btnText {
+        font-size: 10px !important;
+    }
+
+    .controls-expanded {
+        max-width: 180px !important;
+        padding: 8px !important;
+        border-radius: 10px !important;
+        position: relative !important;
+        border-right: 1px solid rgba(102, 126, 234, 0.2) !important;
+    }
+
+    .control-group label {
+        font-size: 10px !important;
+    }
+
+    .control-group {
+        margin-bottom: 6px !important;
+    }
+
+    .voice-select {
+        pointer-events: auto !important;
+        z-index: 1001 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .narration-controls {
+        bottom: 15px !important;
+        right: 10px !important;
+    }
+
+    .narrate-btn {
+        padding: 4px 8px !important;
+        font-size: 10px !important;
+        gap: 3px !important;
+    }
+
+    .narrate-btn #btnIcon {
+        font-size: 13px !important;
+    }
+
+    .narrate-btn #btnText {
+        font-size: 9px !important;
+    }
+
+    .controls-expanded {
+        max-width: 160px !important;
+        padding: 6px !important;
+    }
+
+    .control-group {
+        margin-bottom: 5px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .narrate-btn {
+        padding: 4px 8px !important;
+    }
+
+    .narrate-btn #btnText {
+        display: none !important;
+    }
+
+    .narrate-btn #btnIcon {
+        font-size: 16px !important;
+    }
+}
+
+
+/* ============================================
+   OPTION 2: CORNER BADGE STYLE
+   Uncomment this section and comment out Option 1
+   ============================================ */
+
+/*
+.narration-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.narrate-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+}
+
+.narrate-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.narrate-btn #btnText {
+    display: none;
+}
+
+.narrate-btn.speaking {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    opacity: 1;
+    animation: pulse 2s infinite;
+}
+
+.narrate-btn.paused {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2); }
+    50% { box-shadow: 0 2px 20px rgba(240, 147, 251, 0.5); }
+}
+
+.controls-expanded {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: none;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    min-width: 200px;
+}
+
+.controls-expanded.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.control-group {
+    margin-bottom: 8px;
+}
+
+.control-group label {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+}
+
+.voice-select {
+    background: white;
+    border: 1px solid #667eea;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .narration-controls {
+        top: 15px;
+        right: 15px;
+    }
+
+    .narrate-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .controls-expanded {
+        min-width: 180px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .narration-controls {
+        top: 10px;
+        right: 10px;
+    }
+
+    .narrate-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .controls-expanded {
+        min-width: 160px;
+        right: -10px;
+        padding: 8px;
+    }
+
+    .control-group label {
+        font-size: 10px;
+    }
+}
+*/
+
+
+/* ============================================
+   OPTION 3: MINIMALIST BOTTOM BAR
+   Uncomment this section and comment out Option 1
+   ============================================ */
+
+/*
+.narration-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.narration-controls:hover {
+    opacity: 1;
+}
+
+.narrate-btn {
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.narrate-btn:hover {
+    background: rgba(102, 126, 234, 1);
+    transform: translateY(-1px);
+}
+
+.narrate-btn #btnIcon {
+    font-size: 14px;
+}
+
+.narrate-btn.speaking {
+    background: rgba(240, 147, 251, 0.9);
+}
+
+.narrate-btn.paused {
+    background: rgba(79, 172, 254, 0.9);
+}
+
+.controls-expanded {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+.control-group label {
+    font-size: 10px;
+    color: white;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.control-group input[type="range"] {
+    width: 80px;
+}
+
+.voice-select {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 10px;
+    cursor: pointer;
+    max-width: 150px;
+}
+
+@media (max-width: 768px) {
+    .narration-controls {
+        padding: 6px 10px;
+        gap: 8px;
+    }
+
+    .narrate-btn {
+        padding: 5px 12px;
+        font-size: 11px;
+    }
+
+    .control-group input[type="range"] {
+        width: 60px;
+    }
+
+    .voice-select {
+        max-width: 120px;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 480px) {
+    .narration-controls {
+        flex-wrap: wrap;
+        padding: 5px 8px;
+        gap: 5px;
+    }
+
+    .narrate-btn {
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+
+    .narrate-btn #btnText {
+        display: none;
+    }
+
+    .control-group {
+        gap: 4px;
+    }
+
+    .control-group label {
+        font-size: 9px;
+    }
+
+    .control-group input[type="range"] {
+        width: 50px;
+    }
+
+    .voice-select {
+        max-width: 100px;
+        font-size: 8px;
+        padding: 3px 6px;
+    }
+}
+*/
+
+.highlight {
+    background-color: #ffeb3b;
+    transition: background-color 0.3s ease;
+}
