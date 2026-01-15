@@ -21,35 +21,41 @@
     <%= stylesheet_link_tag :tailwind, "data-turbo-track": "reload" %>
     <%# Load Action Text attachment styles so embedded images render nicely %>
     <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "narration", "data-turbo-track": "reload" %>
+  <style>
+  <%= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'narration.css')).html_safe %>
+</style>
     <%= javascript_importmap_tags %>
-    <script>
-      <%= File.read(Rails.root.join('app', 'javascript', 'narration.js')).html_safe %>
-    </script>
+   <script>
+  <%= File.read(Rails.root.join('app', 'javascript', 'narration.js')).html_safe %>
+</script>
   </head>
 
   <body class="bg-gray-50">
-      <!-- Narration Controls (forced visible for debug, only one set) -->
-      <div class="narration-controls" aria-live="off" role="region" aria-label="Text to speech controls" style="margin-top: 1rem; background: #f0f8ff; border: 2px solid #007bff; padding: 1rem;">
-        <button id="narrateBtn" class="narrate-btn" aria-label="Read page content aloud" style="font-size: 1.2rem;">
-          <span id="btnIcon" aria-hidden="true">🔊</span>
-          <span id="btnText">Read Page</span>
-        </button>
-        <div id="controlsExpanded" class="controls-expanded" aria-label="Narration settings" style="display:block;">
-          <div class="control-group" style="display:block; margin-top: 1rem;">
-            <label for="voiceSelect" aria-hidden="true">Voice:</label>
-            <select id="voiceSelect" class="voice-select" aria-label="Select voice for narration" aria-hidden="true" style="font-size: 1rem;"></select>
-          </div>
-          <div class="control-group" style="display:block; margin-top: 1rem;">
-            <label for="rateControl" aria-hidden="true">Speed: <span id="rateValue" aria-hidden="true">1.0</span>x</label>
-            <input type="range" id="rateControl" min="0.5" max="2" step="0.1" value="1" aria-label="Adjust reading speed" aria-hidden="true">
-          </div>
-          <div class="control-group" style="display:block; margin-top: 1rem;">
-            <label for="pitchControl" aria-hidden="true">Pitch: <span id="pitchValue" aria-hidden="true">1.0</span></label>
-            <input type="range" id="pitchControl" min="0.5" max="2" step="0.1" value="1" aria-label="Adjust pitch" aria-hidden="true">
-          </div>
-        </div>
-      </div>
+    <p class="voice-note" style="font-size: 0.9em; color: #666; margin-top: 0.5em;">
+  Note: Available voices depend on your operating system and browser.
+</p>
+     <!-- Narration Controls -->
+<div class="narration-controls">
+  <button id="narrateBtn" class="narrate-btn">
+    <span id="btnIcon">🔊</span>
+    <span id="btnText">Read Page</span>
+  </button>
+  
+  <div id="controlsExpanded" class="controls-expanded">
+    <div class="control-group">
+      <label for="voiceSelect">Voice:</label>
+      <select id="voiceSelect" class="voice-select"></select>
+    </div>
+    <div class="control-group">
+      <label for="rateControl">Speed: <span id="rateValue">1.0</span>x</label>
+      <input type="range" id="rateControl" min="0.5" max="2" step="0.1" value="1">
+    </div>
+    <div class="control-group">
+      <label for="pitchControl">Pitch: <span id="pitchValue">1.0</span></label>
+      <input type="range" id="pitchControl" min="0.5" max="2" step="0.1" value="1">
+    </div>
+  </div>
+</div>
     <!-- Navigation Bar -->
     <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
