@@ -54,6 +54,9 @@ gem "nokogiri"
 # Cloud upload for sharing audio
 gem "cloudinary"
 
+# Active Storage Cloudinary integration
+gem "activestorage-cloudinary-service"
+
 group :development, :test do
  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
