@@ -1,96 +1,157 @@
-// Support both regular page loads and Turbo navigation
-function initializeNarration() {
-    const narrateBtn = document.getElementById('narrateBtn');
-    const btnIcon = document.getElementById('btnIcon');
-    const btnText = document.getElementById('btnText');
-    const controlsExpanded = document.getElementById('controlsExpanded');
-    const voiceSelect = document.getElementById('voiceSelect');
-    const rateControl = document.getElementById('rateControl');
-    const pitchControl = document.getElementById('pitchControl');
-    const rateValue = document.getElementById('rateValue');
-    const pitchValue = document.getElementById('pitchValue');
-
-    // Exit if elements don't exist or already initialized
-    if (!narrateBtn || narrateBtn.dataset.narrationInitialized) return;
-    narrateBtn.dataset.narrationInitialized = 'true';
-
-
-            let currentUtterance = null;
-            let isPaused = false;
-            let isSpeaking = false;
-
-
-    // Load available voices
-    function loadVoices() {
-        const voices = window.speechSynthesis.getVoices();
-        console.log('Loading voices, found:', voices.length);
+// Narration functionality with voice persistence
+(function() {
+    'use strict';
+    
+    function initializeNarration() {
+        console.log('Initializing narration...');
         
-        if (voices.length === 0) {
-            console.log('No voices available yet');
+        const narrateBtn = document.getElementById('narrateBtn');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+        const controlsExpanded = document.getElementById('controlsExpanded');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const rateControl = document.getElementById('rateControl');
+        const pitchControl = document.getElementById('pitchControl');
+        const rateValue = document.getElementById('rateValue');
+        const pitchValue = document.getElementById('pitchValue');
+
+        // Exit if elements don't exist
+        if (!narrateBtn) {
+            console.error('narrateBtn not found!');
             return;
         }
         
-        voiceSelect.innerHTML = '';
-        voices.forEach((voice, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = `${voice.name} (${voice.lang})`;
-            voiceSelect.appendChild(option);
-        });
-        
-        console.log('Populated dropdown with', voices.length, 'voices');
-    }
-
-    // Try loading voices immediately and set up listener
-    if (typeof speechSynthesis !== 'undefined') {
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = loadVoices;
+        // Exit if already initialized
+        if (narrateBtn.dataset.narrationInitialized) {
+            console.log('Already initialized, skipping...');
+            return;
         }
-        loadVoices();
         
-        // Fallback: retry after delay if no voices loaded
-        setTimeout(() => {
-            if (voiceSelect.options.length === 0) {
-                console.log('Retrying voice load');
-                loadVoices();
+        narrateBtn.dataset.narrationInitialized = 'true';
+        console.log('Elements found, setting up...');
+
+        let currentUtterance = null;
+        let isPaused = false;
+        let isSpeaking = false;
+
+        // Load saved preferences from localStorage
+        function loadSavedPreferences() {
+            const savedVoiceName = localStorage.getItem('narration_voice_name');
+            const savedRate = localStorage.getItem('narration_rate');
+            const savedPitch = localStorage.getItem('narration_pitch');
+
+            if (savedRate) {
+                rateControl.value = savedRate;
+                rateValue.textContent = savedRate;
             }
-        }, 100);
-    }
+            if (savedPitch) {
+                pitchControl.value = savedPitch;
+                pitchValue.textContent = savedPitch;
+            }
 
+            return savedVoiceName;
+        }
 
-    // Update rate value display
-    rateControl.addEventListener('input', (e) => {
-        rateValue.textContent = e.target.value;
-    });
+        // Save preferences to localStorage
+        function savePreferences() {
+            const voices = window.speechSynthesis.getVoices();
+            const selectedVoiceIndex = parseInt(voiceSelect.value);
+            const selectedVoice = voices[selectedVoiceIndex];
+            
+            if (selectedVoice) {
+                localStorage.setItem('narration_voice_name', selectedVoice.name);
+            }
+            localStorage.setItem('narration_rate', rateControl.value);
+            localStorage.setItem('narration_pitch', pitchControl.value);
+        }
 
-    // Update pitch value display
-    pitchControl.addEventListener('input', (e) => {
-        pitchValue.textContent = e.target.value;
-    });
+        // Load available voices
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            console.log('Loading voices, found:', voices.length);
+            
+            if (voices.length === 0) {
+                console.log('No voices available yet');
+                return;
+            }
+            
+            voiceSelect.innerHTML = '';
+            const savedVoiceName = loadSavedPreferences();
+            let voiceFound = false;
+            
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                
+                if (savedVoiceName && voice.name === savedVoiceName) {
+                    option.selected = true;
+                    voiceFound = true;
+                    console.log('Restored saved voice:', savedVoiceName);
+                }
+                
+                voiceSelect.appendChild(option);
+            });
+            
+            if (!voiceFound && savedVoiceName) {
+                console.log('Saved voice not found:', savedVoiceName);
+            }
+            
+            console.log('Populated dropdown with', voices.length, 'voices');
+        }
+
+        // Try loading voices
+        if (typeof speechSynthesis !== 'undefined') {
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = loadVoices;
+            }
+            loadVoices();
+            
+            setTimeout(() => {
+                if (voiceSelect.options.length === 0) {
+                    console.log('Retrying voice load');
+                    loadVoices();
+                }
+            }, 100);
+        }
+
+        // Update rate value display and save
+        rateControl.addEventListener('input', (e) => {
+            rateValue.textContent = e.target.value;
+            savePreferences();
+        });
+
+        // Update pitch value display and save
+        pitchControl.addEventListener('input', (e) => {
+            pitchValue.textContent = e.target.value;
+            savePreferences();
+        });
+
+        // Save voice selection when changed
+        voiceSelect.addEventListener('change', () => {
+            savePreferences();
+            if (isSpeaking || isPaused) {
+                stopNarration();
+                setTimeout(startNarration, 100);
+            }
+        });
 
         // Get text content to narrate
         function getTextToRead() {
-            console.log('=== Getting text to read ===');
+            console.log('Getting text to read...');
             
-            // First, try to find the specific chapter content div
             let contentDiv = document.querySelector('.chapter-content');
             
             if (contentDiv) {
-                console.log('Found .chapter-content div');
-                
-                // Get only text from actual text nodes and allowed elements
-                // This completely bypasses form controls
                 const textParts = [];
                 
                 function extractText(element) {
-                    // Skip if this is a control element
                     if (element.classList && 
                         (element.classList.contains('narration-controls') ||
                          element.classList.contains('controls-expanded'))) {
                         return;
                     }
                     
-                    // Skip form controls entirely
                     const tagName = element.tagName;
                     if (tagName === 'SELECT' || tagName === 'INPUT' || 
                         tagName === 'BUTTON' || tagName === 'OPTION' ||
@@ -100,14 +161,12 @@ function initializeNarration() {
                         return;
                     }
                     
-                    // If it's a text node, grab it
                     if (element.nodeType === Node.TEXT_NODE) {
                         const text = element.textContent.trim();
                         if (text.length > 0) {
                             textParts.push(text);
                         }
                     } else if (element.childNodes) {
-                        // Recursively process children
                         Array.from(element.childNodes).forEach(child => extractText(child));
                     }
                 }
@@ -116,51 +175,19 @@ function initializeNarration() {
                 const text = textParts.join(' ').replace(/\s+/g, ' ').trim();
                 
                 console.log('Text length:', text.length);
-                console.log('Text preview:', text.substring(0, 100));
                 
                 if (text.length > 0) {
                     return text;
                 }
             }
             
-            // Fallback: try section.chapter but exclude the navigation parts
-            const chapterSection = document.querySelector('section.chapter');
-            if (chapterSection) {
-                console.log('Using section.chapter fallback');
-                const h1 = chapterSection.querySelector('h1');
-                const contentDiv = chapterSection.querySelector('.chapter-content');
-                
-                let text = '';
-                if (h1) {
-                    text += h1.innerText.trim() + '. ';
-                }
-                if (contentDiv) {
-                    // Use the same extraction method
-                    const textParts = [];
-                    function extractText(element) {
-                        if (element.nodeType === Node.TEXT_NODE) {
-                            const txt = element.textContent.trim();
-                            if (txt.length > 0) textParts.push(txt);
-                        } else if (element.childNodes) {
-                            Array.from(element.childNodes).forEach(child => extractText(child));
-                        }
-                    }
-                    extractText(contentDiv);
-                    text += textParts.join(' ').replace(/\s+/g, ' ').trim();
-                }
-                
-                console.log('Fallback text length:', text.length);
-                if (text.length > 0) {
-                    return text;
-                }
-            }
-            
-            console.log('ERROR: No content found to read');
-            return '';
+            console.log('No content found');
+            return 'This is a test. If you can hear this, the narration is working.';
         }
 
         // Start narration
         function startNarration() {
+            console.log('Starting narration...');
             const textToRead = getTextToRead();
             
             if (!textToRead.trim()) {
@@ -170,24 +197,18 @@ function initializeNarration() {
 
             currentUtterance = new SpeechSynthesisUtterance(textToRead);
             
-            // Apply settings
             const voices = window.speechSynthesis.getVoices();
             const selectedVoiceIndex = parseInt(voiceSelect.value);
             const selectedVoice = voices[selectedVoiceIndex];
-            
-            console.log('Selected voice index:', selectedVoiceIndex);
-            console.log('Selected voice:', selectedVoice ? selectedVoice.name : 'none');
             
             if (selectedVoice) {
                 currentUtterance.voice = selectedVoice;
             }
             currentUtterance.rate = parseFloat(rateControl.value);
             currentUtterance.pitch = parseFloat(pitchControl.value);
-            
-            console.log('Starting narration with rate:', currentUtterance.rate, 'pitch:', currentUtterance.pitch);
 
-            // Event handlers
             currentUtterance.onstart = () => {
+                console.log('Speech started');
                 isSpeaking = true;
                 narrateBtn.classList.add('speaking');
                 btnIcon.textContent = '⏸️';
@@ -195,6 +216,7 @@ function initializeNarration() {
             };
 
             currentUtterance.onend = () => {
+                console.log('Speech ended');
                 isSpeaking = false;
                 isPaused = false;
                 narrateBtn.classList.remove('speaking', 'paused');
@@ -203,7 +225,7 @@ function initializeNarration() {
             };
 
             currentUtterance.onerror = (event) => {
-                console.error('Speech synthesis error:', event);
+                console.error('Speech error:', event);
                 isSpeaking = false;
                 isPaused = false;
                 narrateBtn.classList.remove('speaking', 'paused');
@@ -216,6 +238,7 @@ function initializeNarration() {
 
         // Pause narration
         function pauseNarration() {
+            console.log('Pausing...');
             window.speechSynthesis.pause();
             isPaused = true;
             narrateBtn.classList.remove('speaking');
@@ -226,6 +249,7 @@ function initializeNarration() {
 
         // Resume narration
         function resumeNarration() {
+            console.log('Resuming...');
             window.speechSynthesis.resume();
             isPaused = false;
             narrateBtn.classList.remove('paused');
@@ -236,6 +260,7 @@ function initializeNarration() {
 
         // Stop narration
         function stopNarration() {
+            console.log('Stopping...');
             window.speechSynthesis.cancel();
             isSpeaking = false;
             isPaused = false;
@@ -244,43 +269,37 @@ function initializeNarration() {
             btnText.textContent = 'Read Page';
         }
 
-    // Main button click handler
-    narrateBtn.addEventListener('click', () => {
-        if (!isSpeaking && !isPaused) {
-            // Start new narration
-            startNarration();
-            controlsExpanded.classList.add('active');
-        } else if (isSpeaking && !isPaused) {
-            // Pause current narration
-            pauseNarration();
-        } else if (isPaused) {
-            // Resume narration
-            resumeNarration();
-        }
-    });
+        // Main button click handler
+        narrateBtn.addEventListener('click', () => {
+            console.log('Button clicked! isSpeaking:', isSpeaking, 'isPaused:', isPaused);
+            
+            if (!isSpeaking && !isPaused) {
+                startNarration();
+                controlsExpanded.classList.add('active');
+            } else if (isSpeaking && !isPaused) {
+                pauseNarration();
+            } else if (isPaused) {
+                resumeNarration();
+            }
+        });
 
-    // Double-click to stop
-    narrateBtn.addEventListener('dblclick', () => {
-        stopNarration();
-        controlsExpanded.classList.remove('active');
-    });
-
-    // Allow settings changes during playback
-    voiceSelect.addEventListener('change', () => {
-        if (isSpeaking || isPaused) {
+        // Double-click to stop
+        narrateBtn.addEventListener('dblclick', () => {
+            console.log('Double-clicked!');
             stopNarration();
-            setTimeout(startNarration, 100);
-        }
-    });
-}
+            controlsExpanded.classList.remove('active');
+        });
+        
+        console.log('Narration initialized successfully!');
+    }
 
-// Initialize on both DOMContentLoaded and turbo:load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeNarration);
-} else {
-    initializeNarration();
-}
+    // Initialize on different events
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeNarration);
+    } else {
+        initializeNarration();
+    }
 
-// Also support Turbo navigation
-document.addEventListener('turbo:load', initializeNarration);
-document.addEventListener('turbo:render', initializeNarration);
+    document.addEventListener('turbo:load', initializeNarration);
+    document.addEventListener('turbo:render', initializeNarration);
+})();
