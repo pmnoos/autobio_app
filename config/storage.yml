@@ -8,9 +8,9 @@ local:
 
 cloudinary:
   service: Cloudinary
-  cloud_name: <%= ENV['CLOUDINARY_CLOUD_NAME'].to_s.strip %>
-  api_key: <%= ENV['CLOUDINARY_API_KEY'].to_s.strip %>
-  api_secret: <%= ENV['CLOUDINARY_API_SECRET'].to_s.strip %>
+  cloud_name: <%= ENV['CLOUDINARY_CLOUD_NAME'].to_s.strip.presence || 'do2jgazpl' %>
+  api_key: <%= ENV['CLOUDINARY_API_KEY'].to_s.strip.presence || '544593413624365' %>
+  api_secret: <%= ENV['CLOUDINARY_API_SECRET'].to_s.strip.presence || 'o1TDSZzpr2lU9f-8maSQrmg-DBQ' %>
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
