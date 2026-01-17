@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get "session" => redirect("/session/new")
   resources :passwords, param: :token
   get "info" => "info#index", as: :info
+  get "info/chapter32" => "info#chapter32", as: :info_chapter32
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
