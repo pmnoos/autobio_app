@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  allow_unauthenticated_access only: [:new, :create]
+  allow_unauthenticated_access only: [ :new, :create ]
 
   def new
     @user = User.new
@@ -7,13 +7,16 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    
+
     if @user.save
       start_new_session_for @user
       redirect_to root_path, notice: "Welcome! Your account has been created successfully."
     else
       render :new, status: :unprocessable_entity
     end
+  rescue ActiveRecord::RecordNotUnique
+    @user.errors.add(:email_address, "has already been taken")
+    render :new, status: :unprocessable_entity
   end
 
   private

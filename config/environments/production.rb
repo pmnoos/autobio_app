@@ -29,7 +29,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   config.active_record.attributes_for_inspect = [ :id ]
 
-  # Use your Render domain here (or ENV variable for flexibility)
+  # Use environment variable for flexibility, fallback to your Render domain
   app_host = ENV.fetch("APP_HOST", "autobio-app.onrender.com")
 
   config.action_mailer.default_url_options = {
@@ -42,7 +42,12 @@ Rails.application.configure do
     protocol: "https"
   }
 
-  # Optional: whitelist your domain to prevent Host header issues
-  config.hosts = [app_host]
+  # Whitelist your Render domain to prevent 403 Forbidden errors
+  config.hosts = [
+    "autobio-app.onrender.com",
+    /.*\.autobio-app\.onrender\.com/
+  ]
+
+  # Allow health check endpoint without host authorization
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
