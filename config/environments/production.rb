@@ -30,7 +30,7 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Use environment variable for flexibility, fallback to your Render domain
-  app_host = ENV.fetch("APP_HOST", "autobio-app.onrender.com")
+  app_host = ENV.fetch("APP_HOST", "autobio-app.onrender.com").strip
 
   config.action_mailer.default_url_options = {
     host: app_host,
