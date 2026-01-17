@@ -10,7 +10,7 @@ Rails.application.configure do
 
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
-  config.active_storage.service = :local
+  config.active_storage.service = :cloudinary
 
   config.assume_ssl = true
   config.force_ssl = true
@@ -43,10 +43,10 @@ Rails.application.configure do
   }
 
   # Whitelist your Render domain to prevent 403 Forbidden errors
-#  config.hosts = [
-#    "autobio-app.onrender.com",
-#    /.*\.autobio-app\.onrender\.com/
-#  ]
+  #  config.hosts = [
+  #    "autobio-app.onrender.com",
+  #    /.*\.autobio-app\.onrender\.com/
+  #  ]
 
   # Allow health check endpoint without host authorization
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
