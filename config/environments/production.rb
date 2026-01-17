@@ -43,10 +43,10 @@ Rails.application.configure do
   }
 
   # Whitelist your Render domain to prevent 403 Forbidden errors
-  config.hosts = [
-    "autobio-app.onrender.com",
-    /.*\.autobio-app\.onrender\.com/
-  ]
+#  config.hosts = [
+#    "autobio-app.onrender.com",
+#    /.*\.autobio-app\.onrender\.com/
+#  ]
 
   # Allow health check endpoint without host authorization
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
