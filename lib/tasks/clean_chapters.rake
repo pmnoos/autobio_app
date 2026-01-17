@@ -7,6 +7,12 @@ namespace :chapters do
     Chapter.find_each do |chapter|
       if chapter.image_header.attached?
         chapter.image_header.purge
+        count += 1
+      end
+    end
+
+    puts "✅ Removed #{count} chapter photos"
+    puts "You can now re-upload them and they will go to Cloudinary"
   end
 
   desc "Delete all chapters (use carefully!)"
