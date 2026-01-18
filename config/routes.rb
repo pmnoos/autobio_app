@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   get "info" => "info#index", as: :info
   get "info/chapter32" => "info#chapter32", as: :info_chapter32
+  get "info/chapter13" => "info#chapter13", as: :info_chapter13
+  get "info/chapter26" => "info#chapter26", as: :info_chapter26
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
