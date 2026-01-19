@@ -1,6 +1,8 @@
 class InfoController < ApplicationController
+  allow_unauthenticated_access
+  
   def index
-    # Info page - automatically requires login
+    # Info page
   end
 
   def chapter32
