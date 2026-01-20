@@ -50,6 +50,7 @@
   </style>
 </head>
 <body>
+ 
   <% if authenticated? %>
   <div class="edit-notice">
     📝 <strong>Editor Mode:</strong> This page can be edited in VS Code at <code>app/views/info/chapter3.html.erb</code>
@@ -58,12 +59,10 @@
   
   <h1>Chapter 3 - Start of my childhood in Dover</h1>
   
-  <div class="info-box">
-    <p>Add your supplementary content for Chapter 3 here.</p>
+  <div class="info-box" style="text-align: center;">
+    <p>Movie about Dover in the 1947's</p>
+    <a href="https://www.youtube.com/watch?v=jP0QRTP554s" target="_blank" class="back-link">Dover 1947 Video</a>
   </div>
-
-  <h2>Section Title</h2>
-  <p>Your content here...</p>
   
   <%= link_to "Back to Chapters", list_chapters_path, class: "back-link" %>
 </body>
