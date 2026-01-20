@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   get "info/chapter32" => "info#chapter32", as: :info_chapter32
   get "info/chapter13" => "info#chapter13", as: :info_chapter13
   get "info/chapter26" => "info#chapter26", as: :info_chapter26
+  get "info/chapter3" => "info#chapter3", as: :info_chapter3
+  get "info/chapter18" => "info#chapter18", as: :info_chapter18
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
