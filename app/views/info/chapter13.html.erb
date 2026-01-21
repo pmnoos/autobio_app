@@ -50,20 +50,19 @@
   </style>
 </head>
 <body>
+
   <% if authenticated? %>
   <div class="edit-notice">
     📝 <strong>Editor Mode:</strong> This page can be edited in VS Code at <code>app/views/info/chapter13.html.erb</code>
   </div>
   <% end %>
   
-  <h1>Chapter 13 - Additional Information</h1>
+  <h1>Chapter 13 - The Strike and the Dream of New Zealand</h1>
   
-  <div class="info-box">
-    <p>My Promotion</p>
+  <div class="info-box" style="text-align: center;">
+    <h2>British Seaman's Strike 1966</h2>
+    <a href="https://www.bandcstaffregister.com/page3888.html#:~:text=Sadly%20the%20seamen%27s%20strike%20in,ports%20but%20Southampton%20in%20particular." target="_blank" class="back-link">Read about the Seaman's Strike 1966</a>
   </div>
-
-  <h2>Section Title</h2>
-  <p>Your content here...</p>
   
   <%= link_to "Back to Chapters", list_chapters_path, class: "back-link" %>
 </body>
