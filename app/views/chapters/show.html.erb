@@ -27,7 +27,7 @@
     </div>
   <% end %>
 
-  <% if @chapter.title&.downcase&.include?("strike") || @chapter.title&.include?("13") %>
+  <% if @chapter.title&.downcase&.include?("strike") || @chapter.title&.match?(/\b13\b/) %>
     <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
       <p class="text-sm text-blue-800">
         <a href="/info/chapter13" target="_blank" class="text-blue-600 hover:text-blue-800 underline">📖 Read Additional Information</a>
