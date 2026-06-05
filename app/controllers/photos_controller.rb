@@ -12,9 +12,18 @@ class PhotosController < ApplicationController
   # GET /photos or /photos.json
   def index
     # Preload attachments to avoid N+1 and ensure robust rendering
-    @photos = Photo.by_date.with_attached_image
+    @photos = Photo.by_position.with_attached_image
     # Exclude chapter-derived images using `source` flag
     @photos = @photos.where.not(source: "chapter")
+  end
+
+  # PATCH /photos/reorder
+  def reorder
+    ids = Array(params[:ids])
+    ids.each_with_index do |id, index|
+      Photo.where(id: id.to_i).update_all(position: index + 1)
+    end
+    head :ok
   end
 
   # GET /photos/1 or /photos/1.json
@@ -84,6 +93,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :title, :description, :taken_at, :image ])
+      params.expect(photo: [ :title, :description, :taken_at, :image, :position ])
     end
 end

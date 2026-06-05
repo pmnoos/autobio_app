@@ -13,6 +13,14 @@
     .tile-delete-btn { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 9999px; background: rgba(220, 38, 38, 0.85); color: white; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.2); cursor: pointer; }
     .tile-delete-btn:hover { background: rgba(239, 68, 68, 0.95); }
     .tile-delete-btn svg { width: 16px; height: 16px; }
+    /* Reorder mode */
+    .reorder-active .tile { cursor: grab; outline: 2px dashed #a855f7; outline-offset: 2px; }
+    .reorder-active .tile:active { cursor: grabbing; }
+    .reorder-active .tile-delete { display: none !important; }
+    .drag-handle { display: none; position: absolute; top: 0.25rem; left: 0.25rem; z-index: 10; background: rgba(168,85,247,0.85); border-radius: 4px; padding: 2px 4px; color: white; pointer-events: none; }
+    .reorder-active .drag-handle { display: flex; align-items: center; }
+    .sortable-ghost { opacity: 0.35; }
+    .sortable-chosen { box-shadow: 0 0 0 3px #a855f7; }
   </style>
 <% end %>
 
@@ -31,8 +39,22 @@
       </div>
       
       <% if authenticated? %>
-        <%= link_to "Add New Photo", new_photo_path, 
-            class: "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all transform hover:scale-105 shadow-lg" %>
+        <div class="flex items-center gap-3">
+          <button id="reorder-toggle"
+                  class="bg-white border border-purple-300 text-purple-700 hover:bg-purple-50 px-4 py-2.5 rounded-xl font-medium transition-all shadow-sm">
+            &#9776; Reorder
+          </button>
+          <button id="reorder-save" style="display:none"
+                  class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-xl font-medium transition-all shadow-sm">
+            Save Order
+          </button>
+          <button id="reorder-cancel" style="display:none"
+                  class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2.5 rounded-xl font-medium transition-all shadow-sm">
+            Cancel
+          </button>
+          <%= link_to "Add New Photo", new_photo_path,
+              class: "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-xl font-medium transition-all transform hover:scale-105 shadow-lg" %>
+        </div>
       <% else %>
         <span class="text-sm text-gray-600 bg-blue-50 border border-blue-200 px-3 py-2 rounded">
           Sign in to add photos
@@ -46,10 +68,13 @@
         <% if @photos.any? %>
           <% photos_with_images = @photos.select { |photo| photo.image.attached? } %>
           <% photos_with_images.each_with_index do |photo, index| %>
-            <div class="tile">
+            <div class="tile" data-photo-id="<%= photo.id %>">
+              <span class="drag-handle" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm8-16a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4zm0 8a2 2 0 110-4 2 2 0 010 4z"/></svg>
+              </span>
               <a href="<%= photo_path(photo) %>" onclick="openLightboxFromElement(this); return false;" aria-label="View <%= photo.title %>" role="button" aria-haspopup="dialog" aria-controls="lightbox"
                  class="block hover:opacity-80 transition-opacity duration-200"
-                  data-id="<%= photo.id %>"
+                 data-id="<%= photo.id %>"
                  data-index="<%= index %>"
                  data-image-url="<%= url_for(photo.image) %>"
                  data-title="<%= photo.title %>"
@@ -246,4 +271,87 @@
   document.getElementById('lightbox').addEventListener('click', function(e) {
     if (e.target === this) closeLightbox();
   });
+
+  // ── Drag-and-drop reordering (authenticated only) ──────────────────────────
+  <% if authenticated? %>
+  (function() {
+    const toggleBtn  = document.getElementById('reorder-toggle');
+    const saveBtn    = document.getElementById('reorder-save');
+    const cancelBtn  = document.getElementById('reorder-cancel');
+    const grid       = document.querySelector('.gallery-grid');
+    let sortable     = null;
+    let reorderMode  = false;
+
+    function enterReorderMode() {
+      reorderMode = true;
+      grid.classList.add('reorder-active');
+      toggleBtn.style.display = 'none';
+      saveBtn.style.display   = '';
+      cancelBtn.style.display = '';
+
+      // Load SortableJS dynamically so it doesn't affect non-admin visitors
+      if (window.Sortable) {
+        initSortable();
+      } else {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js';
+        s.onload = initSortable;
+        document.head.appendChild(s);
+      }
+    }
+
+    function exitReorderMode() {
+      reorderMode = false;
+      grid.classList.remove('reorder-active');
+      toggleBtn.style.display = '';
+      saveBtn.style.display   = 'none';
+      cancelBtn.style.display = 'none';
+      if (sortable) { sortable.destroy(); sortable = null; }
+    }
+
+    function initSortable() {
+      sortable = Sortable.create(grid, {
+        animation: 150,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        // prevent accidental lightbox open while dragging
+        onStart: function() {
+          grid.querySelectorAll('a').forEach(a => a.style.pointerEvents = 'none');
+        },
+        onEnd: function() {
+          grid.querySelectorAll('a').forEach(a => a.style.pointerEvents = '');
+        }
+      });
+    }
+
+    toggleBtn.addEventListener('click', enterReorderMode);
+    cancelBtn.addEventListener('click', exitReorderMode);
+
+    saveBtn.addEventListener('click', function() {
+      const ids = Array.from(grid.querySelectorAll('[data-photo-id]'))
+                       .map(el => el.dataset.photoId);
+
+      fetch('<%= reorder_photos_path %>', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ ids: ids })
+      }).then(function(res) {
+        if (res.ok) {
+          exitReorderMode();
+          // Flash a brief success message
+          const flash = document.createElement('div');
+          flash.textContent = 'Order saved!';
+          flash.className = 'fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-sm font-medium';
+          document.body.appendChild(flash);
+          setTimeout(() => flash.remove(), 2500);
+        } else {
+          alert('Failed to save order. Please try again.');
+        }
+      });
+    });
+  })();
+  <% end %>
 </script>

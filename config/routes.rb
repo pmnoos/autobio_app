@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :users, only: [ :new, :create ]
   resources :photos do
+    collection do
+      patch :reorder
+    end
     member do
       get :pdf
     end
