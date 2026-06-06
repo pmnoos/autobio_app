@@ -52,7 +52,8 @@ gem "caracal"
 gem "nokogiri"
 
 # Cloud upload for sharing audio
-gem "cloudinary"
+# Pinned to 1.x — activestorage-cloudinary-service 0.2.3 is incompatible with cloudinary 2.x
+gem "cloudinary", "~> 1.0"
 
 # Active Storage Cloudinary integration
 gem "activestorage-cloudinary-service"
