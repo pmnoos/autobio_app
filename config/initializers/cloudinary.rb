@@ -1,7 +1,7 @@
 require "cloudinary"
+require Rails.root.join("lib/active_storage/service/cloudinary_custom_service")
 
-# Explicit Cloudinary config — takes precedence over CLOUDINARY_URL env var
-# to ensure the correct credentials are used for both upload and signature verification.
+# Explicit Cloudinary config
 Cloudinary.config do |config|
   config.cloud_name = ENV["CLOUDINARY_CLOUD_NAME"].to_s.strip
   config.api_key    = ENV["CLOUDINARY_API_KEY"].to_s.strip
