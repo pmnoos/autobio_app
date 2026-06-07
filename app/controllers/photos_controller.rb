@@ -8,7 +8,6 @@
 class PhotosController < ApplicationController
   allow_unauthenticated_access only: [ :index, :show ]
   before_action :set_photo, only: %i[ show edit update destroy ]
-
   # GET /photos or /photos.json
   def index
     # Preload attachments to avoid N+1 and ensure robust rendering
@@ -24,6 +23,38 @@ class PhotosController < ApplicationController
       Photo.where(id: id.to_i).update_all(position: index + 1)
     end
     head :ok
+  end
+
+  # GET /photos/bulk_upload
+  def bulk_upload
+  end
+
+  # POST /photos/bulk_upload
+  def bulk_upload_save
+    files = params[:images] || []
+    imported = 0
+    errors   = 0
+
+    Array(files).each do |file|
+      title = File.basename(file.original_filename, ".*")
+                  .gsub(/[_\-]+/, " ")
+                  .split.map(&:capitalize).join(" ")
+
+      photo = Photo.new(title: title)
+      photo.image.attach(
+        io:           file,
+        filename:     file.original_filename,
+        content_type: file.content_type
+      )
+
+      if photo.save
+        imported += 1
+      else
+        errors += 1
+      end
+    end
+
+    redirect_to photos_path, notice: "Imported #{imported} photo(s).#{errors > 0 ? " #{errors} failed." : ""}"
   end
 
   # GET /photos/1 or /photos/1.json

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :photos do
     collection do
       patch :reorder
+      get  :bulk_upload
+      post :bulk_upload, action: :bulk_upload_save
     end
     member do
       get :pdf
