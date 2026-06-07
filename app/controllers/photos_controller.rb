@@ -32,10 +32,18 @@ class PhotosController < ApplicationController
   # POST /photos/bulk_upload
   def bulk_upload_save
     files = Array(params[:images]).select { |f| f.respond_to?(:original_filename) }
+
+    if files.empty?
+      redirect_to bulk_upload_photos_path, alert: "No photos selected." and return
+    end
+
+    # Cap at 10 per request to avoid Render's 30s timeout
+    files = files.first(10)
+
     imported = 0
     errors   = 0
 
-    Array(files).each do |file|
+    files.each do |file|
       title = File.basename(file.original_filename, ".*")
                   .gsub(/[_\-]+/, " ")
                   .split.map(&:capitalize).join(" ")
