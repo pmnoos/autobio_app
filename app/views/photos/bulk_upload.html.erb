@@ -75,9 +75,14 @@
   dropZone.addEventListener('drop', e => {
     e.preventDefault();
     dropZone.classList.remove('border-purple-500', 'bg-purple-50');
-    const dt = e.dataTransfer;
-    // Merge dropped files into the input
-    const files = Array.from(dt.files).filter(f => f.type.startsWith('image/'));
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (!files.length) return;
+
+    // Assign dropped files to the actual file input so they're submitted with the form
+    const dt = new DataTransfer();
+    files.forEach(f => dt.items.add(f));
+    fileInput.files = dt.files;
+
     updateFileInput(files);
   });
 
