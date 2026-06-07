@@ -31,7 +31,7 @@ class PhotosController < ApplicationController
 
   # POST /photos/bulk_upload
   def bulk_upload_save
-    files = params[:images] || []
+    files = Array(params[:images]).select { |f| f.respond_to?(:original_filename) }
     imported = 0
     errors   = 0
 
