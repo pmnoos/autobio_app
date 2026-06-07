@@ -15,7 +15,7 @@
       <% end %>
     </div>
 
-    <%= form_with url: bulk_upload_photos_path, method: :post, multipart: true, id: "bulk-form" do |f| %>
+    <%= form_with url: bulk_upload_photos_path, method: :post, multipart: true, id: "bulk-form", data: { turbo: false } do |f| %>
       <!-- Drop zone -->
       <div id="drop-zone"
            class="border-4 border-dashed border-purple-300 rounded-xl p-12 text-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 transition-all mb-6">
