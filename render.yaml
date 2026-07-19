@@ -31,6 +31,10 @@ services:
       - key: RAILS_SERVE_STATIC_FILES
         value: "true"
       - key: WEB_CONCURRENCY
+        value: "1"
+      - key: RAILS_MAX_THREADS
+        value: "2"
+      - key: MALLOC_ARENA_MAX
         value: "2"
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
