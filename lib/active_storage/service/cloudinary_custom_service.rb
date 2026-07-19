@@ -31,7 +31,7 @@ module ActiveStorage
     end
 
     def download(key, &block)
-      url = cloudinary_url(key)
+      url = cloudinary_url(key, resource_type: "auto")
       if block_given?
         instrument :streaming_download, key: key do
           uri = URI.parse(url)
@@ -51,7 +51,7 @@ module ActiveStorage
 
     def download_chunk(key, range)
       instrument :download_chunk, key: key, range: range do
-        uri = URI.parse(cloudinary_url(key))
+        uri = URI.parse(cloudinary_url(key, resource_type: "auto"))
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
         req = Net::HTTP::Get.new(uri.request_uri)
@@ -85,13 +85,18 @@ module ActiveStorage
 
     def url(key, expires_in:, disposition:, filename:, content_type:, **)
       instrument :url, key: key do
-        cloudinary_url(key)
+        options = {
+          resource_type: resource_type_for(content_type),
+          type: "upload"
+        }
+        options[:flags] = "attachment" if disposition.to_s == "attachment"
+        cloudinary_url(key, **options)
       end
     end
 
     def url_for_direct_upload(key, expires_in:, content_type:, content_length:, checksum:, **)
       instrument :url_for_direct_upload, key: key do
-        cloudinary_url(key)
+        cloudinary_url(key, resource_type: resource_type_for(content_type), type: "upload")
       end
     end
 
@@ -101,8 +106,21 @@ module ActiveStorage
 
     private
 
-    def cloudinary_url(key)
-      Cloudinary::Utils.cloudinary_url(key)
+    def cloudinary_url(key, **options)
+      defaults = {
+        secure: true,
+        sign_url: false
+      }
+      Cloudinary::Utils.cloudinary_url(key, **defaults.merge(options))
+    end
+
+    def resource_type_for(content_type)
+      type = content_type.to_s.downcase
+      return "video" if type.start_with?("audio/")
+      return "video" if type.start_with?("video/")
+      return "image" if type.start_with?("image/")
+
+      "raw"
     end
   end
 end
