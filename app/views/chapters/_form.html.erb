@@ -78,6 +78,32 @@
     <% end %>
   </div>
 
+  <!-- Chapter Audio Field -->
+  <div class="space-y-2">
+    <%= form.label :audio_file, "Chapter Audio (MP3)", class: "block text-sm font-medium text-gray-700" %>
+    <div class="flex items-center space-x-4">
+      <div class="flex-1">
+        <%= form.file_field :audio_file,
+            accept: "audio/mpeg,audio/mp3",
+            class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 #{'border-red-300' if chapter.errors[:audio_file].any?}" %>
+      </div>
+      <% if chapter.audio_file.attached? %>
+        <div class="shrink-0 text-xs text-green-700 bg-green-100 px-2 py-1 rounded">
+          Audio attached
+        </div>
+      <% end %>
+    </div>
+    <% if chapter.audio_file.attached? %>
+      <audio controls preload="none" class="w-full">
+        <source src="<%= url_for(chapter.audio_file) %>" type="audio/mpeg">
+      </audio>
+    <% end %>
+    <p class="text-xs text-gray-500">Upload an optional MP3 for this chapter.</p>
+    <% if chapter.errors[:audio_file].any? %>
+      <p class="text-sm text-red-600"><%= chapter.errors[:audio_file].first %></p>
+    <% end %>
+  </div>
+
   <!-- Content Field -->
   <div class="space-y-2">
     <%= form.label :content, "Chapter Content", class: "block text-sm font-medium text-gray-700" %>

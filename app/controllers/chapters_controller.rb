@@ -208,7 +208,7 @@ class ChaptersController < ApplicationController
   end
 
   def chapter_params
-    allowed = [ :title, :subtitle, :image_header, :image, :content ]
+    allowed = [ :title, :subtitle, :image_header, :image, :audio_file, :content ]
     allowed << :special_type if Chapter.column_names.include?("special_type")
     params.expect(chapter: allowed)
   end

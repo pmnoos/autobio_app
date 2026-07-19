@@ -18,6 +18,21 @@
     <%= @chapter.content %>
   </div>
 
+  <% if @chapter.audio_file.attached? %>
+    <div class="mt-6 mx-auto max-w-prose">
+      <details class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <summary class="cursor-pointer inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white font-medium">Open Chapter Audio</summary>
+        <div class="mt-4">
+          <audio controls preload="none" class="w-full mb-3">
+            <source src="<%= url_for(@chapter.audio_file) %>" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+          <a href="<%= rails_blob_path(@chapter.audio_file, disposition: "attachment") %>" class="inline-flex items-center px-4 py-2 rounded-md bg-gray-700 text-white">Download Chapter Audio</a>
+        </div>
+      </details>
+    </div>
+  <% end %>
+
   <% if @chapter.title&.include?("32") || @chapter.title&.downcase&.include?("christmas") %>
     <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
       <p class="text-sm text-blue-800">
