@@ -16,6 +16,20 @@ class ChaptersController < ApplicationController
     @chapters = Chapter.all.order_chapters_with_intro_first
   end
 
+  # PATCH /chapters/reorder
+  def reorder
+    ids = Array(params[:ids]).map(&:to_i).reject(&:zero?)
+    return head :unprocessable_entity if ids.empty?
+
+    Chapter.transaction do
+      ids.each_with_index do |id, index|
+        Chapter.where(id: id).update_all(position: index + 1)
+      end
+    end
+
+    head :ok
+  end
+
   def show
     all_chapters = Chapter.all.order_chapters_with_intro_first
     current_index = all_chapters.find_index(@chapter)
@@ -217,8 +231,7 @@ class ChaptersController < ApplicationController
     {
       name: "Your Name",
       title: "My Autobiography",
-      subtitle: "A Journey Through Life's Adventures",
-      generated_date: Date.current.strftime("%B %d, %Y")
+      subtitle: "A Journey Through Life's Adventures"
     }
   end
 

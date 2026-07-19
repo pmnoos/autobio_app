@@ -1,6 +1,27 @@
 <% content_for :title, "All Chapters" %>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <style>
+    .chapters-stack.reorder-active .chapter-card {
+      cursor: grab;
+      outline: 2px dashed #93c5fd;
+      outline-offset: 2px;
+    }
+
+    .chapters-stack.reorder-active .chapter-card a,
+    .chapters-stack.reorder-active .chapter-card form {
+      pointer-events: none;
+    }
+
+    .sortable-ghost {
+      opacity: 0.45;
+    }
+
+    .sortable-chosen {
+      transform: scale(1.01);
+    }
+  </style>
+
   <% if notice.present? %>
     <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md mb-6">
       <%= notice %>
@@ -24,14 +45,23 @@
       <% if authenticated? %>
         <%= link_to "Add New Chapter", new_chapter_path, 
             class: "bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-medium transition-colors" %>
+        <button id="chapter-reorder-toggle" type="button" class="bg-amber-500 hover:bg-amber-400 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+          Reorder Chapters
+        </button>
+        <button id="chapter-reorder-save" type="button" class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-lg font-medium transition-colors" style="display: none;">
+          Save Order
+        </button>
+        <button id="chapter-reorder-cancel" type="button" class="bg-gray-500 hover:bg-gray-400 text-white px-6 py-3 rounded-lg font-medium transition-colors" style="display: none;">
+          Cancel
+        </button>
       <% end %>
     </div>
   </div>
 
-  <div class="space-y-8">
+  <div id="chapters-stack" class="space-y-8 chapters-stack">
     <% if @chapters.any? %>
       <% @chapters.each do |chapter| %>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow chapter-card" data-chapter-id="<%= chapter.id %>">
           <div class="flex flex-col lg:flex-row">
             <!-- Chapter Image -->
             <div class="lg:w-1/3">
@@ -83,11 +113,6 @@
                     <% else %>
                       <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
                         Chapter <%= chapter.chapter_number %>
-                      </span>
-                    <% end %>
-                    <% if authenticated? %>
-                      <span class="text-gray-500 text-sm">
-                        <%= chapter.created_at.strftime("%B %d, %Y") %>
                       </span>
                     <% end %>
                   </div>
@@ -153,3 +178,88 @@
     <% end %>
   </div>
 </div>
+
+<% if authenticated? %>
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('chapter-reorder-toggle');
+      const saveBtn = document.getElementById('chapter-reorder-save');
+      const cancelBtn = document.getElementById('chapter-reorder-cancel');
+      const stack = document.getElementById('chapters-stack');
+
+      if (!toggleBtn || !saveBtn || !cancelBtn || !stack) return;
+
+      let sortable = null;
+
+      function initSortable() {
+        if (sortable || !window.Sortable) return;
+
+        sortable = Sortable.create(stack, {
+          animation: 150,
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen'
+        });
+      }
+
+      function enterReorderMode() {
+        stack.classList.add('reorder-active');
+        toggleBtn.style.display = 'none';
+        saveBtn.style.display = '';
+        cancelBtn.style.display = '';
+
+        if (window.Sortable) {
+          initSortable();
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js';
+        script.onload = initSortable;
+        document.head.appendChild(script);
+      }
+
+      function exitReorderMode() {
+        stack.classList.remove('reorder-active');
+        toggleBtn.style.display = '';
+        saveBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
+
+        if (sortable) {
+          sortable.destroy();
+          sortable = null;
+        }
+      }
+
+      toggleBtn.addEventListener('click', enterReorderMode);
+      cancelBtn.addEventListener('click', exitReorderMode);
+
+      saveBtn.addEventListener('click', function() {
+        const ids = Array.from(stack.querySelectorAll('[data-chapter-id]')).map(function(el) {
+          return el.dataset.chapterId;
+        });
+
+        fetch('<%= reorder_chapters_path %>', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({ ids: ids })
+        }).then(function(response) {
+          if (!response.ok) {
+            throw new Error('reorder_failed');
+          }
+
+          exitReorderMode();
+          const flash = document.createElement('div');
+          flash.textContent = 'Chapter order saved.';
+          flash.className = 'fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-sm font-medium';
+          document.body.appendChild(flash);
+          setTimeout(function() { flash.remove(); }, 2500);
+        }).catch(function() {
+          alert('Failed to save chapter order. Please try again.');
+        });
+      });
+    })();
+  </script>
+<% end %>

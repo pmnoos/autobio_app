@@ -3,7 +3,6 @@
   <h1 class="cover-title"><%= @user_info[:title] %></h1>
   <p class="cover-subtitle"><%= @user_info[:subtitle] %></p>
   <p class="cover-author">by <%= @user_info[:name] %></p>
-  <p class="cover-date">Generated on <%= @user_info[:generated_date] %></p>
 </div>
 
 <!-- Table of Contents -->
@@ -44,9 +43,6 @@
       <% if chapter.subtitle.present? %>
         <p class="chapter-subtitle"><%= chapter.subtitle %></p>
       <% end %>
-      <div class="chapter-date">
-        Written on <%= chapter.created_at.strftime("%B %d, %Y") %>
-      </div>
     </div>
     
     <div class="chapter-content">

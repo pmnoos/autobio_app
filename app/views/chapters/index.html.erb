@@ -250,18 +250,10 @@
           
           <!-- Chapter Content -->
           <div class="p-6">
-            <div class="flex items-start justify-between mb-3">
+            <div class="mb-3">
               <h3 class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors leading-tight">
                 <%= link_to chapter.title, chapter, class: "hover:underline" %>
               </h3>
-              <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full ml-2 shrink-0">
-                <%= time_ago_in_words(chapter.updated_at) %> ago
-              </span>
-            </div>
-            <div class="text-xs text-gray-500 mb-2">
-              <% if authenticated? %>
-                Created <%= chapter.created_at.strftime("%B %d, %Y") %>
-              <% end %>
             </div>
             
             <% if chapter.subtitle.present? %>

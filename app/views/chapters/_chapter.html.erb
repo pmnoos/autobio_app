@@ -28,11 +28,6 @@
             Chapter <%= chapter.chapter_number %>
           </span>
         <% end %>
-        <% if authenticated? %>
-          <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-            <%= chapter.created_at.strftime("%B %d, %Y") %>
-          </span>
-        <% end %>
       </div>
       <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 leading-tight"><%= chapter.title %></h1>
       <% if chapter.subtitle.present? %>

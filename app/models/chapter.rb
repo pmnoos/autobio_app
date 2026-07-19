@@ -11,21 +11,23 @@ class Chapter < ApplicationRecord
   # Uses special_type if column exists; falls back to title detection otherwise.
   scope :order_chapters_with_intro_first, -> {
     begin
-      if ActiveRecord::Base.connection.schema_cache.columns_hash("chapters").key?("special_type")
-        order(Arel.sql("CASE \
+      case_sql = if ActiveRecord::Base.connection.schema_cache.columns_hash("chapters").key?("special_type")
+        "CASE \
           WHEN special_type = 'dedication' OR (special_type IS NULL AND (LOWER(title) LIKE '%dedication%' OR LOWER(title) LIKE '%didication%')) THEN 0 \
           WHEN special_type = 'introduction' OR (special_type IS NULL AND LOWER(title) LIKE '%intro%') THEN 1 \
           WHEN special_type = 'epilogue' OR (special_type IS NULL AND LOWER(title) LIKE '%epilogue%') THEN 3 \
-          ELSE 2 END, created_at ASC"))
+          ELSE 2 END"
       else
-        order(Arel.sql("CASE \
+        "CASE \
           WHEN LOWER(title) LIKE '%dedication%' OR LOWER(title) LIKE '%didication%' THEN 0 \
           WHEN LOWER(title) LIKE '%intro%' THEN 1 \
           WHEN LOWER(title) LIKE '%epilogue%' THEN 3 \
-          ELSE 2 END, created_at ASC"))
+          ELSE 2 END"
       end
-    rescue
-      order(created_at: :asc)
+
+      order(Arel.sql("#{case_sql}, CASE WHEN position IS NULL THEN 1 ELSE 0 END, position ASC, created_at ASC"))
+    rescue StandardError
+      order(Arel.sql("CASE WHEN position IS NULL THEN 1 ELSE 0 END, position ASC, created_at ASC"))
     end
   }
 
@@ -52,11 +54,10 @@ class Chapter < ApplicationRecord
   def chapter_number
     return nil if intro_chapter? || epilogue_chapter? || dedication_chapter?
 
-    # Count non-intro chapters created before this one, plus 1
-    if has_attribute?(:special_type)
-      Chapter.where("created_at < ? AND (special_type IS NULL OR special_type NOT IN ('introduction','epilogue','dedication')) AND LOWER(title) NOT LIKE '%intro%' AND LOWER(title) NOT LIKE '%epilogue%' AND LOWER(title) NOT LIKE '%dedication%' AND LOWER(title) NOT LIKE '%didication%'", created_at).count + 1
-    else
-      Chapter.where("created_at < ? AND LOWER(title) NOT LIKE '%intro%' AND LOWER(title) NOT LIKE '%epilogue%' AND LOWER(title) NOT LIKE '%dedication%' AND LOWER(title) NOT LIKE '%didication%'", created_at).count + 1
-    end
+    ordered_ids = Chapter.order_chapters_with_intro_first
+                       .reject { |chapter| chapter.intro_chapter? || chapter.epilogue_chapter? || chapter.dedication_chapter? }
+                       .map(&:id)
+    chapter_index = ordered_ids.index(id)
+    chapter_index ? chapter_index + 1 : nil
   end
 end

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
  resources :chapters do
   collection do
     get :list
+    patch :reorder
     get :export_pdf
 
     # DOCX Import
