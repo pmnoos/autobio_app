@@ -56,6 +56,22 @@
           View Gallery
         <% end %>
       </div>
+
+      <div class="mt-8 max-w-3xl mx-auto bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
+        <h2 class="text-xl sm:text-2xl font-semibold text-white mb-3">Listen to the Full Biography</h2>
+        <audio controls preload="none" class="w-full mb-4">
+          <source src="<%= full_bio_audio_stream_url %>" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="<%= full_bio_audio_stream_url %>" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium">
+            Open Audio
+          </a>
+          <a href="<%= full_bio_audio_download_url %>" class="inline-flex items-center px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white font-medium">
+            Download MP3
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>

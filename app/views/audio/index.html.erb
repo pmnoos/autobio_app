@@ -1,5 +1,16 @@
 <div class="prose max-w-3xl mx-auto">
   <h1>Chapter Audio</h1>
+
+  <section style="margin-bottom: 24px; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+    <h2>Complete Biography Audio</h2>
+    <p>Listen to the complete autobiography as one file.</p>
+    <audio controls preload="none" style="width: 100%; margin-bottom: 8px;" src="<%= full_bio_audio_stream_url %>"></audio>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <a href="<%= full_bio_audio_stream_url %>" target="_blank" rel="noopener">Open Audio</a>
+      <a href="<%= full_bio_audio_download_url %>">Download MP3</a>
+    </div>
+  </section>
+
   <% if @by_chapter.blank? %>
     <p>No audio files found in tmp/audio.<br>
        Run <code>bundle exec rake audio:generate_all</code> to create them.</p>
