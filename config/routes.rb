@@ -10,21 +10,27 @@ Rails.application.routes.draw do
       get :pdf
     end
   end
-  resources :chapters do
-    collection do
-      get :list
-      get :export_pdf
-    end
+ resources :chapters do
+  collection do
+    get :list
+    get :export_pdf
+
+    # DOCX Import
+    get  :import_docx
+    post :import_docx
+     post :import_docx_apply
+  end
+
+  member do
+    get :export_chapter_pdf
+  end
+  # Nested route for photos accessed from chapters
+  resources :photos, only: [ :show ], controller: "photos" do
     member do
-      get :export_chapter_pdf
-    end
-    # Nested route for photos accessed from chapters
-    resources :photos, only: [ :show ], controller: "photos" do
-      member do
-        get :show, path: "", to: "photos#show_from_chapter"
-      end
+      get :show, path: "", to: "photos#show_from_chapter"
     end
   end
+end
   resource :session
   get "session" => redirect("/session/new")
   resources :passwords, param: :token

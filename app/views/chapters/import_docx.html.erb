@@ -1,0 +1,26 @@
+<h1 class="text-3xl font-bold text-gray-900 mb-4">Import DOCX or ODT</h1>
+
+<p class="text-gray-700 mb-2">
+  Upload a DOCX file (or an OpenOffice ODT file).
+</p>
+<p class="text-gray-600 mb-6">
+  ODT files are converted to DOCX before preview. Chapters are matched by order before anything is updated.
+</p>
+
+<%= form_with url: import_docx_chapters_path,
+              method: :post,
+              multipart: true,
+              local: true,
+              data: { turbo: false },
+              class: "bg-white border border-gray-200 rounded-lg p-6 max-w-2xl" do |form| %>
+
+  <div class="mb-4">
+    <%= form.label :docx_file, "DOCX or ODT file", class: "block text-sm font-medium text-gray-700 mb-2" %>
+    <%= form.file_field :docx_file,
+                        accept: ".docx,.odt",
+                        class: "block w-full border border-gray-300 rounded-md px-3 py-2" %>
+  </div>
+
+  <%= form.submit "Preview Import",
+                  class: "inline-flex items-center px-5 py-3 rounded-md text-white bg-blue-600 hover:bg-blue-700 font-medium" %>
+<% end %>
