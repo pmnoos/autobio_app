@@ -14,6 +14,7 @@ class ChaptersController < ApplicationController
 
   def list
     @chapters = Chapter.all.order_chapters_with_intro_first
+    render :list_public
   end
 
   # PATCH /chapters/reorder
