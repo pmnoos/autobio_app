@@ -15,8 +15,6 @@ module Authentication
   private
     def authenticated?
       resume_session
-    rescue StandardError
-      false
     end
 
     def require_authentication
