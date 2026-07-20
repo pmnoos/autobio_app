@@ -151,11 +151,11 @@
               <!-- Action Buttons -->
               <div class="flex flex-wrap gap-3">
                 <%= link_to "Read Chapter", chapter, 
-                    class: "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" %>
+                    class: "bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-medium transition-colors" %>
 
                 <% if chapter.audio_file.attached? %>
                   <%= link_to "Listen", chapter_path(chapter, anchor: "chapter-audio"),
-                      class: "inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" do %>
+                      class: "inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg font-medium transition-colors" do %>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5 6 9H3v6h3l5 4V5Zm4.5 4.5a4.5 4.5 0 0 1 0 5m2.5-7.5a8 8 0 0 1 0 10" />
                     </svg>
@@ -182,16 +182,9 @@
         </div>
         <% rescue StandardError => e %>
           <% Rails.logger.error("chapters/list render error for chapter_id=#{chapter.id} title=#{chapter.title.inspect}: #{e.class}: #{e.message}") %>
-          <div class="bg-white border border-gray-200 rounded-xl p-5">
-            <div class="flex items-center justify-between gap-4">
-              <div class="min-w-0">
-                <h3 class="text-lg font-semibold text-gray-900 truncate"><%= chapter.title.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") %></h3>
-                <% if chapter.subtitle.present? %>
-                  <p class="text-sm text-gray-600 truncate"><%= chapter.subtitle.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: "") %></p>
-                <% end %>
-              </div>
-              <%= link_to "Read Chapter", chapter, class: "shrink-0 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" %>
-            </div>
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+            <h3 class="text-amber-900 font-semibold mb-2">A chapter could not be displayed</h3>
+            <p class="text-amber-800 text-sm">Chapter ID: <%= chapter.id %>. Please edit this chapter to fix invalid media or content data.</p>
           </div>
         <% end %>
       <% end %>
