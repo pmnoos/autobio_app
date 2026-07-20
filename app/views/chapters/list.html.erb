@@ -85,6 +85,10 @@
                       <span class="text-gray-500 text-lg font-medium">Introduction</span>
                     <% elsif chapter.epilogue_chapter? %>
                       <span class="text-gray-500 text-lg font-medium">Epilogue</span>
+                    <% elsif chapter.afterword_chapter? %>
+                      <span class="text-gray-500 text-lg font-medium">Afterword</span>
+                    <% elsif chapter.about_author_chapter? %>
+                      <span class="text-gray-500 text-lg font-medium">About the Author</span>
                     <% else %>
                       <span class="text-gray-500 text-lg font-medium">Chapter <%= chapter.chapter_number %></span>
                     <% end %>
@@ -109,6 +113,14 @@
                     <% elsif chapter.epilogue_chapter? %>
                       <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
                         Epilogue
+                      </span>
+                    <% elsif chapter.afterword_chapter? %>
+                      <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
+                        Afterword
+                      </span>
+                    <% elsif chapter.about_author_chapter? %>
+                      <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
+                        About the Author
                       </span>
                     <% else %>
                       <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">

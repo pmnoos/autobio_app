@@ -23,6 +23,14 @@
           <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
             Epilogue
           </span>
+        <% elsif chapter.afterword_chapter? %>
+          <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            Afterword
+          </span>
+        <% elsif chapter.about_author_chapter? %>
+          <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
+            About the Author
+          </span>
         <% else %>
           <span class="bg-linear-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg">
             Chapter <%= chapter.chapter_number %>

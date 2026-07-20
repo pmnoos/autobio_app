@@ -50,7 +50,7 @@
     <div class="space-y-2">
       <%= form.label :special_type, "Special Page Type (optional)", class: "block text-sm font-medium text-gray-700" %>
       <%= form.select :special_type,
-            options_for_select([["Normal (numbered)", nil], ["Dedication", "dedication"], ["Introduction", "introduction"], ["Epilogue", "epilogue"]], chapter.try(:special_type)),
+        options_for_select([["Normal (numbered)", nil], ["Dedication", "dedication"], ["Introduction", "introduction"], ["Epilogue", "epilogue"], ["Afterword", "afterword"], ["About the Author", "about_author"]], chapter.try(:special_type)),
             {},
             class: "block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
       <p class="text-xs text-gray-500">Choose a special page type to exclude from numbering and position correctly in the book order.</p>

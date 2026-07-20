@@ -7,7 +7,7 @@ class Chapter < ApplicationRecord
   validates :title, presence: true
   validates :content, presence: true
 
-  # Scope to order: Dedication → Introduction → numbered → Epilogue
+  # Scope to order: Dedication → Introduction → numbered → Epilogue → Afterword → About the Author
   # Uses special_type if column exists; falls back to title detection otherwise.
   scope :order_chapters_with_intro_first, -> {
     begin
@@ -16,12 +16,16 @@ class Chapter < ApplicationRecord
           WHEN special_type = 'dedication' OR (special_type IS NULL AND (LOWER(title) LIKE '%dedication%' OR LOWER(title) LIKE '%didication%')) THEN 0 \
           WHEN special_type = 'introduction' OR (special_type IS NULL AND LOWER(title) LIKE '%intro%') THEN 1 \
           WHEN special_type = 'epilogue' OR (special_type IS NULL AND LOWER(title) LIKE '%epilogue%') THEN 3 \
+          WHEN special_type = 'afterword' OR (special_type IS NULL AND LOWER(title) LIKE '%afterword%') THEN 4 \
+          WHEN special_type = 'about_author' OR (special_type IS NULL AND (LOWER(title) LIKE '%about the author%' OR LOWER(title) LIKE '%about author%')) THEN 5 \
           ELSE 2 END"
       else
         "CASE \
           WHEN LOWER(title) LIKE '%dedication%' OR LOWER(title) LIKE '%didication%' THEN 0 \
           WHEN LOWER(title) LIKE '%intro%' THEN 1 \
           WHEN LOWER(title) LIKE '%epilogue%' THEN 3 \
+          WHEN LOWER(title) LIKE '%afterword%' THEN 4 \
+          WHEN LOWER(title) LIKE '%about the author%' OR LOWER(title) LIKE '%about author%' THEN 5 \
           ELSE 2 END"
       end
 
@@ -50,12 +54,20 @@ class Chapter < ApplicationRecord
     (special_type_value == "dedication") || title.downcase.include?("dedication") || title.downcase.include?("didication")
   end
 
+  def afterword_chapter?
+    (special_type_value == "afterword") || title.downcase.include?("afterword")
+  end
+
+  def about_author_chapter?
+    (special_type_value == "about_author") || title.downcase.include?("about the author") || title.downcase.include?("about author")
+  end
+
   # Get the chapter number (intro doesn't get a number)
   def chapter_number
-    return nil if intro_chapter? || epilogue_chapter? || dedication_chapter?
+    return nil if intro_chapter? || epilogue_chapter? || dedication_chapter? || afterword_chapter? || about_author_chapter?
 
     ordered_ids = Chapter.order_chapters_with_intro_first
-                       .reject { |chapter| chapter.intro_chapter? || chapter.epilogue_chapter? || chapter.dedication_chapter? }
+               .reject { |chapter| chapter.intro_chapter? || chapter.epilogue_chapter? || chapter.dedication_chapter? || chapter.afterword_chapter? || chapter.about_author_chapter? }
                        .map(&:id)
     chapter_index = ordered_ids.index(id)
     chapter_index ? chapter_index + 1 : nil

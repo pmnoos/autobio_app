@@ -8,6 +8,10 @@
       Introduction: <%= @chapter.title %>
     <% elsif @chapter.epilogue_chapter? %>
       Epilogue: <%= @chapter.title %>
+    <% elsif @chapter.afterword_chapter? %>
+      Afterword: <%= @chapter.title %>
+    <% elsif @chapter.about_author_chapter? %>
+      About the Author: <%= @chapter.title %>
     <% else %>
       Chapter <%= @chapter.chapter_number %>: <%= @chapter.title %>
     <% end %>
@@ -24,6 +28,10 @@
       <div class="chapter-number">Introduction</div>
     <% elsif @chapter.epilogue_chapter? %>
       <div class="chapter-number">Epilogue</div>
+    <% elsif @chapter.afterword_chapter? %>
+      <div class="chapter-number">Afterword</div>
+    <% elsif @chapter.about_author_chapter? %>
+      <div class="chapter-number">About the Author</div>
     <% else %>
       <div class="chapter-number">Chapter <%= @chapter.chapter_number %></div>
     <% end %>

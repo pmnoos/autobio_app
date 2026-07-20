@@ -12,8 +12,16 @@
   <% @chapters.each_with_index do |chapter, index| %>
     <div class="toc-entry">
       <span class="toc-chapter">
-        <% if chapter.intro_chapter? %>
+        <% if chapter.dedication_chapter? %>
+          Dedication: <%= chapter.title %>
+        <% elsif chapter.intro_chapter? %>
           Introduction: <%= chapter.title %>
+        <% elsif chapter.epilogue_chapter? %>
+          Epilogue: <%= chapter.title %>
+        <% elsif chapter.afterword_chapter? %>
+          Afterword: <%= chapter.title %>
+        <% elsif chapter.about_author_chapter? %>
+          About the Author: <%= chapter.title %>
         <% else %>
           Chapter <%= chapter.chapter_number %>: <%= chapter.title %>
         <% end %>
@@ -27,8 +35,16 @@
 <% @chapters.each do |chapter| %>
   <div class="chapter">
     <div class="chapter-header">
-      <% if chapter.intro_chapter? %>
+      <% if chapter.dedication_chapter? %>
+        <div class="chapter-number">Dedication</div>
+      <% elsif chapter.intro_chapter? %>
         <div class="chapter-number">Introduction</div>
+      <% elsif chapter.epilogue_chapter? %>
+        <div class="chapter-number">Epilogue</div>
+      <% elsif chapter.afterword_chapter? %>
+        <div class="chapter-number">Afterword</div>
+      <% elsif chapter.about_author_chapter? %>
+        <div class="chapter-number">About the Author</div>
       <% else %>
         <div class="chapter-number">Chapter <%= chapter.chapter_number %></div>
       <% end %>
