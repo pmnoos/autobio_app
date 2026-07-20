@@ -61,7 +61,6 @@
   <div id="chapters-stack" class="space-y-8 chapters-stack">
     <% if @chapters.any? %>
       <% @chapters.each do |chapter| %>
-        <% begin %>
         <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow chapter-card" data-chapter-id="<%= chapter.id %>">
           <div class="flex flex-col lg:flex-row">
             <!-- Chapter Image -->
@@ -145,7 +144,7 @@
               
               <!-- Content Preview -->
               <div class="text-gray-700 mb-6 leading-relaxed">
-                <%= truncate(strip_tags(chapter.content.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")), length: 300) %>
+                <%= truncate(strip_tags(chapter.content.to_s), length: 300) %>
               </div>
               
               <!-- Action Buttons -->
@@ -180,13 +179,6 @@
             </div>
           </div>
         </div>
-        <% rescue StandardError => e %>
-          <% Rails.logger.error("chapters/list render error for chapter_id=#{chapter.id} title=#{chapter.title.inspect}: #{e.class}: #{e.message}") %>
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
-            <h3 class="text-amber-900 font-semibold mb-2">A chapter could not be displayed</h3>
-            <p class="text-amber-800 text-sm">Chapter ID: <%= chapter.id %>. Please edit this chapter to fix invalid media or content data.</p>
-          </div>
-        <% end %>
       <% end %>
     <% else %>
       <div class="text-center py-16">
