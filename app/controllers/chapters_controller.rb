@@ -14,6 +14,13 @@ class ChaptersController < ApplicationController
 
   def list
     @chapters = Chapter.all.order_chapters_with_intro_first
+    render :list
+  rescue StandardError => e
+    Rails.logger.error("chapters/list failed: #{e.class}: #{e.message}")
+    Rails.logger.error(e.backtrace.first(20).join("\n")) if e.backtrace
+
+    @chapters = Chapter.order(created_at: :asc)
+    render :list_fallback, status: :ok
   end
 
   # PATCH /chapters/reorder
