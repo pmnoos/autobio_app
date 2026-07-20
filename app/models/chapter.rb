@@ -39,31 +39,27 @@ class Chapter < ApplicationRecord
     has_attribute?(:special_type) ? (self[:special_type].to_s) : ""
   end
 
-  def normalized_title
-    title.to_s.downcase
-  end
-
   # Helper method to check if this is the intro chapter
   def intro_chapter?
-    (special_type_value == "introduction") || normalized_title.include?("intro")
+    (special_type_value == "introduction") || title.downcase.include?("intro")
   end
 
   # Helper method to check if this is the epilogue chapter
   def epilogue_chapter?
-    (special_type_value == "epilogue") || normalized_title.include?("epilogue")
+    (special_type_value == "epilogue") || title.downcase.include?("epilogue")
   end
 
   # Helper method to check if this is the dedication page
   def dedication_chapter?
-    (special_type_value == "dedication") || normalized_title.include?("dedication") || normalized_title.include?("didication")
+    (special_type_value == "dedication") || title.downcase.include?("dedication") || title.downcase.include?("didication")
   end
 
   def afterword_chapter?
-    (special_type_value == "afterword") || normalized_title.include?("afterword")
+    (special_type_value == "afterword") || title.downcase.include?("afterword")
   end
 
   def about_author_chapter?
-    (special_type_value == "about_author") || normalized_title.include?("about the author") || normalized_title.include?("about author")
+    (special_type_value == "about_author") || title.downcase.include?("about the author") || title.downcase.include?("about author")
   end
 
   # Get the chapter number (intro doesn't get a number)
