@@ -8,7 +8,21 @@
 
   <div class="space-y-4">
     <% @chapters.each do |chapter| %>
-      <div class="bg-white rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-shadow">
+      <% accent_gradient = if chapter.dedication_chapter?
+        "from-rose-500 via-pink-500 to-orange-400"
+      elsif chapter.intro_chapter?
+        "from-sky-500 via-cyan-500 to-teal-400"
+      elsif chapter.epilogue_chapter?
+        "from-violet-600 via-indigo-500 to-blue-400"
+      elsif chapter.afterword_chapter?
+        "from-emerald-500 via-green-500 to-lime-400"
+      elsif chapter.about_author_chapter?
+        "from-amber-500 via-orange-500 to-red-400"
+      else
+        "from-slate-700 via-slate-500 to-slate-300"
+      end %>
+
+      <div class="group bg-linear-to-br from-white via-slate-50 to-blue-50 rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-all">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-2 mb-2">
@@ -27,7 +41,7 @@
               <% end %>
             </div>
 
-            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight truncate">
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight truncate group-hover:text-blue-700 transition-colors">
               <%= link_to chapter.title.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: ""), chapter, class: "hover:text-blue-600 transition-colors" %>
             </h2>
 
@@ -37,6 +51,12 @@
           </div>
 
           <div class="flex flex-wrap gap-3 shrink-0">
+            <div class="hidden sm:flex items-center justify-center w-14 h-14 rounded-full bg-linear-to-br <%= accent_gradient %> text-white shadow-lg">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+
             <%= link_to "Read Chapter", chapter_path(chapter), class: "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" %>
             <% if chapter.audio_file.attached? %>
               <%= link_to chapter_path(chapter, anchor: "chapter-audio"), class: "inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" do %>

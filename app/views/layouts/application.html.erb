@@ -30,7 +30,7 @@
 </script>
   </head>
 
-  <body class="bg-gray-50">
+  <body class="bg-brand-bg">
     <p class="voice-note" style="font-size: 0.9em; color: #666; margin-top: 0.5em;">
   Note: Available voices depend on your operating system and browser.
 </p>
@@ -64,7 +64,7 @@
           <div class="flex items-center">
             <%= link_to root_path, class: "flex items-center space-x-4" do %>
               <!-- Profile Image -->
-              <div class="w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-purple-400 to-blue-500 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-brand-accent to-brand-button flex items-center justify-center">
                 <img src="/profile.jpg" 
                      alt="Profile Photo" 
                      class="w-full h-full object-cover"
@@ -74,15 +74,15 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
               </div>
-              <span class="text-xl font-bold text-gray-900">My Autobiography</span>
+              <span class="text-xl font-bold text-brand-text">My Autobiography</span>
             <% end %>
           </div>
 
           <!-- Navigation Links -->
           <div class="hidden md:flex items-center space-x-8">
-            <%= link_to "Home", root_path, class: "text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors" %>
-            <%= link_to "Chapters", list_chapters_path, class: "text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors" %>
-            <%= link_to "Gallery", photos_path, class: "text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors" %>
+            <%= link_to "Home", root_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
+            <%= link_to "Chapters", list_chapters_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
+            <%= link_to "Gallery", photos_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             
             <!-- Authentication Links -->
             <% if authenticated? %>
@@ -92,13 +92,13 @@
                     class: "bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
               </div>
             <% else %>
-              <%= link_to "Sign In", new_session_path, class: "bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+              <%= link_to "Sign In", new_session_path, class: "bg-brand-button hover:bg-brand-hover text-white px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
             <% end %>
           </div>
 
           <!-- Mobile menu button -->
           <div class="md:hidden flex items-center">
-            <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+            <button id="mobile-menu-button" class="text-brand-text hover:text-brand-accent focus:outline-none">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
@@ -110,9 +110,9 @@
       <!-- Mobile menu -->
       <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
         <div class="px-2 pt-2 pb-3 space-y-1">
-          <%= link_to "Home", root_path, class: "block px-3 py-2 text-gray-700 hover:text-blue-600 text-base font-medium" %>
-          <%= link_to "Chapters", list_chapters_path, class: "block px-3 py-2 text-gray-700 hover:text-blue-600 text-base font-medium" %>
-          <%= link_to "Gallery", photos_path, class: "block px-3 py-2 text-gray-700 hover:text-blue-600 text-base font-medium" %>
+          <%= link_to "Home", root_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
+          <%= link_to "Chapters", list_chapters_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
+          <%= link_to "Gallery", photos_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           
           <% if authenticated? %>
             <div class="border-t border-gray-200 pt-2">
@@ -121,7 +121,7 @@
                   class: "w-full text-left px-3 py-2 text-red-600 hover:text-red-500 text-base font-medium" %>
             </div>
           <% else %>
-            <%= link_to "Sign In", new_session_path, class: "block px-3 py-2 text-blue-600 hover:text-blue-500 text-base font-medium" %>
+            <%= link_to "Sign In", new_session_path, class: "block px-3 py-2 text-brand-accent hover:text-brand-hover text-base font-medium" %>
           <% end %>
         </div>
       </div>
@@ -137,7 +137,7 @@
         <!-- Profile and About Section - Centered -->
         <div class="text-center mb-8">
           <div class="flex justify-center items-center space-x-4 mb-4">
-            <div class="w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-purple-400 to-blue-500 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-linear-to-br from-brand-accent to-brand-button flex items-center justify-center">
               <img src="/profile.jpg" 
                    alt="Profile Photo" 
                    class="w-full h-full object-cover"
@@ -146,7 +146,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
               </svg>
             </div>
-            <span class="text-xl font-semibold text-gray-900">My Life Story</span>
+            <span class="text-xl font-semibold text-brand-text">My Life Story</span>
           </div>
           <p class="text-gray-600 max-w-2xl mx-auto">
             A personal journey through life's chapters, memories, and moments that shaped who I am today. 
@@ -156,32 +156,32 @@
 
         <!-- Links Section - All on one line -->
         <div class="text-center mb-8">
-          <div class="flex flex-wrap justify-center items-center gap-6 text-gray-700">
-            <%= link_to "Home", root_path, class: "hover:text-blue-600 transition-colors font-medium" %>
+          <div class="flex flex-wrap justify-center items-center gap-6 text-brand-text">
+            <%= link_to "Home", root_path, class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "All Chapters", list_chapters_path, class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "All Chapters", list_chapters_path, class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "Photo Gallery", photos_path, class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "Photo Gallery", photos_path, class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "About", "/about", class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "About", "/about", class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "Privacy Notice", "/privacy", class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "Privacy Notice", "/privacy", class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "Terms of Use", "/terms", class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "Terms of Use", "/terms", class: "hover:text-brand-accent transition-colors font-medium" %>
             <span class="text-gray-300">•</span>
-            <%= link_to "Contact", "/contact", class: "hover:text-blue-600 transition-colors font-medium" %>
+            <%= link_to "Contact", "/contact", class: "hover:text-brand-accent transition-colors font-medium" %>
             <% if authenticated? %>
               <span class="text-gray-300">•</span>
-              <%= link_to "New Chapter", new_chapter_path, class: "hover:text-blue-600 transition-colors font-medium" %>
+              <%= link_to "New Chapter", new_chapter_path, class: "hover:text-brand-accent transition-colors font-medium" %>
               <span class="text-gray-300">•</span>
-              <%= link_to "Add Photo", new_photo_path, class: "hover:text-blue-600 transition-colors font-medium" %>
+              <%= link_to "Add Photo", new_photo_path, class: "hover:text-brand-accent transition-colors font-medium" %>
             <% end %>
           </div>
         </div>
 
         <!-- Bottom Bar -->
         <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-          <div class="text-gray-700 text-sm">
+          <div class="text-brand-text text-sm">
             © <%= Date.current.year %> My Autobiography. All rights reserved.
           </div>
           <div class="text-gray-500 text-sm mt-2 md:mt-0">

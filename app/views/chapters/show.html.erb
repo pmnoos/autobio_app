@@ -6,13 +6,13 @@
 
   <% if @chapter.audio_file.attached? %>
     <div id="chapter-audio" class="mt-6 mx-auto max-w-prose">
-      <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
-        <div class="text-sm font-semibold text-gray-700 mb-3">Chapter Audio</div>
+      <div class="border border-gray-200 rounded-lg p-4 bg-brand-bg">
+        <div class="text-sm font-semibold text-brand-text mb-3">Chapter Audio</div>
         <audio controls preload="none" class="w-full mb-3">
           <source src="<%= url_for(@chapter.audio_file) %>" type="audio/mpeg">
           Your browser does not support the audio element.
         </audio>
-        <a href="<%= rails_blob_path(@chapter.audio_file, disposition: "attachment") %>" class="inline-flex items-center px-4 py-2 rounded-md bg-gray-700 text-white">Download Chapter Audio</a>
+        <a href="<%= rails_blob_path(@chapter.audio_file, disposition: "attachment") %>" class="inline-flex items-center px-4 py-2 rounded-md bg-brand-button hover:bg-brand-hover text-white">Download Chapter Audio</a>
       </div>
     </div>
   <% end %>
@@ -32,54 +32,54 @@
   </div>
 
   <% if @chapter.title&.include?("32") || @chapter.title&.downcase&.include?("christmas") %>
-    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
-      <p class="text-sm text-blue-800">
+    <div class="mt-6 p-4 bg-brand-bg border border-brand-accent rounded-lg mx-auto max-w-prose">
+      <p class="text-sm text-brand-text">
         <strong>¹ Alex's messages</strong> 
-        <a href="/info/chapter32" target="_blank" class="text-blue-600 hover:text-blue-800 underline ml-2">📖 Read SMS Messages</a>
+        <a href="/info/chapter32" target="_blank" class="text-brand-accent hover:text-brand-hover underline ml-2">📖 Read SMS Messages</a>
       </p>
     </div>
   <% end %>
 
   <% if @chapter.title&.downcase&.include?("strike") || @chapter.title&.match?(/\b13\b/) %>
-    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
-      <p class="text-sm text-blue-800">
-        <a href="/info/chapter13" target="_blank" class="text-blue-600 hover:text-blue-800 underline">📖 Read Additional Information</a>
+    <div class="mt-6 p-4 bg-brand-bg border border-brand-accent rounded-lg mx-auto max-w-prose">
+      <p class="text-sm text-brand-text">
+        <a href="/info/chapter13" target="_blank" class="text-brand-accent hover:text-brand-hover underline">📖 Read Additional Information</a>
       </p>
     </div>
   <% end %>
 
   <% if @chapter.title&.downcase&.include?("bali hai") %>
-    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
-      <p class="text-sm text-blue-800">
-        <a href="/info/chapter26" target="_blank" class="text-blue-600 hover:text-blue-800 underline">📖 Read Additional Information</a>
+    <div class="mt-6 p-4 bg-brand-bg border border-brand-accent rounded-lg mx-auto max-w-prose">
+      <p class="text-sm text-brand-text">
+        <a href="/info/chapter26" target="_blank" class="text-brand-accent hover:text-brand-hover underline">📖 Read Additional Information</a>
       </p>
     </div>
   <% end %>
 
   <% if @chapter.title&.downcase&.include?("childhood") %>
-    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
-      <p class="text-sm text-blue-800">
-        <a href="/info/chapter3" target="_blank" class="text-blue-600 hover:text-blue-800 underline">📖 Read Additional Information</a>
+    <div class="mt-6 p-4 bg-brand-bg border border-brand-accent rounded-lg mx-auto max-w-prose">
+      <p class="text-sm text-brand-text">
+        <a href="/info/chapter3" target="_blank" class="text-brand-accent hover:text-brand-hover underline">📖 Read Additional Information</a>
       </p>
     </div>
   <% end %>
 
   <% if @chapter.title&.downcase&.include?("turning") %>
-    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg mx-auto max-w-prose">
-      <p class="text-sm text-blue-800">
-        <a href="/info/chapter18" target="_blank" class="text-blue-600 hover:text-blue-800 underline">📖 Read Additional Information</a>
+    <div class="mt-6 p-4 bg-brand-bg border border-brand-accent rounded-lg mx-auto max-w-prose">
+      <p class="text-sm text-brand-text">
+        <a href="/info/chapter18" target="_blank" class="text-brand-accent hover:text-brand-hover underline">📖 Read Additional Information</a>
       </p>
     </div>
   <% end %>
 
   <div class="mt-8 flex justify-between">
     <% if @previous_chapter %>
-      <%= link_to "← Previous", chapter_path(@previous_chapter), class: "text-blue-600 hover:text-blue-500" %>
+      <%= link_to "← Previous", chapter_path(@previous_chapter), class: "text-brand-accent hover:text-brand-hover" %>
     <% else %>
       <span></span>
     <% end %>
     <% if @next_chapter %>
-      <%= link_to "Next →", chapter_path(@next_chapter), class: "text-blue-600 hover:text-blue-500" %>
+      <%= link_to "Next →", chapter_path(@next_chapter), class: "text-brand-accent hover:text-brand-hover" %>
     <% end %>
   </div>
 </section>
