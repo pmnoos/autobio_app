@@ -16,6 +16,25 @@
       </div>
     </div>
   <% end %>
+  <% if authenticated? %>
+  <div class="mt-6 flex flex-wrap justify-center gap-3">
+
+    <%= link_to "← Back to Chapters",
+        chapters_path,
+        class: "px-4 py-2 rounded-md bg-gray-600 text-white hover:bg-gray-700" %>
+
+    <%= link_to "✏️ Edit Chapter",
+        edit_chapter_path(@chapter),
+        class: "px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700" %>
+
+    <%= button_to "🗑 Delete Chapter",
+        @chapter,
+        method: :delete,
+        data: { turbo_confirm: "Delete this chapter?" },
+        class: "px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700" %>
+
+  </div>
+<% end %>
 
   <% if @chapter.respond_to?(:image_header) && @chapter.image_header.attached? %>
     <div class="chapter-image">
