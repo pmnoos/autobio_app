@@ -13,16 +13,6 @@
  *= require_tree .
  *= require_self
  */
-/* Global body background */
-body {
-  background-color: #f8fafc; /* Light gray-blue background */
-  /* Alternative options:
-     background-color: #ffffff; - Pure white
-     background-color: #f1f5f9; - Light slate
-     background-color: #fef7ff; - Light purple tint
-     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); - Gradient
-  */
-}
 
 /* Prose styles for rich text content */
 .prose {

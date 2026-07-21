@@ -31,6 +31,15 @@ Create and share a beautiful digital autobiography: write chapters, add photos, 
 	# then visit http://localhost:3000
 	```
 
+### Windows Shortcut
+If `bin/dev` is awkward in PowerShell, use:
+
+```bat
+start-dev.bat
+```
+
+This script removes a stale Rails PID lock (if present) and starts Foreman with `Procfile.dev`.
+
 ## First Login & Accounts
 - After seeding, an admin user is created:
   - Email: `admin@autobio.com`
