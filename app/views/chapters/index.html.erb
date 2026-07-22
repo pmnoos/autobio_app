@@ -1,328 +1,218 @@
 <% content_for :title, "My Autobiography - Home" %>
 
-<!-- Hero Section -->
-<section class="relative bg-brand-accent text-white overflow-hidden">
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-    <div class="text-center">
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 text-brand-bg leading-tight">
-        The Story of an Ordinary Man<br>
-        <span class="text-4xl sm:text-6xl lg:text-7xl font-bold text-brand-bg">with an Extraordinary Life</span>
-      </h1>
-      <p class="text-xl sm:text-2xl mb-8 text-brand-bg max-w-4xl mx-auto leading-relaxed">
-        Through the simplicity of my existence, I unearthed the profound truth that to love and to be loved is the greatest adventure of all...<br>
-        <span class="text-lg sm:text-xl text-brand-bg mt-2 block">A personal journey through life, love, and adventure.</span>
-      </p>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-4xl mx-auto">
-        <%= link_to list_chapters_path, 
-            class: "group bg-brand-button hover:bg-brand-hover text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center" do %>
-          <svg class="w-5 h-5 mr-2 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-          </svg>
-          Start Reading
-        <% end %>
-        
-        <% if authenticated? %>
-        <%= link_to export_pdf_chapters_path(format: :pdf), 
-            class: "group border-2 border-white/60 text-white hover:bg-white/20 px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl flex items-center",
-            target: "_blank" do %>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          Download PDF
-        <% end %>
-        <% end %>
-        <% if authenticated? %>
-        <%= link_to export_pdf_chapters_path(format: :docx), 
-            class: "group border-2 border-brand-bg text-brand-bg hover:bg-brand-bg hover:text-brand-text px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg flex items-center",
-            target: "_blank" do %>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          Download DOCX
-        <% end %>
-        <% end %>
-        
-        <%= link_to photos_path, 
-            class: "group border-2 border-brand-bg text-brand-bg hover:bg-brand-bg hover:text-brand-text px-8 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg flex items-center" do %>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-          View Gallery
-        <% end %>
+<div class="bg-brand-bg">
+
+<!-- Hero -->
+<section class="relative overflow-hidden" style="background-image: url('<%= asset_path('positano.jpg') %>'); background-size: cover; background-position: center 30%;">
+  <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(30,42,74,0.75) 0%, rgba(30,42,74,0.45) 35%, rgba(30,42,74,0.15) 60%, rgba(30,42,74,0) 78%); z-index: 1;"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28" style="z-index: 10;">
+    <div class="max-w-xl">
+      <p class="italic text-2xl text-brand-accent mb-2" style="text-shadow: 0 1px 10px rgba(0,0,0,0.35);">The Story of an</p>
+      <div class="flex items-center gap-3 mb-1">
+        <span class="h-px w-10 bg-brand-accent"></span>
+        <span class="text-brand-accent text-lg">❦</span>
+        <span class="h-px w-10 bg-brand-accent"></span>
+      </div>
+      <h1 class="text-5xl lg:text-6xl font-bold text-[#FFFCF5] leading-[1.05] mt-4" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Ordinary Man</h1>
+      <p class="italic text-2xl text-brand-accent my-2 text-center" style="text-shadow: 0 1px 8px rgba(0,0,0,0.2);">with an</p>
+      <h1 class="text-5xl lg:text-6xl font-bold text-[#FFFCF5] leading-[1.05] mb-6" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Extraordinary Life</h1>
+
+      <div class="flex items-center gap-3 my-6">
+        <span class="h-px w-10 bg-brand-accent"></span>
+        <span class="text-brand-accent text-lg">❦</span>
+        <span class="h-px w-10 bg-brand-accent"></span>
       </div>
 
-      <div class="mt-8 max-w-3xl mx-auto bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5">
-        <h2 class="text-xl sm:text-2xl font-semibold text-white mb-3">Listen to the Full Biography</h2>
-        <details>
-          <summary class="cursor-pointer inline-flex items-center px-4 py-2 rounded-lg bg-brand-button hover:bg-brand-hover text-white font-medium">Open Audio</summary>
-          <div class="mt-4">
-            <audio controls preload="none" class="w-full mb-4">
+      <p class="italic text-xl text-[#FFFCF5] leading-relaxed mb-8" style="text-shadow: 0 1px 8px rgba(0,0,0,0.25);">
+        Through the simplicity of my existence, I unearthed the profound truth that
+        to love and to be loved is the greatest adventure of all.
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <%= link_to list_chapters_path, class: "flex items-center gap-3 bg-brand-button hover:bg-brand-hover text-white px-5 py-3 rounded-md transition-colors" do %>
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <span class="text-left leading-tight">
+            <span class="block text-sm font-semibold">Start Reading</span>
+            <span class="block text-xs text-white/70">Begin the journey</span>
+          </span>
+        <% end %>
+
+        <details class="relative">
+          <summary class="list-none cursor-pointer flex items-center gap-3 bg-brand-accent text-brand-text px-5 py-3 rounded-md">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3m18 5a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3"/></svg>
+            <span class="text-left leading-tight">
+              <span class="block text-sm font-semibold">Listen to the Story</span>
+              <span class="block text-xs text-brand-text/70">Hear the full audiobook</span>
+            </span>
+          </summary>
+          <div class="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl p-4 w-80 z-20">
+            <audio controls preload="none" class="w-full mb-3">
               <source src="<%= full_bio_audio_stream_url %>" type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>
-            <div class="flex flex-wrap gap-3 justify-center">
-              <a href="<%= full_bio_audio_download_url %>" class="inline-flex items-center px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white font-medium">
-                Download MP3
-              </a>
-            </div>
+            <a href="<%= full_bio_audio_download_url %>" class="text-sm text-brand-accent hover:text-brand-hover font-medium">Download MP3</a>
           </div>
         </details>
+
+        <%= link_to photos_path, class: "flex items-center gap-3 bg-brand-bg border border-brand-text/20 text-brand-text px-5 py-3 rounded-md" do %>
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span class="text-left leading-tight">
+            <span class="block text-sm font-semibold">View Gallery</span>
+            <span class="block text-xs text-brand-text/70">See the memories</span>
+          </span>
+        <% end %>
+
+        <% if authenticated? %>
+          <%= link_to export_pdf_chapters_path(format: :pdf), class: "flex items-center gap-3 border-2 border-white/60 text-white hover:bg-white/20 px-5 py-3 rounded-md transition-colors", target: "_blank" do %>
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="text-sm font-semibold">Download PDF</span>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features Section -->
-<section class="py-20 bg-brand-bg relative overflow-hidden">
-  <!-- Background decorations -->
-  <div class="absolute top-0 left-0 w-full h-full">
-    <div class="absolute top-20 left-20 w-32 h-32 bg-brand-accent bg-opacity-15 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-20 right-20 w-40 h-40 bg-brand-button bg-opacity-15 rounded-full blur-3xl"></div>
-  </div>
-  
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-20">
-      <h2 class="text-4xl sm:text-5xl font-bold bg-linear-to-r from-brand-accent to-brand-button bg-clip-text text-transparent mb-6">
-        Explore My Story
-      </h2>
-      <p class="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-        Discover the different ways you can experience my autobiography and journey through the chapters of my life
+<!-- Welcome section -->
+<section class="bg-[#F5E9D8] py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[320px_1fr] gap-10 items-start">
+    <div class="bg-white p-3 rounded-sm shadow-lg rotate-[-2deg] w-full max-w-xs mx-auto md:mx-0">
+      <%= image_tag "peter.jpg", alt: "Peter Magner", class: "aspect-[4/5] w-full object-cover rounded-sm" %>
+    </div>
+
+    <div>
+      <p class="italic text-3xl text-brand-accent mb-1">Welcome…</p>
+      <div class="flex items-center gap-2 mb-6">
+        <span class="h-px w-8 bg-brand-accent"></span>
+        <span class="text-brand-accent">♥</span>
+      </div>
+      <p class="font-semibold text-brand-text mb-4">Thank you for visiting my autobiography.</p>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        When I first began writing these memories, I simply wanted to leave a record for my family.
+        As the story unfolded, I realised my life had been filled with far more adventure than I had
+        ever appreciated—from growing up in wartime England and serving in the Merchant Navy, to
+        building a new life in New Zealand and Australia.
       </p>
-    </div>
-    
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-      <!-- Chapters Feature -->
-      <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-20 h-20 bg-brand-bg rounded-full -translate-y-10 translate-x-10"></div>
-        <div class="relative">
-          <div class="bg-linear-to-br from-brand-accent to-brand-button rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-brand-text mb-4 text-center">Life Chapters</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed text-center">
-            Read through the different chapters of my life story, each with rich text content 
-            and accompanying images that bring the memories to life.
-          </p>
-          <%= link_to list_chapters_path, 
-              class: "block w-full text-center bg-brand-button text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-hover transition-all transform hover:scale-105 shadow-lg" do %>
-            Read Chapters
-          <% end %>
-        </div>
-      </div>
-
-      <!-- Gallery Feature -->
-      <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-20 h-20 bg-brand-bg rounded-full -translate-y-10 translate-x-10"></div>
-        <div class="relative">
-          <div class="bg-linear-to-br from-brand-accent to-brand-button rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-brand-text mb-4 text-center">Photo Gallery</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed text-center">
-            Browse through a curated collection of photographs that capture important 
-            moments, people, and places throughout my journey.
-          </p>
-          <%= link_to photos_path, 
-              class: "block w-full text-center bg-brand-button text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-hover transition-all transform hover:scale-105 shadow-lg" do %>
-            View Gallery
-          <% end %>
-        </div>
-      </div>
-
-      <!-- PDF Export Feature -->
-      <div class="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100 relative overflow-hidden md:col-span-2 lg:col-span-1">
-        <div class="absolute top-0 right-0 w-20 h-20 bg-brand-bg rounded-full -translate-y-10 translate-x-10"></div>
-        <div class="relative">
-          <div class="bg-linear-to-br from-brand-accent to-brand-button rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-          </div>
-          <h3 class="text-2xl font-bold text-brand-text mb-4 text-center">Download PDF</h3>
-          <p class="text-gray-600 mb-6 leading-relaxed text-center">
-            Get the complete autobiography as a beautifully formatted PDF document 
-            that you can read offline or share with others.
-          </p>
-          <% if authenticated? %>
-            <%= link_to export_pdf_chapters_path(format: :pdf), 
-                class: "block w-full text-center bg-brand-button text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-hover transition-all transform hover:scale-105 shadow-lg",
-                target: "_blank" do %>
-              Download PDF
-            <% end %>
-          <% end %>
-        </div>
-      </div>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        There have been moments of joy and sadness, success and disappointment, above all, a lifetime
+        enriched by family, friendship and love.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-2">
+        I hope these stories bring back memories for those who shared parts of my journey and perhaps
+        offer a little inspiration to those beginning their own.
+      </p>
+      <p class="italic text-xl text-brand-accent text-right mt-4">— Peter Magner</p>
     </div>
   </div>
 </section>
 
-<!-- Recent Chapters Section -->
+<!-- Begin Your Journey -->
 <% if @chapters.any? %>
-<section class="py-20 bg-linear-to-br from-brand-bg via-white to-brand-bg relative overflow-hidden">
-  <!-- Background decorations -->
-  <div class="absolute top-0 left-0 w-full h-full">
-    <div class="absolute top-10 right-10 w-40 h-40 bg-brand-accent bg-opacity-15 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-10 left-10 w-32 h-32 bg-brand-button bg-opacity-15 rounded-full blur-3xl"></div>
-  </div>
-  
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <h2 class="text-4xl sm:text-5xl font-bold bg-linear-to-r from-brand-accent to-brand-button bg-clip-text text-transparent mb-6">
-        Recent Chapters
-      </h2>
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        The latest additions to my story - dive into these recent chapters to discover new adventures and insights
-      </p>
+<section class="bg-brand-bg py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <span class="text-brand-accent">❧</span>
+        <h2 class="text-3xl font-bold text-brand-text">Begin Your Journey</h2>
+        <span class="text-brand-accent">❧</span>
+      </div>
+      <p class="italic text-xl text-brand-accent mb-1">Every great story begins with the first page.</p>
+      <p class="text-gray-600 text-sm">Start at the beginning and follow the journey as it unfolded, one chapter at a time.</p>
     </div>
-    
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-      <% @chapters.limit(3).each do |chapter| %>
-        <div class="group bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-gray-100 relative">
-          <!-- Chapter Image/Header -->
-          <% if chapter.image_header.attached? %>
-            <div class="h-56 overflow-hidden relative">
-              <%= image_tag url_for(chapter.image_header), 
-                  alt: chapter.title,
-                  class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500",
-                  loading: "lazy" %>
-              <div class="absolute inset-0 bg-linear-to-t from-black/50 to-transparent"></div>
-              <div class="absolute top-4 right-4">
-                <span class="bg-white/90 backdrop-blur-sm text-brand-text px-3 py-1 rounded-full text-sm font-semibold">
-                  <% if chapter.dedication_chapter? %>
-                    Dedication
-                  <% elsif chapter.intro_chapter? %>
-                    Introduction
-                  <% elsif chapter.epilogue_chapter? %>
-                    Epilogue
-                  <% elsif chapter.afterword_chapter? %>
-                    Afterword
-                  <% elsif chapter.about_author_chapter? %>
-                    About the Author
-                  <% else %>
-                    Chapter <%= chapter.chapter_number %>
-                  <% end %>
-                </span>
-              </div>
-            </div>
-          <% else %>
-            <div class="h-56 bg-linear-to-br from-brand-accent via-brand-hover to-brand-button flex items-center justify-center relative overflow-hidden">
-              <div class="absolute inset-0 bg-linear-to-br from-black/20 to-transparent"></div>
-              <div class="relative text-center">
-                <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-3">
-                  <% if chapter.dedication_chapter? %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 19.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
-                    </svg>
-                  <% elsif chapter.intro_chapter? %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                  <% elsif chapter.epilogue_chapter? %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3"></path>
-                    </svg>
-                  <% elsif chapter.afterword_chapter? %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                  <% elsif chapter.about_author_chapter? %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.88 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  <% else %>
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                  <% end %>
-                </div>
-                <span class="text-white text-lg font-bold block">
-                  <% if chapter.dedication_chapter? %>
-                    Dedication
-                  <% elsif chapter.intro_chapter? %>
-                    Introduction
-                  <% elsif chapter.epilogue_chapter? %>
-                    Epilogue
-                  <% elsif chapter.afterword_chapter? %>
-                    Afterword
-                  <% elsif chapter.about_author_chapter? %>
-                    About the Author
-                  <% else %>
-                    Chapter <%= chapter.chapter_number %>
-                  <% end %>
-                </span>
-              </div>
-            </div>
-          <% end %>
-          
-          <!-- Chapter Content -->
-          <div class="p-6">
-            <div class="mb-3">
-              <h3 class="text-xl font-bold text-brand-text group-hover:text-brand-accent transition-colors leading-tight">
-                <%= link_to chapter.title, chapter, class: "hover:underline" %>
-              </h3>
-            </div>
-            
-            <% if chapter.subtitle.present? %>
-              <p class="text-gray-600 mb-3 font-medium text-sm"><%= chapter.subtitle %></p>
-            <% end %>
-            
-            <p class="text-gray-700 mb-4 leading-relaxed text-sm">
-              <%= truncate(strip_tags(chapter.content.to_s), length: 100) %>
-            </p>
-            
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2">
-                <%= link_to chapter, 
-                    class: "inline-flex items-center bg-brand-button text-white px-4 py-2 rounded-xl font-medium hover:bg-brand-hover transition-all transform hover:scale-105 text-sm shadow-lg" do %>
-                  Read More
-                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                <% end %>
 
-                <% if chapter.audio_file.attached? %>
-                  <%= link_to chapter_path(chapter, anchor: "chapter-audio"),
-                      class: "inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-medium hover:bg-emerald-500 transition-all transform hover:scale-105 text-sm shadow-lg" do %>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5 6 9H3v6h3l5 4V5Zm4.5 4.5a4.5 4.5 0 0 1 0 5m2.5-7.5a8 8 0 0 1 0 10" />
-                    </svg>
-                    Listen
-                  <% end %>
-                <% end %>
-              </div>
-              
-              <div class="flex space-x-2">
-                <% if authenticated? %>
-                  <%= link_to export_chapter_pdf_chapter_path(chapter, format: :pdf), 
-                      class: "text-gray-400 hover:text-brand-accent transition-colors",
-                      target: "_blank",
-                      title: "Download as PDF" do %>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+      <% @chapters.limit(5).each do |chapter| %>
+        <div class="bg-[#F5E9D8] rounded-lg p-6 text-center border border-[#e5d9c3]">
+          <div class="w-11 h-11 mx-auto mb-3 rounded-full bg-brand-bg border border-brand-accent flex items-center justify-center text-brand-accent text-lg">
+            <% if chapter.dedication_chapter? %>♥
+            <% elsif chapter.intro_chapter? %>🖋
+            <% elsif chapter.epilogue_chapter? %>⛵
+            <% elsif chapter.afterword_chapter? %>✒
+            <% elsif chapter.about_author_chapter? %>👤
+            <% else %>⌂
+            <% end %>
           </div>
+          <h3 class="text-lg font-bold text-brand-text mb-1">
+            <% if chapter.dedication_chapter? %>Dedication
+            <% elsif chapter.intro_chapter? %>Introduction
+            <% elsif chapter.epilogue_chapter? %>Epilogue
+            <% elsif chapter.afterword_chapter? %>Afterword
+            <% elsif chapter.about_author_chapter? %>About the Author
+            <% else %>Chapter <%= chapter.chapter_number %>
+            <% end %>
+          </h3>
+          <% if chapter.subtitle.present? %>
+            <p class="italic text-brand-accent text-sm mb-2"><%= chapter.subtitle %></p>
+          <% end %>
+          <p class="text-sm text-gray-600 mb-4"><%= truncate(strip_tags(chapter.content.to_s), length: 70) %></p>
+          <%= link_to "Read Chapter →", chapter, class: "text-sm font-semibold text-brand-accent hover:text-brand-hover" %>
         </div>
       <% end %>
     </div>
-    
-    <div class="text-center mt-16">
-      <%= link_to list_chapters_path, 
-          class: "group inline-flex items-center bg-brand-button hover:bg-brand-hover text-white px-10 py-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl" do %>
-        View All Chapters
-        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-        </svg>
+
+    <div class="text-center mt-10">
+      <%= link_to list_chapters_path, class: "inline-flex items-center gap-2 bg-brand-button hover:bg-brand-hover text-white px-6 py-3 rounded-md text-sm font-semibold transition-colors" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Continue the Journey →
       <% end %>
     </div>
   </div>
 </section>
 <% end %>
+
+<!-- Choose How You'd Like to Explore -->
+<section class="bg-[#eef2f5] py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <div class="flex items-center justify-center gap-3">
+        <span class="text-brand-accent">❧</span>
+        <h2 class="text-2xl font-bold text-brand-text">Choose How You'd Like to Explore</h2>
+        <span class="text-brand-accent">❧</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg p-6 flex gap-4 items-start shadow-sm">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-brand-text flex items-center justify-center text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18v-6a9 9 0 0118 0v6M3 18a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3m18 5a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-brand-text mb-1">Listen to the Complete Audiobook</h3>
+          <p class="text-sm text-gray-600 mb-2">Sit back and enjoy the story narrated from beginning to end.</p>
+          <a href="<%= full_bio_audio_stream_url %>" class="text-sm font-semibold text-brand-accent hover:text-brand-hover">Listen Now →</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg p-6 flex gap-4 items-start shadow-sm">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-brand-text flex items-center justify-center text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-brand-text mb-1">Browse the Photo Gallery</h3>
+          <p class="text-sm text-gray-600 mb-2">Photographs spanning decades of family, friends and adventures.</p>
+          <%= link_to "View Gallery →", photos_path, class: "text-sm font-semibold text-brand-accent hover:text-brand-hover" %>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg p-6 flex gap-4 items-start shadow-sm">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-brand-text flex items-center justify-center text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-brand-text mb-1">View All Chapters</h3>
+          <p class="text-sm text-gray-600 mb-2">Jump to any chapter whenever you wish.</p>
+          <%= link_to "See All Chapters →", list_chapters_path, class: "text-sm font-semibold text-brand-accent hover:text-brand-hover" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote -->
+<section class="bg-brand-bg py-14 text-center">
+  <p class="text-brand-accent text-3xl mb-2">"</p>
+  <p class="italic text-2xl text-brand-text mb-1">Thank you for spending time with me.</p>
+  <p class="text-gray-600 text-sm mb-1">I hope you enjoy reading these memories as much as I enjoyed remembering and writing them.</p>
+  <p class="italic text-lg text-brand-accent mt-3">— Peter Magner</p>
+</section>
+
+</div>
