@@ -21,41 +21,14 @@
     <%= stylesheet_link_tag :tailwind, "data-turbo-track": "reload" %>
     <%# Load Action Text attachment styles so embedded images render nicely %>
     <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
-  <style>
-  <%= File.read(Rails.root.join('app', 'assets', 'stylesheets', 'narration.css')).html_safe %>
-</style>
+  
     <%= javascript_importmap_tags %>
-   <script>
-  <%= File.read(Rails.root.join('app', 'javascript', 'narration.js')).html_safe %>
-</script>
+  
   </head>
 
   <body class="bg-brand-bg">
-    <p class="voice-note" style="font-size: 0.9em; color: #666; margin-top: 0.5em;">
-  Note: Available voices depend on your operating system and browser.
-</p>
-     <!-- Narration Controls -->
-<div class="narration-controls">
-  <button id="narrateBtn" class="narrate-btn">
-    <span id="btnIcon">🔊</span>
-    <span id="btnText">Read Page</span>
-  </button>
   
-  <div id="controlsExpanded" class="controls-expanded">
-    <div class="control-group">
-      <label for="voiceSelect">Voice:</label>
-      <select id="voiceSelect" class="voice-select"></select>
-    </div>
-    <div class="control-group">
-      <label for="rateControl">Speed: <span id="rateValue">1.0</span>x</label>
-      <input type="range" id="rateControl" min="0.5" max="2" step="0.1" value="1">
-    </div>
-    <div class="control-group">
-      <label for="pitchControl">Pitch: <span id="pitchValue">1.0</span></label>
-      <input type="range" id="pitchControl" min="0.5" max="2" step="0.1" value="1">
-    </div>
-  </div>
-</div>
+ 
     <!-- Navigation Bar -->
     <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

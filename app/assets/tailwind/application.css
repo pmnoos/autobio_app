@@ -7,11 +7,10 @@
 /* =========================
    EBOOK / BOOK VIEW STYLES
    ========================= */
-
 @theme {
-  --color-brand-text: #29284B;
-  --color-brand-bg: #F5F3F7;
-  --color-brand-hover: #483857;
-  --color-brand-accent: #49567D;
-  --color-brand-button: #442164;
+  --color-brand-text: #1E2A4A;
+  --color-brand-bg: #FBF3E7;
+  --color-brand-hover: #16213A;
+  --color-brand-accent: #B8863E;
+  --color-brand-button: #1E2A4A;
 }

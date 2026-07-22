@@ -16,18 +16,18 @@
   <% end %>
 
   <header class="text-center mb-12">
-    <h1 class="font-bold text-5xl text-gray-900 mb-4">Photo Gallery</h1>
+    <h1 class="font-bold text-5xl text-brand-text mb-4">Photo Gallery</h1>
     <p class="text-xl text-gray-600 mb-8">Memories captured through the lens</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
       <% if authenticated? %>
-        <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium text-lg" %>
+        <%= link_to "Add New Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-brand-button hover:bg-brand-hover text-white inline-block font-medium text-lg" %>
       <% else %>
-        <span class="text-sm text-gray-700 bg-blue-50 border border-blue-200 px-3 py-2 rounded">
+        <span class="text-sm text-brand-text bg-brand-bg border border-brand-accent/30 px-3 py-2 rounded">
           Sign in to add photos
-          <%= link_to "Sign in", new_session_path, class: "underline text-blue-700 hover:text-blue-800 ml-1" %>
+          <%= link_to "Sign in", new_session_path, class: "underline text-brand-accent hover:text-brand-hover ml-1" %>
         </span>
       <% end %>
-      <%= link_to "📖 Back to Chapters", root_path, class: "rounded-md px-6 py-3 bg-gray-100 hover:bg-gray-50 text-gray-700 inline-block font-medium text-lg" %>
+      <%= link_to "📖 Back to Chapters", root_path, class: "rounded-md px-6 py-3 border-2 border-brand-accent hover:bg-brand-accent text-brand-accent hover:text-white inline-block font-medium text-lg transition-colors" %>
     </div>
   </header>
 
@@ -61,7 +61,7 @@
           
           <!-- Photo Info -->
           <div class="p-4">
-            <h3 class="font-semibold text-gray-900 mb-1 truncate"><%= photo.title %></h3>
+            <h3 class="font-semibold text-brand-text mb-1 truncate"><%= photo.title %></h3>
             <% if photo.taken_at.present? %>
               <p class="text-sm text-gray-500 mb-2"><%= photo.taken_at.strftime("%B %d, %Y") %></p>
             <% end %>
@@ -71,7 +71,7 @@
             
             <!-- Action Buttons -->
             <div class="flex gap-2 mt-3">
-              <%= link_to "View", photo, class: "px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-medium" %>
+              <%= link_to "View", photo, class: "px-3 py-1 bg-brand-button hover:bg-brand-hover text-white rounded text-xs font-medium" %>
               <%= link_to "Edit", edit_photo_path(photo), class: "px-3 py-1 bg-gray-100 hover:bg-gray-50 text-gray-700 rounded text-xs font-medium" %>
               <%= button_to "Delete", photo, method: :delete, 
                   class: "px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-xs font-medium", 
@@ -87,14 +87,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
         </div>
-        <h3 class="text-2xl font-medium text-gray-900 mb-4">No photos yet</h3>
+        <h3 class="text-2xl font-medium text-brand-text mb-4">No photos yet</h3>
         <p class="text-gray-600 mb-8">Start building your photo gallery by uploading your first image.</p>
         <% if authenticated? %>
-          <%= link_to "Upload Your First Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+          <%= link_to "Upload Your First Photo", new_photo_path, class: "rounded-md px-6 py-3 bg-brand-button hover:bg-brand-hover text-white inline-block font-medium" %>
         <% else %>
-          <span class="text-sm text-gray-700 bg-blue-50 border border-blue-200 px-3 py-2 rounded">
+          <span class="text-sm text-brand-text bg-brand-bg border border-brand-accent/30 px-3 py-2 rounded">
             Sign in to add photos
-            <%= link_to "Sign in", new_session_path, class: "underline text-blue-700 hover:text-blue-800 ml-1" %>
+            <%= link_to "Sign in", new_session_path, class: "underline text-brand-accent hover:text-brand-hover ml-1" %>
           </span>
         <% end %>
       </div>
