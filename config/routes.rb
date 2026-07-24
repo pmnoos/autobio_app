@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   collection do
     get :list
     patch :reorder
-    get :export_pdf
 
     # DOCX Import
     get  :import_docx
@@ -22,9 +21,7 @@ Rails.application.routes.draw do
      post :import_docx_apply
   end
 
-  member do
-    get :export_chapter_pdf
-  end
+
   # Nested route for photos accessed from chapters
   resources :photos, only: [ :show ], controller: "photos" do
     member do
@@ -64,7 +61,7 @@ end
   post "audio/generate" => "audio#generate", as: :audio_generate
 
   # Static pages
-  get "chapters/export/docx_test", to: "chapters#export_docx_test"
+  
 
   get "about" => "pages#about"
   get "privacy" => "pages#privacy"

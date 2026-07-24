@@ -1,9 +1,10 @@
+<h1 style="background: red; color: white; font-size: 50px;">TEST 12345</h1>
 <% content_for :title, "My Autobiography - Home" %>
 
 <div class="bg-brand-bg">
 
 <!-- Hero -->
-<section class="relative overflow-hidden" style="background-image: url('<%= asset_path('positano.jpg') %>'); background-size: cover; background-position: center 30%;">
+<section class="relative overflow-hidden" style="background-image: url('<%= asset_path('hero/positano.jpg') %>'); background-size: cover; background-position: center 30%;">
   <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(30,42,74,0.75) 0%, rgba(30,42,74,0.45) 35%, rgba(30,42,74,0.15) 60%, rgba(30,42,74,0) 78%); z-index: 1;"></div>
 
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28" style="z-index: 10;">
@@ -14,9 +15,9 @@
         <span class="text-brand-accent text-lg">❦</span>
         <span class="h-px w-10 bg-brand-accent"></span>
       </div>
-      <h1 class="text-5xl lg:text-6xl font-bold text-[#FFFCF5] leading-[1.05] mt-4" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Ordinary Man</h1>
+      <h1 class="text-5xl lg:text-6xl font-bold text-brand-bg leading-[1.05] mt-4" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Ordinary Man</h1>
       <p class="italic text-2xl text-brand-accent my-2 text-center" style="text-shadow: 0 1px 8px rgba(0,0,0,0.2);">with an</p>
-      <h1 class="text-5xl lg:text-6xl font-bold text-[#FFFCF5] leading-[1.05] mb-6" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Extraordinary Life</h1>
+      <h1 class="text-5xl lg:text-6xl font-bold text-brand-bg leading-[1.05] mb-6" style="text-shadow: 0 2px 12px rgba(0,0,0,0.25);">Extraordinary Life</h1>
 
       <div class="flex items-center gap-3 my-6">
         <span class="h-px w-10 bg-brand-accent"></span>
@@ -24,7 +25,7 @@
         <span class="h-px w-10 bg-brand-accent"></span>
       </div>
 
-      <p class="italic text-xl text-[#FFFCF5] leading-relaxed mb-8" style="text-shadow: 0 1px 8px rgba(0,0,0,0.25);">
+      <p class="italic text-xl text-brand-bg leading-relaxed mb-8" style="text-shadow: 0 1px 8px rgba(0,0,0,0.25);">
         Through the simplicity of my existence, I unearthed the profound truth that
         to love and to be loved is the greatest adventure of all.
       </p>
@@ -61,13 +62,6 @@
             <span class="block text-sm font-semibold">View Gallery</span>
             <span class="block text-xs text-brand-text/70">See the memories</span>
           </span>
-        <% end %>
-
-        <% if authenticated? %>
-          <%= link_to export_pdf_chapters_path(format: :pdf), class: "flex items-center gap-3 border-2 border-white/60 text-white hover:bg-white/20 px-5 py-3 rounded-md transition-colors", target: "_blank" do %>
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            <span class="text-sm font-semibold">Download PDF</span>
-          <% end %>
         <% end %>
       </div>
     </div>
@@ -216,3 +210,4 @@
 </section>
 
 </div>
+
