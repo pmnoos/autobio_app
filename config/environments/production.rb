@@ -47,7 +47,9 @@ Rails.application.configure do
   #    "autobio-app.onrender.com",
   #    /.*\.autobio-app\.onrender\.com/
   #  ]
-
+  if ENV["RESEND_API_KEY"].present?
+    config.action_mailer.delivery_method = :resend
+  end
   # Allow health check endpoint without host authorization
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end

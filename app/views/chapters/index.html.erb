@@ -70,7 +70,7 @@
 <!-- Welcome section -->
 <section class="bg-[#F5E9D8] py-16">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-[320px_1fr] gap-10 items-start">
-    <div class="bg-white p-3 rounded-sm shadow-lg rotate-[-2deg] w-full max-w-xs mx-auto md:mx-0">
+    <div class="bg-white p-3 rounded-sm shadow-lg -rotate-2 w-full max-w-xs mx-auto md:mx-0">
       <%= image_tag "peter.jpg", alt: "Peter Magner", class: "aspect-[4/5] w-full object-cover rounded-sm" %>
     </div>
 
@@ -206,6 +206,26 @@
   <p class="italic text-2xl text-brand-text mb-1">Thank you for spending time with me.</p>
   <p class="text-gray-600 text-sm mb-1">I hope you enjoy reading these memories as much as I enjoyed remembering and writing them.</p>
   <p class="italic text-lg text-brand-accent mt-3">— Peter Magner</p>
+</section>
+
+<!-- Contact -->
+<section class="bg-[#F5E9D8] py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <span class="text-brand-accent">❧</span>
+        <h2 class="text-3xl font-bold text-brand-text">Get in Touch</h2>
+        <span class="text-brand-accent">❧</span>
+      </div>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+        If you have memories, photos, questions, or just want to say hello, send a message here and I'll get back to you.
+      </p>
+    </div>
+
+    <div class="max-w-3xl mx-auto">
+      <%= render "shared/contact_form" %>
+    </div>
+  </div>
 </section>
 
 </div>
