@@ -14,6 +14,14 @@ class PagesController < ApplicationController
   end
 
   def send_contact
+    # Honeypot check: real visitors never see or fill this field.
+    # If it has any value, this is almost certainly a spam bot — silently
+    # pretend success without actually sending an email.
+    if params[:website].present?
+      redirect_to contact_path, notice: "Thanks for your message — I'll get back to you soon."
+      return
+    end
+
     Resend.api_key = ENV["RESEND_API_KEY"]
 
     Resend::Emails.send({
