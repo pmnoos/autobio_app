@@ -51,7 +51,7 @@ gem "grover"
 gem "caracal"
 gem "docx"
 gem "nokogiri"
-
+gem "resend"
 # Cloud upload for sharing audio
 gem "cloudinary", "~> 2.0"
 gem "json", "= 2.19.3"
@@ -62,7 +62,7 @@ group :development, :test do
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
+  gem "dotenv-rails", groups: [:development, :test]
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase]
   gem "rubocop-rails-omakase", require: false
 end
