@@ -8,7 +8,7 @@
   <% end %>
 
   <%= form_with url: "https://formspree.io/f/mzepkqdv", method: :post,
-      class: "space-y-6", data: { turbo: false } do |form| %>
+      class: "space-y-6", data: { turbo: false }, authenticity_token: false do |form| %>
     <%= form.hidden_field :_next, value: "#{request.base_url}#{contact_path}?submitted=1" %>
     <div>
       <div style="position: absolute; left: -9999px;" aria-hidden="true">
