@@ -68,7 +68,6 @@ end
   get "privacy" => "pages#privacy"
   get "terms" => "pages#terms"
   get  "contact", to: "pages#contact"
-  post "contact" => "pages#send_contact", as: :send_contact
   get "/book", to: "book#show"
   # Alias plural path to singular book route
   get "/books", to: redirect("/book")
