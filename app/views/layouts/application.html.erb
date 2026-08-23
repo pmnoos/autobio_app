@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : "Autobio App" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Peter Magner | The Story of an Ordinary Man with an Extraordinary Life" %></title>
+
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "The autobiography of Peter Magner — stories, memories and life's journey. The story of an ordinary man with an extraordinary life." %>">
+
+    <meta name="keywords" content="Peter Magner, autobiography, memoir, life story, stories, memories, extraordinary life">
+
+    <meta name="author" content="Peter Magner">
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="<%= content_for?(:title) ? yield(:title) : "Peter Magner | My Autobiography" %>">
+
+    <meta property="og:description" content="<%= content_for?(:description) ? yield(:description) : "Stories, memories and life's journey — The Story of an Ordinary Man with an Extraordinary Life." %>">
+
+    <meta property="og:type" content="website">
+
+    <meta property="og:url" content="<%= request.original_url %>">
+
+    <meta property="og:site_name" content="Peter Magner | My Autobiography">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Load compiled Tailwind stylesheet from app/assets/builds %>
     <%= stylesheet_link_tag :tailwind, "data-turbo-track": "reload" %>
-    <%# Load Action Text attachment styles so embedded images render nicely %>
+
     <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
-  
+
     <%= javascript_importmap_tags %>
-  
+
   </head>
 
   <body class="bg-brand-bg">

@@ -62,7 +62,7 @@ end
 
   # Static pages
   
-
+  post "contact" => "pages#send_contact", as: :send_contact
   get "about" => "pages#about"
   get "privacy" => "pages#privacy"
   get "terms" => "pages#terms"
