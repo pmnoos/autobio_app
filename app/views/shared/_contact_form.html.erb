@@ -1,8 +1,15 @@
 <div class="bg-white rounded-lg shadow-md p-8">
   <h2 class="text-2xl font-bold text-gray-900 mb-6">Send a Message</h2>
 
+  <% if params[:submitted].present? %>
+    <p class="mb-6 rounded-md bg-green-50 px-4 py-3 text-green-800" role="status">
+      Thank you! Your message has been sent successfully.
+    </p>
+  <% end %>
+
   <%= form_with url: "https://formspree.io/f/mzepkqdv", method: :post,
       class: "space-y-6", data: { turbo: false } do |form| %>
+    <%= form.hidden_field :_next, value: "#{request.base_url}#{contact_path}?submitted=1" %>
     <div>
       <div style="position: absolute; left: -9999px;" aria-hidden="true">
         <%= form.text_field :_gotcha, tabindex: -1, autocomplete: "off" %>
