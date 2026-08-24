@@ -1,3 +1,7 @@
+<% content_for :title, "#{@chapter.title} | Peter Magner's Autobiography" %>
+
+<% content_for :description, @chapter.subtitle.presence || "Read #{@chapter.title}, a chapter from Peter Magner's autobiography, The Story of an Ordinary Man with an Extraordinary Life." %>
+
 <section class="chapter max-w-4xl mx-auto px-4">
   <h1 class="text-center mt-6 mb-4"><%= @chapter.title %></h1>
   <% if @chapter.subtitle.present? %>

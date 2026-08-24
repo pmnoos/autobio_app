@@ -2,7 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>My Autobiography</title>
+
+  <title><%= content_for?(:title) ? yield(:title) : "Peter Magner | My Autobiography" %></title>
+
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "The autobiography of Peter Magner — The Story of an Ordinary Man with an Extraordinary Life." %>">
+
+  <meta name="author" content="Peter Magner">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= yield :head %>
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 </head>
