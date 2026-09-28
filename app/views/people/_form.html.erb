@@ -1,0 +1,75 @@
+<%= form_with model: @person, class: "max-w-2xl mx-auto p-4 space-y-4" do |form| %>
+  <% if @person.errors.any? %>
+    <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md">
+      <h3 class="font-semibold"><%= pluralize(@person.errors.count, "error") %> stopped this from saving:</h3>
+      <ul class="list-disc pl-5">
+        <% @person.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% %i[first_name last_name maiden_name birth_place death_place gender].each do |field| %>
+    <div>
+      <%= form.label field, class: "block font-semibold mb-1 text-brand-text" %>
+      <%= form.text_field field, class: "w-full border border-brand-text/20 rounded-md p-2" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :birth_date, class: "block font-semibold mb-1 text-brand-text" %>
+    <%= form.date_field :birth_date, class: "w-full border border-brand-text/20 rounded-md p-2" %>
+  </div>
+
+  <div>
+    <%= form.label :death_date, class: "block font-semibold mb-1 text-brand-text" %>
+    <%= form.date_field :death_date, class: "w-full border border-brand-text/20 rounded-md p-2" %>
+  </div>
+
+  <div>
+    <%= form.label :bio_notes, class: "block font-semibold mb-1 text-brand-text" %>
+    <%= form.text_area :bio_notes, rows: 4, class: "w-full border border-brand-text/20 rounded-md p-2" %>
+  </div>
+
+  <div>
+    <%= form.label :photo, "Photo", class: "block font-semibold mb-1 text-brand-text" %>
+    <%= form.file_field :photo %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <%= form.check_box :is_self %>
+    <%= form.label :is_self, "This is me (shown as the root of the family tree)" %>
+  </div>
+
+  <% if @related_to %>
+    <div class="bg-brand-accent/10 p-4 rounded-md space-y-3">
+      <p>Adding a family member for <strong><%= @related_to.full_name %></strong></p>
+      <%= hidden_field_tag :related_to, @related_to.id %>
+      <div>
+        <%= label_tag :relationship_kind, "This person is their...", class: "block font-semibold mb-1" %>
+       <%= select_tag :relationship_kind, options_for_select([
+      ["Parent", "parent_of_related"],
+      ["Child", "child_of_related"],
+      ["Spouse", "spouse_of_related"],
+      ["Sibling", "sibling_of_related"],
+      ["Step-parent", "step_parent_of_related"],
+      ["Step-child", "step_child_of_related"]
+    ]), class: "w-full border border-brand-text/20 rounded-md p-2" %>
+      </div>
+
+      <div>
+        <%= label_tag :existing_person_id, "Or link to someone already in the tree", class: "block font-semibold mb-1" %>
+        <%= select_tag :existing_person_id,
+              options_for_select(
+                Person.where.not(id: @related_to.id).order(:first_name).map { |p| [p.full_name, p.id] }
+              ),
+              include_blank: "-- create a new person instead --",
+              class: "w-full border border-brand-text/20 rounded-md p-2" %>
+        <p class="text-sm text-brand-text/60">If you pick someone here, the name/date fields above will be ignored.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <%= form.submit class: "px-6 py-2 rounded-md font-semibold bg-brand-button text-white hover:bg-brand-hover" %>
+<% end %>

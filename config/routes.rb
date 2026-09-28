@@ -11,25 +11,25 @@ Rails.application.routes.draw do
       get :pdf
     end
   end
- resources :chapters do
-  collection do
-    get :list
-    patch :reorder
+  resources :chapters do
+    collection do
+      get :list
+      patch :reorder
+      # DOCX Import
+      get  :import_docx
+      post :import_docx
+      post :import_docx_apply
+    end
 
-    # DOCX Import
-    get  :import_docx
-    post :import_docx
-     post :import_docx_apply
-  end
-
-
-  # Nested route for photos accessed from chapters
-  resources :photos, only: [ :show ], controller: "photos" do
-    member do
-      get :show, path: "", to: "photos#show_from_chapter"
+    # Nested route for photos accessed from chapters
+    resources :photos, only: [ :show ], controller: "photos" do
+      member do
+        get :show, path: "", to: "photos#show_from_chapter"
+      end
     end
   end
-end
+
+  resources :people
   resource :session
   get "session" => redirect("/session/new")
   resources :passwords, param: :token
@@ -62,13 +62,13 @@ end
   post "audio/generate" => "audio#generate", as: :audio_generate
 
   # Static pages
-  
+
   get "contact", to: "pages#contact"
   post "contact", to: "contacts#create", as: :send_contact
   get "about" => "pages#about"
   get "privacy" => "pages#privacy"
   get "terms" => "pages#terms"
-  get  "contact", to: "pages#contact"
+  get "contact", to: "pages#contact"
   get "/book", to: "book#show"
   # Alias plural path to singular book route
   get "/books", to: redirect("/book")

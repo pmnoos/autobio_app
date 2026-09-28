@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_05_000001) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_27_034907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_05_000001) do
     t.index ["special_type"], name: "index_chapters_on_special_type"
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "maiden_name"
+    t.date "birth_date"
+    t.date "death_date"
+    t.string "birth_place"
+    t.string "death_place"
+    t.string "gender"
+    t.text "bio_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "is_self", default: false, null: false
+  end
+
   create_table "photos", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -74,6 +89,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_05_000001) do
     t.integer "position"
     t.index ["position"], name: "index_photos_on_position"
     t.index ["source"], name: "index_photos_on_source"
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.bigint "person_id", null: false
+    t.bigint "related_person_id", null: false
+    t.integer "relationship_type"
+    t.date "start_date"
+    t.date "end_date"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_relationships_on_person_id"
+    t.index ["related_person_id"], name: "index_relationships_on_related_person_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -96,5 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_05_000001) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "relationships", "people"
+  add_foreign_key "relationships", "people", column: "related_person_id"
   add_foreign_key "sessions", "users"
 end

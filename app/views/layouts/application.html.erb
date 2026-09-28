@@ -33,7 +33,6 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
     <%= stylesheet_link_tag :tailwind, "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
@@ -73,7 +72,12 @@
             <%= link_to "Home", root_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <%= link_to "Chapters", list_chapters_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <%= link_to "Gallery", photos_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
-            
+            <% if (me = Person.me) %>
+              <%= link_to "Family Tree", person_path(me), class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
+            <% elsif authenticated? %>
+              <%= link_to "Set up Family Tree", new_person_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
+            <% end %>
+
             <!-- Authentication Links -->
             <% if authenticated? %>
               <div class="flex items-center space-x-4">
@@ -101,7 +105,12 @@
           <%= link_to "Home", root_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <%= link_to "Chapters", list_chapters_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <%= link_to "Gallery", photos_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
-          
+          <% if (me = Person.me) %>
+            <%= link_to "Family Tree", person_path(me), class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
+          <% elsif authenticated? %>
+            <%= link_to "Set up Family Tree", new_person_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
+          <% end %>
+
           <% if authenticated? %>
             <div class="border-t border-gray-200 pt-2">
               <span class="block px-3 py-2 text-gray-600 text-sm">Welcome, <%= Current.session.user.email_address %></span>
