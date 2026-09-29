@@ -29,8 +29,19 @@ class Person < ApplicationRecord
     Person.where(id: subject_ids + related_ids)
   end
 
+  def spouse_relationships
+    subject_rows = relationships_as_subject.where(relationship_type: :spouse).map do |relationship|
+      { person: relationship.related_person, start_date: relationship.start_date, end_date: relationship.end_date }
+    end
+    related_rows = relationships_as_related.where(relationship_type: :spouse).map do |relationship|
+      { person: relationship.person, start_date: relationship.start_date, end_date: relationship.end_date }
+    end
+
+    subject_rows + related_rows
+  end
+
 def siblings
-  from_shared_parents = parents.flat_map(&:children) - [self]
+  from_shared_parents = parents.flat_map(&:children) - [ self ]
 
   explicit_subject = relationships_as_subject.where(relationship_type: :sibling).map(&:related_person)
   explicit_related = relationships_as_related.where(relationship_type: :sibling).map(&:person)

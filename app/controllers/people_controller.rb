@@ -90,11 +90,6 @@ class PeopleController < ApplicationController
   " as #{related_to.full_name}'s #{label}"
 end
 
-def spouse_relationships
-  subject_rows = relationships_as_subject.where(relationship_type: :spouse).map { |r| { person: r.related_person, start_date: r.start_date, end_date: r.end_date } }
-  related_rows = relationships_as_related.where(relationship_type: :spouse).map { |r| { person: r.person, start_date: r.start_date, end_date: r.end_date } }
-  subject_rows + related_rows
-end
   def person_params
   params.require(:person).permit(:first_name, :last_name, :maiden_name,
                                   :birth_date, :death_date, :birth_place,
