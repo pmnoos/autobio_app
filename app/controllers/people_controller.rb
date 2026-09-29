@@ -61,13 +61,14 @@ class PeopleController < ApplicationController
   return "" if params[:related_to].blank? || params[:relationship_kind].blank?
 
   related_to = Person.find(params[:related_to])
+  dates = { start_date: params[:relationship_start_date].presence, end_date: params[:relationship_end_date].presence }
 
   label = case params[:relationship_kind]
   when "parent_of_related"
-    Relationship.find_or_create_by!(person: @person, related_person: related_to, relationship_type: :parent)
+    Relationship.find_or_create_by!(person: @person, related_person: related_to, relationship_type: :parent).update!(dates)
     "parent"
   when "child_of_related"
-    Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :parent)
+    Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :parent).update!(dates)
     related_to.spouses.each do |spouse|
       Relationship.find_or_create_by!(person: spouse, related_person: @person, relationship_type: :parent)
     end
@@ -79,7 +80,7 @@ class PeopleController < ApplicationController
     Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :parent, notes: "step")
     "step-child"
   when "spouse_of_related"
-    Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :spouse)
+    Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :spouse).update!(dates)
     "spouse"
   when "sibling_of_related"
     Relationship.find_or_create_by!(person: related_to, related_person: @person, relationship_type: :sibling)
@@ -87,8 +88,13 @@ class PeopleController < ApplicationController
   end
 
   " as #{related_to.full_name}'s #{label}"
-  end
-  
+end
+
+def spouse_relationships
+  subject_rows = relationships_as_subject.where(relationship_type: :spouse).map { |r| { person: r.related_person, start_date: r.start_date, end_date: r.end_date } }
+  related_rows = relationships_as_related.where(relationship_type: :spouse).map { |r| { person: r.person, start_date: r.start_date, end_date: r.end_date } }
+  subject_rows + related_rows
+end
   def person_params
   params.require(:person).permit(:first_name, :last_name, :maiden_name,
                                   :birth_date, :death_date, :birth_place,

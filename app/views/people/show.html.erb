@@ -42,23 +42,25 @@
     <%= link_to "← Back", :back, class: "text-brand-button hover:underline" %>
   </div>
 
-  <% [["Parents", @parents], ["Spouse#{'s' if @spouses.size > 1}", @spouses], ["Children", @children], ["Siblings", @siblings]].each do |label, list| %>
-    <div class="mb-6">
-      <h2 class="text-sm font-medium uppercase tracking-wide text-brand-text/60 border-b border-brand-accent/30 pb-1 mb-2"><%= label %></h2>
-      <ul class="divide-y divide-brand-accent/10">
-        <% list.each do |person| %>
-          <li class="py-2 flex justify-between items-center">
-            <%= link_to person.full_name, person_path(person), class: "text-lg font-semibold text-brand-button hover:underline" %>
-            <% if authenticated? %>
-              <%= link_to "Edit", edit_person_path(person), class: "text-xs text-brand-accent hover:underline" %>
-            <% end %>
-          </li>
+<div class="mb-6">
+  <h2 class="text-xl font-semibold border-b border-brand-accent/30 pb-1 mb-2">
+    Spouse<%= "s" if @person.spouse_relationships.size > 1 %>
+  </h2>
+  <ul class="divide-y divide-brand-accent/10">
+    <% @person.spouse_relationships.each do |rel| %>
+      <li class="py-2 flex justify-between items-center">
+        <div>
+          <%= link_to rel[:person].full_name, person_path(rel[:person]), class: "text-brand-button font-medium hover:underline" %>
+          <% if rel[:start_date] || rel[:end_date] %>
+            <span class="text-sm text-brand-text/60">
+              (<%= rel[:start_date]&.strftime("%Y") || "?" %>–<%= rel[:end_date]&.strftime("%Y") || "present" %>)
+            </span>
+          <% end %>
+        </div>
+        <% if authenticated? %>
+          <%= link_to "Edit", edit_person_path(rel[:person]), class: "text-sm text-brand-accent hover:underline" %>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if authenticated? %>
-    <%= link_to "Add a family member", new_person_path(related_to: @person.id), class: "inline-block px-5 py-2 rounded-md font-semibold bg-brand-button text-white hover:bg-brand-hover" %>
-  <% end %>
+      </li>
+    <% end %>
+  </ul>
 </div>

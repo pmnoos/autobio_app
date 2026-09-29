@@ -56,6 +56,17 @@
       ["Step-parent", "step_parent_of_related"],
       ["Step-child", "step_child_of_related"]
     ]), class: "w-full border border-brand-text/20 rounded-md p-2" %>
+      <div class="grid grid-cols-2 gap-3">
+  <div>
+    <%= label_tag :relationship_start_date, "Start date (optional)", class: "block text-sm font-medium text-brand-text/70 mb-1" %>
+    <%= date_field_tag :relationship_start_date, nil, class: "w-full border border-brand-text/30 rounded-md p-3 text-base bg-white" %>
+  </div>
+  <div>
+    <%= label_tag :relationship_end_date, "End date (optional)", class: "block text-sm font-medium text-brand-text/70 mb-1" %>
+    <%= date_field_tag :relationship_end_date, nil, class: "w-full border border-brand-text/30 rounded-md p-3 text-base bg-white" %>
+  </div>
+</div>
+<p class="text-sm text-brand-text/60">For a marriage: when it started, and when it ended (divorce or death) if applicable.</p>
       </div>
 
       <div>
