@@ -7,7 +7,17 @@
     <% if @person.photo.attached? %>
       <%= image_tag @person.photo, class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
     <% end %>
+    <div class="flex justify-center gap-4 text-sm mb-6 pb-4 border-b border-brand-accent/20">
+  <% if (me = Person.me) && me != @person %>
+    <%= link_to "🏠 Home (You)", person_path(me), class: "text-brand-button hover:underline" %>
+  <% end %>
 
+  <% if authenticated? %>
+    <%= link_to "+ Add family member here", new_person_path(related_to: @person.id), class: "text-brand-button hover:underline" %>
+  <% end %>
+
+  <%= link_to "← Back", :back, class: "text-brand-button hover:underline" %>
+</div>
     <h1 class="text-3xl font-bold"><%= @person.full_name %></h1>
     <p class="text-brand-text/70">
       <%= @person.birth_date&.strftime("%Y") %>
