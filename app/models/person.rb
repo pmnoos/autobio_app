@@ -14,14 +14,14 @@ class Person < ApplicationRecord
 
   before_save :clear_other_is_self, if: :is_self?
 
-  # Convention: a Relationship(person: A, related_person: B, relationship_type: :parent) means "A is a parent of B".
-  def parents
-    Person.where(id: relationships_as_related.where(relationship_type: :parent).select(:person_id))
-  end
+# Convention: a Relationship(person: A, related_person: B, relationship_type: :parent) means "A is a parent of B".
+def parents
+  Person.where(id: relationships_as_related.where(relationship_type: :parent).select(:person_id)).order(:birth_date)
+end
 
-  def children
-    Person.where(id: relationships_as_subject.where(relationship_type: :parent).select(:related_person_id))
-  end
+def children
+  Person.where(id: relationships_as_subject.where(relationship_type: :parent).select(:related_person_id)).order(:birth_date)
+end
 
   def spouses
     subject_ids = relationships_as_subject.spouse.pluck(:related_person_id)
@@ -41,12 +41,12 @@ class Person < ApplicationRecord
   end
 
 def siblings
-  from_shared_parents = parents.flat_map(&:children) - [ self ]
+  from_shared_parents = parents.flat_map(&:children) - [self]
 
   explicit_subject = relationships_as_subject.where(relationship_type: :sibling).map(&:related_person)
   explicit_related = relationships_as_related.where(relationship_type: :sibling).map(&:person)
 
-  (from_shared_parents + explicit_subject + explicit_related).uniq
+  (from_shared_parents + explicit_subject + explicit_related).uniq.sort_by { |p| p.birth_date || Date::Infinity.new }
 end
 
   private
