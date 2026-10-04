@@ -41,7 +41,7 @@ end
   end
 
 def siblings
-  from_shared_parents = parents.flat_map(&:children) - [self]
+  from_shared_parents = parents.flat_map(&:children) - [ self ]
 
   explicit_subject = relationships_as_subject.where(relationship_type: :sibling).map(&:related_person)
   explicit_related = relationships_as_related.where(relationship_type: :sibling).map(&:person)
@@ -53,5 +53,36 @@ end
 
   def clear_other_is_self
     Person.where.not(id: id).update_all(is_self: false)
+  end
+
+  public
+
+  def research_links
+  name_query = "#{first_name} #{last_name}".strip
+  year = birth_date&.year
+  places = "#{birth_place} #{death_place}".downcase
+
+  links = {}
+
+  links["FamilySearch"] = "https://www.familysearch.org/search/record/results?q.givenName=#{CGI.escape(first_name.to_s)}&q.surname=#{CGI.escape(last_name.to_s)}#{"&q.birthLikeDate.from=#{year}&q.birthLikeDate.to=#{year}" if year}"
+
+  if places.match?(/uk|england|britain|wales|scotland|kent|hull|sutton coldfield|slough|dover/)
+    links["FreeBMD (England & Wales)"] = "https://www.freebmd.org.uk/cgi/search.pl?surname=#{CGI.escape(last_name.to_s)}&given=#{CGI.escape(first_name.to_s)}"
+    links["UK National Archives"] = "https://discovery.nationalarchives.gov.uk/results/r?_q=#{CGI.escape(name_query)}"
+  end
+
+  if places.match?(/ireland|eire|mount mellick/)
+    links["IrishGenealogy.ie"] = "https://civilrecords.irishgenealogy.ie/churchrecords/civil-images.jsp?surname=#{CGI.escape(last_name.to_s)}&firstname=#{CGI.escape(first_name.to_s)}"
+  end
+
+  if places.match?(/australia|nsw|victoria|queensland|brisbane|sydney|melbourne/)
+    links["Trove (Australia)"] = "https://trove.nla.gov.au/search/category/newspapers?keyword=#{CGI.escape(name_query)}"
+  end
+
+  if places.match?(/new zealand|nz|glenfield|auckland|wellington/)
+    links["Papers Past (NZ)"] = "https://paperspast.natlib.govt.nz/newspapers?query=#{CGI.escape(name_query)}"
+  end
+
+  links
   end
 end
