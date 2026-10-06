@@ -31,7 +31,7 @@ class FamilyTreeController < ApplicationController
       end
     end
 
-    Person.all.map do |person|
+    Person.with_attached_photo.map do |person|
       {
         id: person.id.to_s,
         data: {
@@ -39,6 +39,7 @@ class FamilyTreeController < ApplicationController
           "last name" => person.last_name.to_s,
           "years" => years_for(person),
           "page" => page_link_for(person),
+          "avatar" => avatar_for(person),
           "gender" => person.gender.to_s.downcase.start_with?("f") ? "F" : "M"
         },
         rels: links[person.id.to_s]
@@ -57,6 +58,11 @@ class FamilyTreeController < ApplicationController
 
   # A small link shown on each card that opens that person's own page.
   def page_link_for(person)
-    "<a href=\"#{person_path(person)}\" data-turbo=\"false\" style=\"color:#9ecbff;text-decoration:underline;\">View page</a>"
+    "<a href=\"#{person_path(person)}\" data-turbo=\"false\" style=\"color:#1a56a0;text-decoration:underline;font-size:15px;\">View page</a>"
+  end
+
+  # Address of the person's attached photo, or nil when there isn't one.
+  def avatar_for(person)
+    person.photo.attached? ? rails_blob_path(person.photo, only_path: true) : nil
   end
 end
