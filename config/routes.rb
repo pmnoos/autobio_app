@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get "info/chapter3" => "info#chapter3", as: :info_chapter3
   get "info/chapter18" => "info#chapter18", as: :info_chapter18
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
+  get "family_tree" => "family_tree#show", as: :family_tree
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

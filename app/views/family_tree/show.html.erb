@@ -1,0 +1,35 @@
+
+<% content_for :title, "Family Tree" %>
+
+<% content_for :head do %>
+  <script src="https://unpkg.com/d3@7"></script>
+  <link rel="stylesheet" href="https://unpkg.com/family-chart@latest/dist/styles/family-chart.css">
+  <script type="module" src="https://unpkg.com/family-chart@latest"></script>
+<% end %>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-brand-text mb-2">Family Tree</h1>
+  <p class="text-gray-600 mb-6">Click a person to centre the tree on them. Drag to move around and scroll to zoom.</p>
+
+  <% if @tree_data.empty? %>
+    <p class="text-gray-600">No people have been added yet.</p>
+  <% else %>
+    <div id="FamilyChart" class="f3"
+         style="width:100%;height:75vh;min-height:500px;background-color:rgb(33,33,33);color:#fff;border-radius:8px;"></div>
+
+    <script type="application/json" id="tree-data"><%= raw json_escape(@tree_data.to_json) %></script>
+
+    <script type="module">
+      const data = JSON.parse(document.getElementById("tree-data").textContent);
+      const mainId = "<%= @main_id %>";
+
+      const f3Chart = f3.createChart("#FamilyChart", data);
+
+      f3Chart.setCardHtml()
+        .setCardDisplay([["first name", "last name"], ["years"]]);
+
+      if (mainId) f3Chart.updateMainId(mainId);
+      f3Chart.updateTree({ initial: true });
+    </script>
+  <% end %>
+</div>
