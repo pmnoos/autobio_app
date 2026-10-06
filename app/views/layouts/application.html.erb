@@ -73,7 +73,7 @@
             <%= link_to "Chapters", list_chapters_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <%= link_to "Gallery", photos_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <% if (me = Person.me) %>
-              <%= link_to "Family Tree", person_path(me), class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
+              <%= link_to "Family Tree", family_tree_path, data: { turbo: false }, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <% elsif authenticated? %>
               <%= link_to "Set up Family Tree", new_person_path, class: "text-brand-text hover:text-brand-accent px-3 py-2 text-sm font-medium transition-colors" %>
             <% end %>
@@ -106,7 +106,7 @@
           <%= link_to "Chapters", list_chapters_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <%= link_to "Gallery", photos_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <% if (me = Person.me) %>
-            <%= link_to "Family Tree", person_path(me), class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
+          <%= link_to "Family Tree", family_tree_path, data: { turbo: false }, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <% elsif authenticated? %>
             <%= link_to "Set up Family Tree", new_person_path, class: "block px-3 py-2 text-brand-text hover:text-brand-accent text-base font-medium" %>
           <% end %>

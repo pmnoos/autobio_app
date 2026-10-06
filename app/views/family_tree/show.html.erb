@@ -1,4 +1,3 @@
-
 <% content_for :title, "Family Tree" %>
 
 <% content_for :head do %>
@@ -9,7 +8,7 @@
 
 <div class="max-w-7xl mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-brand-text mb-2">Family Tree</h1>
-  <p class="text-gray-600 mb-6">Click a person to centre the tree on them. Drag to move around and scroll to zoom.</p>
+  <p class="text-gray-600 mb-6">Click a person to centre the tree on them. Drag to move around and scroll to zoom. Use "View page" on a card to open that person's page.</p>
 
   <% if @tree_data.empty? %>
     <p class="text-gray-600">No people have been added yet.</p>
@@ -26,7 +25,7 @@
       const f3Chart = f3.createChart("#FamilyChart", data);
 
       f3Chart.setCardHtml()
-        .setCardDisplay([["first name", "last name"], ["years"]]);
+        .setCardDisplay([["first name", "last name"], ["years"], ["page"]]);
 
       if (mainId) f3Chart.updateMainId(mainId);
       f3Chart.updateTree({ initial: true });

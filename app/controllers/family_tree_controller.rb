@@ -38,6 +38,7 @@ class FamilyTreeController < ApplicationController
           "first name" => person.first_name.to_s,
           "last name" => person.last_name.to_s,
           "years" => years_for(person),
+          "page" => page_link_for(person),
           "gender" => person.gender.to_s.downcase.start_with?("f") ? "F" : "M"
         },
         rels: links[person.id.to_s]
@@ -52,5 +53,10 @@ class FamilyTreeController < ApplicationController
     return "b. #{born}" if died.nil?
 
     "#{born || '?'} – #{died}"
+  end
+
+  # A small link shown on each card that opens that person's own page.
+  def page_link_for(person)
+    "<a href=\"#{person_path(person)}\" data-turbo=\"false\" style=\"color:#9ecbff;text-decoration:underline;\">View page</a>"
   end
 end
