@@ -8,17 +8,46 @@
       <%= image_tag @person.photo, class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
     <% end %>
 
-    <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
-    <p class="mt-2 text-lg font-medium text-brand-text">
-      <%= @person.birth_date&.strftime("%Y") %>
-      <% if @person.death_date %> – <%= @person.death_date.strftime("%Y") %><% end %>
+ <% if @person.private_profile? && !authenticated? %>
+
+  <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
+
+  <p class="mt-3 text-base text-brand-text/60">
+    Living family member — some details are private.
+  </p>
+
+<% else %>
+
+  <% if @person.photo.attached? %>
+    <%= image_tag @person.photo,
+          class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
+  <% end %>
+
+  <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
+
+  <p class="mt-2 text-lg font-medium text-brand-text">
+    <%= @person.birth_date&.strftime("%Y") %>
+    <% if @person.death_date %>
+      – <%= @person.death_date.strftime("%Y") %>
+    <% end %>
+  </p>
+
+  <% if @person.birth_place.present? %>
+    <p class="mt-1 text-sm text-brand-text/60">
+      Born in
+      <span class="text-base font-medium text-brand-text">
+        <%= @person.birth_place %>
+      </span>
     </p>
-    <% if @person.birth_place.present? %>
-      <p class="mt-1 text-sm text-brand-text/60">Born in <span class="text-base font-medium text-brand-text"><%= @person.birth_place %></span></p>
-    <% end %>
-    <% if @person.bio_notes.present? %>
-      <p class="mt-4 text-base leading-relaxed"><%= @person.bio_notes %></p>
-    <% end %>
+  <% end %>
+
+  <% if @person.bio_notes.present? %>
+    <p class="mt-4 text-base leading-relaxed">
+      <%= @person.bio_notes %>
+    </p>
+  <% end %>
+
+<% end %>
 
     <% if authenticated? %>
       <div class="mt-4 flex justify-center gap-3">

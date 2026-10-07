@@ -87,12 +87,15 @@ class PeopleController < ApplicationController
     "sibling"
   end
 
-  " as #{related_to.full_name}'s #{label}"
-end
+    " as #{related_to.full_name}'s #{label}"
+  end
 
   def person_params
-  params.require(:person).permit(:first_name, :last_name, :maiden_name,
-                                  :birth_date, :death_date, :birth_place,
-                                  :death_place, :gender, :bio_notes, :is_self, :photo)
+    params.require(:person).permit(
+      :first_name, :last_name, :maiden_name,
+      :birth_date, :death_date, :birth_place,
+      :death_place, :gender, :bio_notes,
+      :is_self, :photo, :private_profile
+    )
   end
 end

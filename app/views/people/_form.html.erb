@@ -25,7 +25,7 @@
 <div>
   <%= form.label :death_date, class: "block text-sm font-medium text-brand-text/70 mb-1" %>
   <%= form.date_field :death_date, class: "w-full border border-brand-text/30 rounded-md p-3 text-base bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-brand-accent" %>
-</div>>
+</div>
 
   <div>
     <%= form.label :bio_notes, class: "block text-sm font-medium text-brand-text/70 mb-1" %>
@@ -40,7 +40,10 @@
     <%= form.check_box :is_self %>
     <%= form.label :is_self, "This is me (shown as the root of the family tree)" %>
   </div>
-
+  <div class="flex items-center gap-2">
+    <%= form.check_box :private_profile %>
+    <%= form.label :private_profile, "Keep this person's details private" %>
+  </div>
   <% if @related_to %>
     <div class="bg-brand-accent/10 p-4 rounded-md space-y-3">
       <p>Adding a family member for <strong><%= @related_to.full_name %></strong></p>
