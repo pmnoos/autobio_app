@@ -3,7 +3,11 @@
     <% if @person.is_self? %>
       <span class="inline-block bg-brand-accent text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">This is you</span>
     <% end %>
-
+    <% if authenticated? && @person.private_profile? %>
+    <span class="inline-block bg-gray-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">
+      🔒 Private
+    </span>
+<% end %>
     <% if @person.photo.attached? %>
       <%= image_tag @person.photo, class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
     <% end %>
