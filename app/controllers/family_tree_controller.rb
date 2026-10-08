@@ -31,15 +31,18 @@ class FamilyTreeController < ApplicationController
       end
     end
 
+    signed_in = authenticated?
+
     Person.with_attached_photo.map do |person|
+      hidden = person.private_profile? && !signed_in
       {
         id: person.id.to_s,
         data: {
           "first name" => person.first_name.to_s,
           "last name" => person.last_name.to_s,
-          "years" => years_for(person),
-          "page" => page_link_for(person),
-          "avatar" => avatar_for(person),
+          "years" => hidden ? "" : years_for(person),
+          "page" => hidden ? "" : page_link_for(person),
+          "avatar" => hidden ? nil : avatar_for(person),
           "gender" => person.gender.to_s.downcase.start_with?("f") ? "F" : "M"
         },
         rels: links[person.id.to_s]
