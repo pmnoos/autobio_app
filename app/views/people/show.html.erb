@@ -8,10 +8,6 @@
       🔒 Private
     </span>
 <% end %>
-    <% if @person.photo.attached? %>
-      <%= image_tag @person.photo, class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
-    <% end %>
-
  <% if @person.private_profile? && !authenticated? %>
 
   <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
