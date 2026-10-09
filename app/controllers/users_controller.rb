@@ -1,27 +1,12 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: [ :new, :create ]
 
+  # Sign-up is closed. Accounts are created by the site owner only.
   def new
-    @user = User.new
+    redirect_to root_path, alert: "Sign-up is closed."
   end
 
   def create
-    @user = User.new(user_params)
-
-    if @user.save
-      start_new_session_for @user
-      redirect_to root_path, notice: "Welcome! Your account has been created successfully."
-    else
-      render :new, status: :unprocessable_entity
-    end
-  rescue ActiveRecord::RecordNotUnique
-    @user.errors.add(:email_address, "has already been taken")
-    render :new, status: :unprocessable_entity
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:email_address, :password, :password_confirmation)
+    redirect_to root_path, alert: "Sign-up is closed."
   end
 end
