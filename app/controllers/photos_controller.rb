@@ -1,19 +1,25 @@
-  # GET /photos/1/pdf
-  def pdf
-    @photo = Photo.find(params[:id])
-    html = render_to_string(template: "photos/show", layout: false)
-    pdf = Grover.new(html, format: "A4").to_pdf
-    send_data pdf, filename: "photo-#{@photo.id}.pdf", type: "application/pdf", disposition: "attachment"
-  end
 class PhotosController < ApplicationController
+  before_action :require_admin, only: %i[ new create edit update destroy reorder bulk_upload bulk_upload_save ]
   allow_unauthenticated_access only: [ :index, :show ]
   before_action :set_photo, only: %i[ show edit update destroy ]
+
   # GET /photos or /photos.json
   def index
     # Preload attachments to avoid N+1 and ensure robust rendering
     @photos = Photo.by_position.with_attached_image
     # Exclude chapter-derived images using `source` flag
     @photos = @photos.where.not(source: "chapter")
+  end
+
+  # GET /photos/1/pdf
+  def pdf
+    @photo = Photo.find(params[:id])
+    html = render_to_string(template: "photos/show", layout: false)
+    pdf = Grover.new(html, format: "A4").to_pdf
+    send_data pdf, filename: "photo-#{@photo.id}.pdf", type: "application/pdf", disposition: "attachment"
+
+
+
   end
 
   # PATCH /photos/reorder

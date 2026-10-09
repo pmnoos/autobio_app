@@ -38,11 +38,6 @@
     
     <div class="flex space-x-3 items-center">
       <!-- PDF Export Buttons -->
-      <% if authenticated? %>
-        <%= link_to "📄 Export Complete Book as PDF", export_pdf_chapters_path(format: :pdf), 
-            class: "bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm",
-            target: "_blank" %>
-      <% end %>
       
       <% if authenticated? %>
         <%= link_to "Add New Chapter", new_chapter_path, 
@@ -164,11 +159,6 @@
                   <% end %>
                 <% end %>
                 
-                <% if authenticated? %>
-                  <%= link_to "📄 Export PDF", export_chapter_pdf_chapter_path(chapter, format: :pdf), 
-                      class: "bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm",
-                      target: "_blank" %>
-                <% end %>
                 
                 <% if authenticated? %>
                   <%= link_to "Edit", edit_chapter_path(chapter), 

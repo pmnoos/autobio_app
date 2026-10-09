@@ -1,4 +1,5 @@
 class AudioController < ApplicationController
+  before_action :require_admin, only: %i[ generate ]
   protect_from_forgery with: :exception
 
   def index

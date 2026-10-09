@@ -1,4 +1,5 @@
 class PeopleController < ApplicationController
+  before_action :require_admin, only: [ :new, :create, :edit, :update, :destroy ]
   allow_unauthenticated_access only: [ :show ]
 
   before_action :set_person, only: [ :edit, :update, :destroy ]

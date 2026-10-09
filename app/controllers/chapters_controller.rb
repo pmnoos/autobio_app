@@ -3,6 +3,7 @@ require "open3"
 require "securerandom"
 
 class ChaptersController < ApplicationController
+  before_action :require_admin, only: %i[ reorder import_docx import_docx_apply new create edit update destroy ]
   include ActionController::MimeResponds
   allow_unauthenticated_access only: [ :index, :list, :show ]
   before_action :set_chapter, only: %i[show edit update destroy]
