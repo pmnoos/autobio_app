@@ -1,0 +1,11 @@
+<h2>A family tree suggestion</h2>
+
+<p><strong>About:</strong> <%= @person.full_name %></p>
+
+<p><strong>From:</strong> <%= @name.presence || "(no name given)" %></p>
+
+<p><strong>Email:</strong> <%= @email.presence || "(none given)" %></p>
+
+<hr>
+
+<%= simple_format(@message) %>

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "contacts/create"
   resources :users, only: [ :new, :create ]
+  resources :suggestions, only: [ :create ]
   resources :photos do
     collection do
       patch :reorder
