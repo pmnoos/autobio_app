@@ -41,7 +41,7 @@ class FamilyTreeController < ApplicationController
           "first name" => person.first_name.to_s,
           "last name" => person.last_name.to_s,
           "years" => hidden ? "" : years_for(person),
-          "page" => hidden ? "" : page_link_for(person),
+          "page" => page_link_for(person),
           "avatar" => hidden ? nil : avatar_for(person),
           "gender" => person.gender.to_s.downcase.start_with?("f") ? "F" : "M"
         },
