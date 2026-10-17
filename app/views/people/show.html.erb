@@ -1,136 +1,77 @@
-<div class="max-w-3xl mx-auto p-4 bg-brand-bg text-brand-text">
-  <div class="text-center mb-8 pb-6 border-b border-brand-accent/30">
-    <% if @person.is_self? %>
-      <span class="inline-block bg-brand-accent text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">This is you</span>
-    <% end %>
-    <% if authenticated? && @person.private_profile? %>
-    <span class="inline-block bg-gray-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">
-      🔒 Private
-    </span>
-<% end %>
- <% if @person.private_profile? && !authenticated? %>
+<% content_for :title, "Family Tree" %>
 
-  <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
+<% content_for :head do %>
+  <script src="https://unpkg.com/d3@7"></script>
+  <link rel="stylesheet" href="https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css">
+  <script type="module" src="https://unpkg.com/family-chart@0.9.0"></script>
 
-  <p class="mt-3 text-base text-brand-text/60">
-    Living family member — some details are private.
-  </p>
-
-<% else %>
-
-  <% if @person.photo.attached? %>
-    <%= image_tag @person.photo,
-          class: "w-40 h-40 rounded-full object-cover mx-auto mb-4 border-4 border-brand-accent" %>
-  <% end %>
-
-  <h1 class="text-4xl font-bold"><%= @person.full_name %></h1>
-
-  <p class="mt-2 text-lg font-medium text-brand-text">
-    <%= @person.birth_date&.strftime("%Y") %>
-    <% if @person.death_date %>
-      – <%= @person.death_date.strftime("%Y") %>
-    <% end %>
-  </p>
-
-  <% if @person.birth_place.present? %>
-    <p class="mt-1 text-sm text-brand-text/60">
-      Born in
-      <span class="text-base font-medium text-brand-text">
-        <%= @person.birth_place %>
-      </span>
-    </p>
-  <% end %>
-
-  <% if @person.bio_notes.present? %>
-    <p class="mt-4 text-base leading-relaxed">
-      <%= @person.bio_notes %>
-    </p>
-  <% end %>
-
+  <style>
+    /* Light, easy-to-read colours and larger text for the family tree */
+    #FamilyChart {
+      --background-color: #faf6ef;
+      --text-color: #2b2b2b;
+      --male-color: #cfe3ee;
+      --female-color: #f4d9dc;
+      --genderless-color: #e6e6e6;
+      font-size: 18px;
+    }
+    #FamilyChart path.link {
+      stroke: #8a7a68;
+      stroke-width: 2px;
+    }
+    #FamilyChart div.card-main .card-inner {
+      outline: 4px solid #b45309;
+    }
+    #FamilyChart div.card-inner.f3-path-to-main {
+      outline: 4px solid #d6a77a;
+    }
+    #FamilyChart div.card-main .card-inner,
+    #FamilyChart div.card:hover .card-inner {
+      box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.25);
+    }
+  </style>
 <% end %>
 
-    <% if authenticated? %>
-      <div class="mt-4 flex justify-center gap-3">
-        <%= link_to "Edit", edit_person_path(@person), class: "px-5 py-2 rounded-md font-semibold bg-brand-button text-white hover:bg-brand-hover" %>
-        <%= button_to "Remove", person_path(@person), method: :delete,
-              data: { turbo_confirm: "Remove #{@person.full_name}?" },
-              class: "px-5 py-2 rounded-md font-semibold border border-brand-text/30 text-brand-text hover:bg-brand-text/5" %>
-      </div>
-    <% end %>
-  </div>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-brand-text mb-2">Family Tree</h1>
+  <p class="text-lg text-brand-text mb-3">This is the Magner family tree. Click anyone to see their branch, and use the <strong>View page</strong> link on their card to open their page. Details of living family members are kept private. If you spot a mistake or know a story about someone, open their page and send me a note.</p>
+  <p class="text-gray-600 mb-6">Drag to move around and scroll to zoom.</p>
 
-  <div class="flex justify-center gap-4 text-sm mb-6 pb-4 border-b border-brand-accent/20">
-    <% if (me = Person.me) && me != @person %>
-      <%= link_to "🏠 Home (You)", person_path(me), class: "text-brand-button hover:underline" %>
-    <% end %>
-
-    <% if authenticated? %>
-      <%= link_to "+ Add family member here", new_person_path(related_to: @person.id), class: "text-brand-button hover:underline" %>
-    <% end %>
-
-    <%= link_to "← Back", :back, class: "text-brand-button hover:underline" %>
-  </div>
-
-  <% show_relatives = authenticated? || !@person.private_profile? %>
-
-  <% if show_relatives %>
-  <div class="mb-6">
-    <h2 class="text-xl font-semibold border-b border-brand-accent/30 pb-1 mb-2">
-      Spouse<%= "s" if @person.spouse_relationships.size > 1 %>
-    </h2>
-    <ul class="divide-y divide-brand-accent/10">
-      <% @person.spouse_relationships.each do |rel| %>
-        <li class="py-2 flex justify-between items-center">
-          <div>
-            <%= link_to rel[:person].full_name, person_path(rel[:person]), class: "text-brand-button font-medium hover:underline" %>
-            <% if rel[:start_date] || rel[:end_date] %>
-              <span class="text-sm text-brand-text/60">
-                (<%= rel[:start_date]&.strftime("%Y") || "?" %>–<%= rel[:end_date]&.strftime("%Y") || "present" %>)
-              </span>
-            <% end %>
-          </div>
-          <% if authenticated? %>
-            <%= link_to "Edit", edit_person_path(rel[:person]), class: "text-sm text-brand-accent hover:underline" %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-
-  <% [["Parents", @parents], ["Children", @children], ["Siblings", @siblings]].each do |label, list| %>
-    <div class="mb-6">
-      <h2 class="text-xl font-semibold border-b border-brand-accent/30 pb-1 mb-2"><%= label %></h2>
-      <ul class="divide-y divide-brand-accent/10">
-        <% list.each do |person| %>
-          <li class="py-2 flex justify-between items-center">
-            <%= link_to person.full_name, person_path(person), class: "text-brand-button font-medium hover:underline" %>
-            <% if authenticated? %>
-              <%= link_to "Edit", edit_person_path(person), class: "text-sm text-brand-accent hover:underline" %>
-            <% end %>
-          </li>
+  <% if authenticated? && @skipped_links.present? %>
+    <div class="mb-6 p-4 rounded-md bg-yellow-50 border border-yellow-300 text-brand-text">
+      <p class="font-semibold">Some links were left out of the tree because they would break it:</p>
+      <ul class="list-disc ml-6">
+        <% @skipped_links.each do |note| %>
+          <li><%= note %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-  <% end %>
 
-  <%= render 'people/suggestion_form', person: @person %>
-  <% if authenticated? %>
-    <%= link_to "Add a family member", new_person_path(related_to: @person.id), class: "inline-block px-5 py-2 rounded-md font-semibold bg-brand-button text-white hover:bg-brand-hover" %>
-  <% end %>
+  <% if @tree_data.empty? %>
+    <p class="text-gray-600">No people have been added yet.</p>
+  <% else %>
+    <div id="FamilyChart" class="f3"
+         style="width:100%;height:75vh;min-height:500px;background-color:#faf6ef;color:#2b2b2b;border:1px solid #e5dccd;border-radius:8px;"></div>
 
-  <% if authenticated? %>
-    <div class="mt-8 pt-6 border-t border-brand-accent/30">
-      <h2 class="text-sm font-medium uppercase tracking-wide text-brand-text/60 mb-2">Research this person</h2>
-      <p class="text-sm text-brand-text/60 mb-3">Search free genealogy sites for records matching this person:</p>
-      <ul class="flex flex-wrap gap-3">
-        <% @person.research_links.each do |site, url| %>
-          <li>
-            <%= link_to site, url, target: "_blank", rel: "noopener",
-                  class: "inline-block px-3 py-1.5 text-sm rounded-md border border-brand-accent/40 text-brand-button hover:bg-brand-accent/10" %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <script type="application/json" id="tree-data"><%= raw json_escape(@tree_data.to_json) %></script>
+
+    <script type="module">
+      const data = JSON.parse(document.getElementById("tree-data").textContent);
+      const mainId = "<%= @main_id %>";
+
+      const f3Chart = f3.createChart("#FamilyChart", data);
+
+      // Wider spacing to suit the larger cards
+      f3Chart.setCardXSpacing(340);
+      f3Chart.setCardYSpacing(170);
+
+      f3Chart.setCardHtml()
+        .setCardDisplay([["first name", "last name"], ["years"], ["page"]])
+        .setCardDim({ w: 300, h: 100, height_auto: true, img_w: 80, img_h: 80, img_x: 0, img_y: 0 });
+
+      if (mainId) f3Chart.updateMainId(mainId);
+      f3Chart.updateTree({ initial: true });
+    </script>
   <% end %>
 </div>
